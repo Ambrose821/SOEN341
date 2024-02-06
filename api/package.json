@@ -1,0 +1,21 @@
+{
+  "name": "soen341-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www --ignore client",
+    "server": "node ./bin/www --ignore client ",
+    "client": "cd react-client && npm start"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-proxy-middleware": "^2.0.6",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

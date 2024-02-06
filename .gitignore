@@ -1,0 +1,34 @@
+# Dependency directories
+/react-client/node_modules/
+/api/node_modules/
+
+# React build directory
+/react-client/build/
+
+# Environment files
+/react-client/.env*
+/api/.env*
+
+# Logs
+/react-client/npm-debug.log*
+/react-client/yarn-debug.log*
+/react-client/yarn-error.log*
+/api/npm-debug.log*
+/api/yarn-debug.log*
+/api/yarn-error.log*
+/api/*.log
+/api/*.pid
+/api/*.seed
+/api/*.pid.lock
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+
+# React-specific
+/react-client/.eslintcache
+/react-client/*.tsbuildinfo
+
+# Optional: Documentation and reports for API
+/api/docs/
+/api/reports/
