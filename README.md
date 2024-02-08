@@ -19,4 +19,4 @@ Develop a car rental web application.
   <li>ExpressJS</li>
 </ul>
 
-Project Approach
+<h3>Project Approach</h3>
