@@ -106,5 +106,9 @@ Develop a car rental web application.
   <li>ExpressJS</li>
 </ul>
 
+<p>
+  For additional information on planning, installation instructions, team rules and management guidelines, please refer to the <a href="https://github.com/vinishamanek/SillySquad-soen341projectW2024/wiki">Wiki</a> section.
+</p>
+
 </body>
 </html>
