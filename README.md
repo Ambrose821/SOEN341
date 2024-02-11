@@ -37,7 +37,7 @@ Develop a car rental web application.
       Team Leader, Backend Development
     </td>
     <td>
-      2nd year Software Engineering student at Concordia University with experience in
+      2nd year Software Engineering student at Concordia University with experience in Java software design at  Lockheed martin. Additional experience includes full stack web development using React, Node Js, PHP, Html & CSS. 
     </td>
   </tr>
    <tr>
@@ -51,7 +51,7 @@ Develop a car rental web application.
       Frontend Development, Documentation
     </td>
     <td>
-      2nd year Software Engineering student at Concordia University with experience in front end development, C# and Java programming
+      2nd year Software Engineering student at Concordia University with experience in front end development, C# and Java programming.
     </td>
   </tr>
   <tr>
@@ -65,7 +65,7 @@ Develop a car rental web application.
       Documentation, Frontend Development, Backend Development
     </td>
     <td>
-      2nd year Software Engineering student at Concordia University with experience in app development using SwiftUI, and web development using Node.js.
+      2nd year Software Engineering student at Concordia University with experience in app development using SwiftUI, web development using Node.js, and Java programming.
     </td>
   </tr>
   <tr>
