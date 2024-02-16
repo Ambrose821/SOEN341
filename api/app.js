@@ -8,6 +8,8 @@ var session = require('express-session')
 
 //Models
 const User = require('./models/User');
+const Vehicle = require('./models/Vehicle');
+
 
 //routes
 var indexRouter = require('./routes/index');
