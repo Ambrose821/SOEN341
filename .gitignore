@@ -7,7 +7,7 @@
 
 # Environment files
 /react-client/.env*
-/api/.env*
+/api/config/config.env
 
 # Logs
 /react-client/npm-debug.log*
