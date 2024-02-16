@@ -7,7 +7,8 @@ var cors = require('cors')
 var session = require('express-session')
 
 //Models
-const Media = require('./models/User');
+const User = require('./models/User');
+const Vehicle = require('./models/Vehicle');
 
 //routes
 var indexRouter = require('./routes/index');
