@@ -10,6 +10,7 @@ var session = require('express-session')
 const User = require('./models/User');
 const Vehicle = require('./models/Vehicle');
 
+
 //routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -18,15 +19,21 @@ var apiRouter = require('./routes/apiRouter');
 var app = express();
 app.use(cors());
 
+//Passport config
+require('./config/passport')(passport)
+
 
 //Load config file
 dotenv.config({path: './config/config.env'})
 
-//Mongo Connext
+
+//Mongo Middleware
 const mongoose = require('mongoose');
 const MongoStore = require("connect-mongo")
 const connectDB = require('./config/db');
 connectDB();
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -40,6 +47,11 @@ app.use(session({
     saveUninitialized: false,
     store: MongoStore.create({mongoUrl: process.env.MONGO_URI})
   }));
+
+//passport middleware 
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
