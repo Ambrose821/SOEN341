@@ -1,12 +1,19 @@
 import React from "react";
-import { routes } from "./Routes";
-import { Link } from "react-router-dom";
-import { useLocation} from "react-router-dom";
+import { Link } from 'react-router-dom';
+
 
 function Sidebar() {
-return (
-    <div>
-   side bar
+  return (
+    <div className="sidebar">
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+        {/* Add more navigation links as needed */}
+      </ul>
     </div>
   );
 }

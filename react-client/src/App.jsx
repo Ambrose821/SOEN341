@@ -1,19 +1,22 @@
 import React from "react";
 import "./App.css";
-import Header from "./Pages/Global Components/Header";
-import Footer from "./Pages/Global Components/Footer";
-import Sidebar from "./Pages/Global Components/Sidebar";
-import Content from "./Pages/Global Components/Content";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from "./Pages/Global Components/Layout";
+import Home from "./Pages/Home";
+import LoginPage from "./Pages/Login_page";;
 
 function App() {
 
   return (
-    <div className="App">
-      <Sidebar />
-      <Header />
-      <Content />
-      <Footer />
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage/>} />
+          {/* Add routes for other pages */} 
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 
