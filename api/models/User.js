@@ -20,13 +20,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default : 'customer',
         enum: ['customer','admin','customer_service'],
-        required: true,
+        
        
     
     },
     img:{
         type:String,
-        required :true
+        default: '/imgs/carlogo.jpg'
     }
 
 })
