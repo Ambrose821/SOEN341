@@ -20,6 +20,7 @@ var app = express();
 app.use(cors());
 
 //Passport config
+var passport = require('passport')
 require('./config/passport')(passport)
 
 
