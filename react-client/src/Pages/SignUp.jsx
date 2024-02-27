@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -12,6 +12,8 @@ function SignUp() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  
+  const[isSignedup, setSignup] = useState(false);
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
@@ -75,26 +77,37 @@ function SignUp() {
 
     try {
       // Send signup data to backend
-      const response = await fetch('/signup', {
+      const response = await fetch('http://localhost:9000/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ firstName, lastName, email, password }),
       });
-
+      
       if (!response.ok) {
-        throw new Error('Signup failed');
+        const message = await response.json()
+        throw new Error('Signup failed' + message.message);
       }
+      
+    
 
       // Handle successful signup response
       const data = await response.json();
-      console.log('Signup successful:', data);
+      console.log('Signup successful:', data.success);
+      setSignup(true);
+
+      
     } catch (error) {
       console.error('Error:', error.message);
     }
   };
-
+  
+  if(isSignedup){
+        
+    return <Navigate to='/' replace ={true} />
+    }
+  
   return (
     <div>
       <h2>Sign Up</h2>
