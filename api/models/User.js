@@ -16,6 +16,11 @@ const UserSchema = new mongoose.Schema({
         unique: true,
 
     },
+    password:{
+
+        type: String,
+        required: true
+    },
     user_flag:{
         type: String,
         default : 'customer',
@@ -27,7 +32,8 @@ const UserSchema = new mongoose.Schema({
     img:{
         type:String,
         default: '/imgs/carlogo.jpg'
-    }
+    },
+    salt: Buffer,
 
 })
 module.exports = mongoose.model('User',UserSchema);

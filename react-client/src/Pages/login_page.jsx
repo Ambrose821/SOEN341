@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import  { useAuth } from '../apiServices/AuthContext';
+
 
 const LoginPage = () => {
+  
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const[isLoggedIn, setLoggedIn] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -14,6 +19,7 @@ const LoginPage = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +40,7 @@ const LoginPage = () => {
     setPasswordError('');
 
     try {
-      const response = await fetch('/login', {
+      const response = await fetch('http://localhost:9000/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,18 +48,29 @@ const LoginPage = () => {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
+        console.log(data)
         throw new Error('Login failed');
       }
 
+      login(data.accessToken);//using the loing function from AuthContext
+
       // Handle successful login response
-      const data = await response.json();
+     
       console.log('Login successful:', data);
+      setLoggedIn(true);
+      
     } catch (error) {
       console.error('Error:', error.message);
     }
   };
-
+  if(isLoggedIn){
+         
+    return <Navigate to='/' replace ={true} />
+    }
+  
+  
   return (
     <div>
       <h2>Login</h2>
@@ -73,6 +90,6 @@ const LoginPage = () => {
       <Link to="/signup">Don't have an account yet? <b>Create an account</b></Link>
     </div>
   );
-};
 
+  }
 export default LoginPage;
