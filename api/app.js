@@ -21,6 +21,7 @@ var app = express();
 app.use(cors());
 
 //Passport config
+var passport = require('passport')
 require('./config/passport')(passport)
 
 
@@ -32,6 +33,7 @@ dotenv.config({path: './config/config.env'})
 const mongoose = require('mongoose');
 const MongoStore = require("connect-mongo")
 const connectDB = require('./config/db');
+const { refresh } = require("./controller/authController");
 connectDB();
 
 
@@ -53,6 +55,11 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+//RefreshTokens
+
+var refreshTokens = []
+app.locals.refreshTokens = refreshTokens
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

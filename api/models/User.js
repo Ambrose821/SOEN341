@@ -16,18 +16,24 @@ const UserSchema = new mongoose.Schema({
         unique: true,
 
     },
+    password:{
+
+        type: String,
+        required: true
+    },
     user_flag:{
         type: String,
         default : 'customer',
         enum: ['customer','admin','customer_service'],
-        required: true,
+        
        
     
     },
     img:{
         type:String,
-        required :true
-    }
+        default: '/imgs/carlogo.jpg'
+    },
+    salt: Buffer,
 
 })
 module.exports = mongoose.model('User',UserSchema);
