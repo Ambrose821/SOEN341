@@ -11,6 +11,7 @@ const User = require('./models/User');
 const Vehicle = require('./models/Vehicle');
 
 
+
 //routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -57,4 +58,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/apiRoute',apiRouter)
 
+// Creating Objects in Database 
+const vehicleModule = require('./Database/VehicleCreator')
+vehicleModule.createVehicles();
+
+
 module.exports = app;
+
