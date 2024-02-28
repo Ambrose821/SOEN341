@@ -66,8 +66,8 @@ app.use('/users', usersRouter);
 app.use('/apiRoute',apiRouter)
 
 // Creating Objects in Database 
-const vehicleModule = require('./Database/VehicleCreator')
-vehicleModule.createVehicles();
+const createVehicles = require('./Database/VehicleCreator');
+createVehicles();
 
 
 module.exports = app;
