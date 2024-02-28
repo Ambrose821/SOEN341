@@ -67,7 +67,8 @@ app.use('/apiRoute',apiRouter)
 
 // Creating Objects in Database 
 const createVehicles = require('./Database/VehicleCreator');
-createVehicles();
+// Commented out since it would create vehicles everytime someone runs the server!
+// createVehicles(); 
 
 
 module.exports = app;
