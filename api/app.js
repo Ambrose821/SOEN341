@@ -16,6 +16,7 @@ const Vehicle = require('./models/Vehicle');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/apiRouter');
+var vehicleRouter = require('./routes/vehicles');
 
 var app = express();
 app.use(cors());
@@ -64,6 +65,7 @@ app.locals.refreshTokens = refreshTokens
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/apiRoute',apiRouter)
+app.use('/vehicles',vehicleRouter);
 
 // Creating Objects in Database 
 const createVehicles = require('./Database/VehicleCreator');
