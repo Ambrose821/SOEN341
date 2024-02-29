@@ -4,16 +4,17 @@ var Vehicle = require('../models/Vehicle');
 var mongo = require('mongodb');
 var assert = require('assert');
 
-router.get('/getCars', function(req, res, next){
+router.get('/getCars', async function(req, res, next){
 
-    Vehicle.find({}, (err, data) => {
-        if(err){
-            console.log("error occurred in route: /get-data", err);
-        } else {
-            // Send JSON response with fetched data
-            res.json(data);
-        }
-    });
+    try{
+        const cars = await Vehicle.find({}).lean();
+
+        res.status(200).json(cars);
+    }
+    catch(error){
+        console.log(error);
+        res.status(400).json({sucess:false,message: "Get vehicles Failed" + error})
+    }
 });
 
 router.post('/insert', function(req, res, next){
