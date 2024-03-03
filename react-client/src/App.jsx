@@ -5,6 +5,7 @@ import Layout from "./Pages/Global Components/Layout";
 import Home from "./Pages/Home";
 import SignUp from "./Pages/SignUp";
 import LoginPage from "./Pages/login_page";
+import Profile from "./Pages/Profile";
 import { AuthProvider } from "./apiServices/AuthContext";
 
 
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignUp/>} />
+          <Route path="/profile" element={<Profile />} /> 
         </Routes>
       </Layout>
       </AuthProvider>

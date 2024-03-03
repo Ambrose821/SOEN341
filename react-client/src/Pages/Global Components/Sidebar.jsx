@@ -7,9 +7,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 
 function Sidebar() {
-  const { currentUser, useFlag, logout, isLoggedIn } = useAuth();
+
   const location = useLocation(); // Get current location
   
+  const {currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, useFlag, logout, isLoggedIn} = useAuth();
+
   return (
     <div className="sidebar">
       <ul className="sidebarList">
@@ -46,6 +48,9 @@ function Sidebar() {
             </Link>
           </li>
         )}
+
+
+
         {/* Add more navigation links as needed */}
       </ul>
     </div>
