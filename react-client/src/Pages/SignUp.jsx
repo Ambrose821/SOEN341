@@ -105,7 +105,7 @@ function SignUp() {
   
   if(isSignedup){
         
-    return <Navigate to='/' replace ={true} />
+    return <Navigate to='/login' replace ={true} />
     }
   
   return (
