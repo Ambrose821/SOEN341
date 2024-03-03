@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/User')
 const crypto = require('crypto')
 const passport = require('passport')
+const jwt = require('jsonwebtoken')
 
 
 const {login, refresh, logout} = require('../controller/authController')
@@ -102,4 +103,38 @@ router.get('/users/me', authenticateToken, (req, res) => {
   // Return user info based on the provided access token
   res.json(req.user.UserInfo);
 });
+
+router.post("/adminRequest", async(req, res) => {
+
+  try{
+  const email = req.body.currentUser;
+  const user = await User.findOne({email : email});
+  user.user_flag = "admin";
+
+  const accessToken = jwt.sign(
+    {
+        "UserInfo" :{
+            "user": {"email": user.email, "firstName": user.firstName, 
+            'lastName' : user.last_name , 'user_flag': user.user_flag }
+        }
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {expiresIn: '10m'}//Temp expirey for testing
+)
+
+const refreshToken = jwt.sign(
+   {"username": user.email,
+},
+process.env.REFRESH_TOKEN_SECRET,
+{expiresIn: '1d'} //Users wont need to re enter login for 24h
+)
+
+  res.status(200).json({success: true, message: "Admin Request Granted", accessToken: accessToken, refreshToken: refreshToken});
+  }catch(err){
+    res.status(400).json({success: false, message: "Admin Request Denied >:( " + err});
+  }
+});
+
+
+
 module.exports = router;
