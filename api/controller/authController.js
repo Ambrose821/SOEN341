@@ -25,8 +25,11 @@ const login =  async (req,res,next)=>{
     const accessToken = jwt.sign(
         {
             "UserInfo" :{
-                "email": thisUser.email,
-                "user_flag:" : thisUser.user_flag
+                "user": {"email": thisUser.email, "firstName": thisUser.firstName, 
+                'lastName' :thisUser.last_name , 'user_flag': thisUser.user_flag }
+               /* "firstName": thisUser.firstName,
+                "lastName": thisUser.last_name,
+                "user_flag:" : thisUser.user_flag*/
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -71,8 +74,10 @@ const refresh = (req,res) =>{
             const accessToken = jwt.sign(
                 {
                     "UserInfo" :{
-                        "email": thisUser.email,
-                        "user_flag:" : thisUser.user_flag
+                        "user": {email: thisUser.email, firstName: thisUser.firstName, lastName :thisUser.last_name , user_flag: thisUser.user_flag }
+                       /* "firstName": thisUser.firstName,
+                        "lastName": thisUser.last_name,
+                        "user_flag:" : thisUser.user_flag*/
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
