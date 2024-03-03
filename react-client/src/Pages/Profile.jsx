@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
 import  { useAuth } from '../apiServices/AuthContext';
 
 const Profile = () => {
     const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth()
     const [update, setUpdate] = useState("");
     
-    
+
     
     // user not logged in: redirect to login page
     // if (!isLoggedIn) {
@@ -20,7 +19,7 @@ const Profile = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ currentUser : currentUser, currentUserFlag: currentUserFlag }),
+          body: JSON.stringify({ currentUser: currentUser, currentUserFlag: currentUserFlag }),
         });
   
         const data = await response.json();
@@ -31,7 +30,7 @@ const Profile = () => {
 
         console.log(data.message);
         console.log(data.success);
-        await updateAdmin("admin",data.accessToken);
+        await updateAdmin("admin", data.accessToken);
 
       } catch (error) {
         console.error('Error:', error);

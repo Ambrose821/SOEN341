@@ -22,11 +22,11 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(payload.UserInfo.user.email);
       setCurrentUserFirstName(payload.UserInfo.user.firstName);
       setCurrentUserLastName(payload.UserInfo.user.lastName);
-      setUserFlag(payload.UserInfo.user.user_flag) ;
+      setUserFlag(payload.UserInfo.user.user_flag);
       setIsLoggedIn(true);
-      console.log(currentUserFirstName, currentUserLastName, currentUserFlag)
+      console.log(currentUserFirstName, currentUserLastName, currentUserFlag);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag]);
 
   // Function to handle login
   const login = (accessToken) => {
@@ -52,9 +52,8 @@ export const AuthProvider = ({ children }) => {
 
   const updateAdmin = (flag_value, accessToken) =>{
     setUserFlag(flag_value)
-    //localStorage.removeItem('accessToken');
-
-    //localStorage.setItem('accessToken', accessToken);
+    // localStorage.removeItem('accessToken');
+    // localStorage.setItem('accessToken', accessToken);
     const payload = JSON.parse(atob(accessToken.split('.')[1]));
     setCurrentUser(payload.UserInfo.user);
     setUserFlag(payload.UserInfo.user_flag);
