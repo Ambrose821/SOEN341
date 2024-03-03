@@ -51,3 +51,8 @@ body {
   width:100%;
   box-sizing: border-box;
 }
+
+.sidebar{
+  background-color:#FFFFFF;
+  color: #8796A1;
+}
