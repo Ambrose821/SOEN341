@@ -5,6 +5,12 @@ const Profile = () => {
     const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth()
     const [update, setUpdate] = useState("");
     
+    const [profileCurrentUser, setProfileCurrentUser] = useState(currentUser);
+    const [profileCurrentUserFirstName, setProfileCurrentUserFirstName] = useState(currentUserFirstName);
+    const [profileCurrentUserLastName, setProfileCurrentUserLastName] = useState(currentUserLastName);
+    const [profileCurrentUserFlag, setProfileUserFlag] = useState(currentUserFlag);
+    const [profileIsLoggedIn, setProfileIsLoggedIn] = useState(isLoggedIn);
+  
 
     
     // user not logged in: redirect to login page
@@ -32,6 +38,7 @@ const Profile = () => {
         console.log(data.success);
         await updateAdmin("admin", data.accessToken);
         setUpdate(data.message)
+        setProfileUserFlag("admin")
 
       } catch (error) {
         console.error('Error:', error);
@@ -50,11 +57,11 @@ const Profile = () => {
       <div>
 
         
-          {/* {currentUserFlag && <p>Flag: {currentUserFlag}</p>}
-          {currentUserFirstName && <p>First Name: {currentUserFirstName}</p>}
-          {currentUserLastName && <p>Last Name: {currentUserLastName}</p>}
-          <p>Email: {currentUser}</p>
-          # of reservations made */}
+          {profileCurrentUserFlag && <p>Flag: {profileCurrentUserFlag}</p>}
+          {profileCurrentUserFirstName && <p>First Name: {profileCurrentUserFirstName}</p>}
+          {profileCurrentUserLastName && <p>Last Name: {profileCurrentUserLastName}</p>}
+          <p>Email: {profileCurrentUser}</p>
+         {/* # of reservations made */}
       </div>
       <div>
         <button onClick={becomeAdmin}>Become Admin</button>
