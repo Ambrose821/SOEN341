@@ -31,6 +31,7 @@ const Profile = () => {
         console.log(data.message);
         console.log(data.success);
         await updateAdmin("admin", data.accessToken);
+        setUpdate(data.message)
 
       } catch (error) {
         console.error('Error:', error);
@@ -47,11 +48,13 @@ const Profile = () => {
           {/* profile picture */}
       </div>
       <div>
-          {currentUserFlag && <p>Flag: {currentUserFlag}</p>}
+
+        
+          {/* {currentUserFlag && <p>Flag: {currentUserFlag}</p>}
           {currentUserFirstName && <p>First Name: {currentUserFirstName}</p>}
           {currentUserLastName && <p>Last Name: {currentUserLastName}</p>}
           <p>Email: {currentUser}</p>
-          {/* # of reservations made */}
+          # of reservations made */}
       </div>
       <div>
         <button onClick={becomeAdmin}>Become Admin</button>

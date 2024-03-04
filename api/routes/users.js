@@ -110,6 +110,7 @@ router.post("/adminRequest", async(req, res) => {
   const email = req.body.currentUser;
   const user = await User.findOne({email : email});
   user.user_flag = "admin";
+  await user.save();
 
   const accessToken = jwt.sign(
     {

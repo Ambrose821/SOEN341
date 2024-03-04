@@ -52,16 +52,8 @@ export const AuthProvider = ({ children }) => {
 
   const updateAdmin = (flag_value, accessToken) =>{
     setUserFlag(flag_value)
-    // localStorage.removeItem('accessToken');
-    // localStorage.setItem('accessToken', accessToken);
-    const payload = JSON.parse(atob(accessToken.split('.')[1]));
-    setCurrentUser(payload.UserInfo.user);
-    setUserFlag(payload.UserInfo.user_flag);
-    setCurrentUserFirstName(payload.UserInfo.firstName);
-    setCurrentUserLastName(payload.UserInfo.lastName);
-    setIsLoggedIn(true);
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.removeItem('accessToken');
+    logout();
+    login(accessToken)
 
   }
   // Providing the context with current state and functions
