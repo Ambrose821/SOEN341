@@ -22,11 +22,11 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(payload.UserInfo.user.email);
       setCurrentUserFirstName(payload.UserInfo.user.firstName);
       setCurrentUserLastName(payload.UserInfo.user.lastName);
-      setUserFlag(payload.UserInfo.user.user_flag) ;
+      setUserFlag(payload.UserInfo.user.user_flag);
       setIsLoggedIn(true);
-      console.log(currentUserFirstName, currentUserLastName, currentUserFlag)
+      console.log(currentUserFirstName, currentUserLastName, currentUserFlag);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag]);
 
   // Function to handle login
   const login = (accessToken) => {
@@ -50,9 +50,15 @@ export const AuthProvider = ({ children }) => {
     fetch('http://localhost:9000/users/logout', { method: 'DELETE', });
   };
 
+  const updateAdmin = (flag_value, accessToken) =>{
+    setUserFlag(flag_value)
+    logout();
+    login(accessToken)
+
+  }
   // Providing the context with current state and functions
   return (
-    <AuthContext.Provider value={{ isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, login, logout, updateAdmin }}>
       {children}
     </AuthContext.Provider>
   );

@@ -54,7 +54,7 @@ const LoginPage = () => {
         throw new Error('Login failed');
       }
 
-      login(data.accessToken);//using the loing function from AuthContext
+      login(data.accessToken);//using the login function from AuthContext
 
       // Handle successful login response
      
