@@ -216,4 +216,17 @@ router.post("/changeUserInfo", async (req, res) => {
 
 })
 
+router.delete('/deleteUser', async(req, res) => {
+  const { currentUser } = req.body;
+
+  try {
+    const userToDelete = User.findOne({ email: currentUser });
+
+    result = await User.deleteOne(userToDelete);
+    res.status(200).json({ success: true, message: 'UserDeleted' })
+  } catch (err) {
+    res.status(400).json({success:false, message: 'lol Couldnt Delete.' +err })
+  }
+})
+
 module.exports = router;
