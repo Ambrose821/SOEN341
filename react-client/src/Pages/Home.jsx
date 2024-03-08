@@ -4,8 +4,11 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import Reserve from './Reserve';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../apiServices/AuthContext';
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,10 +18,18 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const DynamicGrid = ({ photoURLs }) => {
+
+
+const DynamicGrid = ({ photoURLs, IDs }) => {
   const {isLoggedIn} = useAuth();
+  const navigate=useNavigate();
   const columns = 3; // Set your desired number of columns here
   const rows = Math.ceil(photoURLs.length / columns);
+
+  const handleReserveClick = (id) => {
+    console.log(id);
+    //navigate('/reserve', { state: { id } });
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -54,6 +65,7 @@ const DynamicGrid = ({ photoURLs }) => {
                         backgroundColor: '#4CAF50',
                         color: 'white',
                       }}
+                      onClick={() => handleReserveClick(IDs[index])}
                     >
                       Reserve
                     </Button>
@@ -126,7 +138,9 @@ function Home() {
   // Assuming vehicleData has a property named 'photoURL'
   const photoURLs = vehicleData.map(vehicle => vehicle.photoURL);
 
-  return <DynamicGrid rows={rows} cols={columns} photoURLs={photoURLs} />;
+  const IDs = vehicleData.map(vehicle => vehicle._id);
+
+  return <DynamicGrid rows={rows} cols={columns} photoURLs={photoURLs} IDs={IDs}/>;
 }
 
 export default Home;
