@@ -36,7 +36,7 @@ function Sidebar() {
 
         {isLoggedIn && (
           <li>
-            <Link to="/reservations" className={`sidebarLink ${location.pathname === '/reservations' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/reservations' */}
+            <Link to="/Reservations" className={`sidebarLink ${location.pathname === '/Reservations' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/reservations' */}
               <EventIcon className="icon" />
               <span className="sidebarTitle">My Reservations</span>
             </Link>
@@ -70,6 +70,15 @@ function Sidebar() {
             </Link>
           </li>
       
+          {/* link to add car page */}
+          {isLoggedIn && (
+          <li>
+            <Link to="/admindashboard" className={`sidebarLink ${location.pathname === '/admindashboard' ? 'activeLink' : ''}`}> 
+              <DriveEtaIcon className="icon" />
+              <span className="sidebarTitle">Admin Dashboard</span>
+            </Link>
+          </li>
+          )}
 
         {/* link to favourite cars page */}
         
