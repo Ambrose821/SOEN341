@@ -9,9 +9,9 @@ import Profile from "./Pages/Profile";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Careers from "./Pages/Careers";
+import Info from "./Pages/Info";
 import { AuthProvider } from "./apiServices/AuthContext";
 import Reservations from "./Pages/Reservations";
-
 
 function App() {
 
