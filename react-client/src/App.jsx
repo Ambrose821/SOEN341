@@ -12,7 +12,6 @@ import Careers from "./Pages/Careers";
 import Reservations from "./Pages/Reservations";
 import { AuthProvider } from "./apiServices/AuthContext";
 
-
 function App() {
 
   return (
