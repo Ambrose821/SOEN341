@@ -75,11 +75,13 @@ function Home() {
       .catch(error => setError(error));
   }, []);
 
+
   const getVehicles = async () => {
     try {
       const response = await fetch('http://localhost:9000/vehicles/getCars');
       const data = await response.json();
       console.log(data);
+
       return data;
     } catch (error) {
       setError(error);

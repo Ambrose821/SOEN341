@@ -8,8 +8,8 @@ router.get('/getCars', async function(req, res, next){
 
     try{
         const cars = await Vehicle.find({}).lean();
-
-        res.status(200).json(cars);
+        
+        res.status(200).json({cars: cars});
     }
     catch(error){
         console.log(error);
