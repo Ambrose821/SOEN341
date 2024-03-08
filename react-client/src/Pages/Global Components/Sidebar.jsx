@@ -4,7 +4,10 @@ import { useAuth } from '../../apiServices/AuthContext'
 import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import DriveEtaIcon from '@mui/icons-material/DriveEta';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import EventIcon from '@mui/icons-material/Event';
 
 function Sidebar() {
 
@@ -24,8 +27,17 @@ function Sidebar() {
 
         {isLoggedIn && (
           <li>
+            <Link to="/profile" className={`sidebarLink ${location.pathname === '/profile' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/profile' */}
+              <AccountCircleIcon className="icon" />
+              <span className="sidebarTitle">My Profile</span>
+            </Link>
+          </li>
+        )}
+
+        {isLoggedIn && (
+          <li>
             <Link to="/reservations" className={`sidebarLink ${location.pathname === '/reservations' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/reservations' */}
-              <TimeToLeaveIcon className="icon" />
+              <EventIcon className="icon" />
               <span className="sidebarTitle">My Reservations</span>
             </Link>
           </li>
@@ -49,6 +61,25 @@ function Sidebar() {
           </li>
         )}
 
+        {/* link to all available cars page */}
+        
+          <li>
+            <Link to="/cars" className={`sidebarLink ${location.pathname === '/' ? 'activeLink' : ''}`}> 
+              <DriveEtaIcon className="icon" />
+              <span className="sidebarTitle">Cars</span>
+            </Link>
+          </li>
+      
+
+        {/* link to favourite cars page */}
+        
+          <li>
+            <Link to="/favorites" className={`sidebarLink ${location.pathname === '/' ? 'activeLink' : ''}`}>
+              <FavoriteIcon className="icon" />
+              <span className="sidebarTitle">Favorites</span>
+            </Link>
+          </li>
+       
 
 
         {/* Add more navigation links as needed */}
