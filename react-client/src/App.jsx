@@ -10,6 +10,7 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Careers from "./Pages/Careers";
 import { AuthProvider } from "./apiServices/AuthContext";
+import Reservations from "./Pages/Reservations";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/about" element={<About />} /> 
           <Route path="/careers" element={<Careers />} /> 
+          <Route path="/Reservations" element={<Reservations />} /> 
         </Routes>
       </Layout>
       </AuthProvider>

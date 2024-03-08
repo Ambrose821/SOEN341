@@ -36,9 +36,9 @@ function Sidebar() {
 
         {isLoggedIn && (
           <li>
-            <Link to="/reservations" className={`sidebarLink ${location.pathname === '/reservations' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/reservations' */}
+            <Link to="/Reservations" className={`sidebarLink ${location.pathname === '/Reservations' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/reservations' */}
               <EventIcon className="icon" />
-              <span className="sidebarTitle">My Reservations</span>
+              <span className="sidebarTitle">Book a Reservations</span>
             </Link>
           </li>
         )}

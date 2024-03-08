@@ -1,7 +1,15 @@
 import React, { useEffect,useState } from 'react';
+import  { useAuth } from '../apiServices/AuthContext';
+
+
+
+
+
 
 function Home() {
-
+ 
+  const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth()
+  const [update, setUpdate] = useState("");
   const [vehicleData, setVehicleData] = useState(null);
 
   useEffect(() => {
@@ -15,7 +23,6 @@ function Home() {
 
       return data;
   }
-
     if(vehicleData != null){
       console.log(vehicleData)
     }
