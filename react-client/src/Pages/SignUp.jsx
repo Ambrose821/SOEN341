@@ -3,6 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
+
 function SignUp() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -16,7 +17,9 @@ function SignUp() {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const[isSignedup, setSignup] = useState(false);
+  const [isSignedup, setSignup] = useState(false);
+
+  const [generalError, setGeneralError] = useState(false)
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
@@ -90,7 +93,9 @@ function SignUp() {
       
       if (!response.ok) {
         const message = await response.json()
-        throw new Error('Signup failed' + message.message);
+        setGeneralError(message.message)
+        console.error('Signup failed' + message.message);
+        
       }
       
     
@@ -154,6 +159,7 @@ function SignUp() {
           </div>
           {confirmPasswordError && <p className="error">{confirmPasswordError}</p>}
         </div>
+        {generalError && <p className='error'>{generalError}</p>}
         <button type="submit">Sign Up</button>
       </form>
       <Link to="/login">Already have an account? <b>Sign in</b></Link>
