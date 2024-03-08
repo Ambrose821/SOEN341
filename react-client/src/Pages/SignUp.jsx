@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -12,7 +14,8 @@ function SignUp() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const[isSignedup, setSignup] = useState(false);
 
   const handleFirstNameChange = (e) => {
@@ -102,6 +105,14 @@ function SignUp() {
       console.error('Error:', error.message);
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
   
   if(isSignedup){
         
@@ -109,32 +120,38 @@ function SignUp() {
     }
   
   return (
-    <div>
+    <div className='signup-container'>
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className='form-group'>
           <label>First Name:</label>
           <input type="text" value={firstName} onChange={handleFirstNameChange} />
           {firstNameError && <p className="error">{firstNameError}</p>}
         </div>
-        <div>
+        <div className='form-group'>
           <label>Last Name:</label>
           <input type="text" value={lastName} onChange={handleLastNameChange} />
           {lastNameError && <p className="error">{lastNameError}</p>}
         </div>
-        <div>
+        <div className='form-group'>
           <label>Email:</label>
           <input type="email" value={email} onChange={handleEmailChange} />
           {emailError && <p className="error">{emailError}</p>}
         </div>
-        <div>
+        <div className='form-group'>
           <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
+          <div className="password-input">
+            <input type={showPassword ? "text" : "password"} value={password} onChange={handlePasswordChange} />
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} />
+          </div>
           {passwordError && <p className="error">{passwordError}</p>}
         </div>
-        <div>
+        <div className='form-group'>
           <label>Confirm Password:</label>
-          <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+          <div className="password-input">
+            <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={handleConfirmPasswordChange} />
+            <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} onClick={toggleConfirmPasswordVisibility} />
+          </div>
           {confirmPasswordError && <p className="error">{confirmPasswordError}</p>}
         </div>
         <button type="submit">Sign Up</button>

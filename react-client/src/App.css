@@ -15,12 +15,21 @@ body {
 }
 
 .header {
-  background-color: #333;
-  color: #fff;
-  padding: 50px;
+  background-color: #FFFFFF; /* White background */
+  color: #000000; /* Black text color */
+  padding: 20px;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
+  border-bottom: 1px solid #CCCCCC; /* Thin grey border on the bottom */
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  text-decoration: none;
+  margin-left: auto;
+
 }
 
 .body {
@@ -29,14 +38,97 @@ body {
 }
 
 .sidebar {
-  background-color: #f4f4f4;
+  background-color: #FFFFFF;
   padding: 10px;
   width: 200px;
-
   ul {list-style-type: none;}
 }
 
+.login {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
+.login > div {
+  margin-bottom: 20px;
+}
+
+.login label {
+  display: block;
+}
+
+.login input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.login button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.login button:hover {
+  background-color: #0056b3;
+}
+
+.signup-container {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.signup-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.signup-container button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+}
 
 .content {
   flex: 1;
@@ -44,10 +136,101 @@ body {
 }
 
 .footer {
-  background-color: #333;
-  color: #fff;
-  padding: 50px;
-  text-align: center;
-  width:100%;
+  background-color: #212A30; /* White background */
+  color: #FFFFFF; /* Black text color */
+  padding: 25px;
+  text-align: left;
+  width: 100%;
   box-sizing: border-box;
+  border-top: 1px solid #CCCCCC; /* Thin grey border on the bottom */
+font-size: small;
+  a{
+    color: #FFFFFF;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th,td{
+    padding-right:40px;
+    padding-left:30px;
+  }
+  
+  tr {
+    margin-bottom: 15px; 
+  }
+  
+  td {
+    width: 50%; 
+  }
 }
+
+
+.sidebar {
+  background-color: #FFFFFF;
+  color: #192024;
+  font-size: small;
+  width: 50px; /* Initial width */
+  border-right: 1px solid #CCCCCC; /* Thin grey border on the right */
+  transition: width 0.3s ease, border-width 0.3s ease; /* Smooth transition for width and border width */
+  padding:0px;
+  /* Add hover effect */
+  &:hover {
+    width: 200px; /* Expanded width */
+    border-right-width: 1px; /* Keep the border width consistent */
+  }
+  display: flex;
+  flex-direction:row; /* vertically center the items */
+}
+
+.sidebarList li {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* vertically center the items */
+  height: auto;
+  width: auto;
+  padding:10px;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  width: 100%; /* ensure row takes up full width */
+  overflow: hidden;
+  padding: 0;
+}
+
+.sidebarList li:hover{
+  background-color:#E6EBEF;
+}
+
+
+.sidebarList {
+  list-style: none; /* remove bullet points from list */
+  padding: 0;
+  margin: 0; /* add this line to remove default margin */
+  width:100%;
+}
+.icon {
+  width: 60px;
+  text-align: center;
+  color: #8796A1;
+}
+
+.sidebarTitle {
+  display:none;
+  margin-left: 10px; /* Add some space between icon and title */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow text */
+  transition: width 0.3s ease; /* Smooth transition */
+
+  /* Show title on hover */
+  .sidebar:hover & {
+    display:inline-flex;
+    width: auto; /* Allow title to expand to fit content */
+  }
+}
+

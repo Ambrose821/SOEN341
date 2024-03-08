@@ -9,6 +9,8 @@ export const useAuth = () => useContext(AuthContext);
 // Component to provide auth context to children
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentUserFirstName, setCurrentUserFirstName] = useState(null);
+  const [currentUserLastName, setCurrentUserLastName] = useState(null);
   const [currentUserFlag, setUserFlag] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -17,20 +19,26 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      setCurrentUser(payload.UserInfo.email);
-      setUserFlag(payload.UserInfo.user_flag);
+      setCurrentUser(payload.UserInfo.user.email);
+      setCurrentUserFirstName(payload.UserInfo.user.firstName);
+      setCurrentUserLastName(payload.UserInfo.user.lastName);
+      setUserFlag(payload.UserInfo.user.user_flag);
       setIsLoggedIn(true);
+      console.log(currentUserFirstName, currentUserLastName, currentUserFlag);
     }
-  }, []);
+  }, [isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag]);
 
   // Function to handle login
   const login = (accessToken) => {
     localStorage.setItem('accessToken', accessToken);
     const payload = JSON.parse(atob(accessToken.split('.')[1]));
-    setCurrentUser(payload.UserInfo.email);
+    setCurrentUser(payload.UserInfo.user);
     setUserFlag(payload.UserInfo.user_flag);
+    setCurrentUserFirstName(payload.UserInfo.firstName);
+    setCurrentUserLastName(payload.UserInfo.lastName);
     setIsLoggedIn(true);
   };
+  
 
   // Function to handle logout
   const logout = () => {
@@ -42,9 +50,15 @@ export const AuthProvider = ({ children }) => {
     fetch('http://localhost:9000/users/logout', { method: 'DELETE', });
   };
 
+  const updateAdmin = (flag_value, accessToken) =>{
+    setUserFlag(flag_value)
+    logout();
+    login(accessToken)
+
+  }
   // Providing the context with current state and functions
   return (
-    <AuthContext.Provider value={{ isLoggedIn, currentUser, currentUserFlag, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, login, logout, updateAdmin }}>
       {children}
     </AuthContext.Provider>
   );

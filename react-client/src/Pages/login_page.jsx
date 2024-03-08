@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import  { useAuth } from '../apiServices/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 const LoginPage = () => {
@@ -11,6 +13,7 @@ const LoginPage = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const[isLoggedIn, setLoggedIn] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -20,6 +23,9 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +60,7 @@ const LoginPage = () => {
         throw new Error('Login failed');
       }
 
-      login(data.accessToken);//using the loing function from AuthContext
+      login(data.accessToken);//using the login function from AuthContext
 
       // Handle successful login response
      
@@ -69,10 +75,12 @@ const LoginPage = () => {
          
     return <Navigate to='/' replace ={true} />
     }
+
+    
   
   
   return (
-    <div>
+    <div className='login'>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -82,7 +90,17 @@ const LoginPage = () => {
         </div>
         <div>
           <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
+          <div className="password-input">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <FontAwesomeIcon
+              icon={showPassword ? faEyeSlash : faEye}
+              onClick={togglePasswordVisibility}
+            />
+          </div>
           {passwordError && <p className="error">{passwordError}</p>}
         </div>
         <button type="submit">Login</button>
