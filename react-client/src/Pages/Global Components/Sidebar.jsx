@@ -38,7 +38,7 @@ function Sidebar() {
           <li>
             <Link to="/Reservations" className={`sidebarLink ${location.pathname === '/Reservations' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/reservations' */}
               <EventIcon className="icon" />
-              <span className="sidebarTitle">Book a Reservations</span>
+              <span className="sidebarTitle">My Reservations</span>
             </Link>
           </li>
         )}
