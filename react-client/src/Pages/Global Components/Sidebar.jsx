@@ -63,13 +63,7 @@ function Sidebar() {
 
         {/* link to all available cars page */}
         
-          <li>
-            <Link to="/cars" className={`sidebarLink ${location.pathname === '/' ? 'activeLink' : ''}`}> 
-              <DriveEtaIcon className="icon" />
-              <span className="sidebarTitle">Cars</span>
-            </Link>
-          </li>
-      
+          
           {/* link to add car page */}
           {isLoggedIn && (
           <li>
