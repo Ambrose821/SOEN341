@@ -17,11 +17,19 @@ body {
 .header {
   background-color: #FFFFFF; /* White background */
   color: #000000; /* Black text color */
-  padding: 25px;
+  padding: 20px;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
   border-bottom: 1px solid #CCCCCC; /* Thin grey border on the bottom */
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  text-decoration: none;
+  margin-left: auto;
+
 }
 
 .body {
@@ -36,7 +44,91 @@ body {
   ul {list-style-type: none;}
 }
 
+.login {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
+.login > div {
+  margin-bottom: 20px;
+}
+
+.login label {
+  display: block;
+}
+
+.login input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.login button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.login button:hover {
+  background-color: #0056b3;
+}
+
+.signup-container {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.signup-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.signup-container button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+}
 
 .content {
   flex: 1;
