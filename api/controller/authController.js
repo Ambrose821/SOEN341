@@ -52,7 +52,7 @@ const login =  async (req,res,next)=>{
 
 
 //@desc Refresh
-//@route GET/user/refresh
+//@route GET/user/refreshx
 //@access Public
 const refresh = (req,res) =>{
     const cookies = req.cookies
@@ -102,4 +102,22 @@ const logout =  (req,res,next) =>{
   
 }
 
-module.exports = {login,refresh,logout}
+// checks if the user is an admin
+const isAdmin = async (req, res, next) => {
+    try {
+        const userEmail = req.body.email;
+        const user = await User.findOne({ email: userEmail });
+
+        if (!user || user.user_flag !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Access denied: You are not authorized to perform this action' });
+        }
+        next();
+    } catch (error) {
+        console.error('Error in isAdmin middleware:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+module.exports = {login,refresh,logout, isAdmin}
+
+
