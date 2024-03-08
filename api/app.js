@@ -18,6 +18,7 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/apiRouter');
 var vehicleRouter = require('./routes/vehicles');
 
+
 var app = express();
 app.use(cors());
 
@@ -68,10 +69,9 @@ app.use('/apiRoute',apiRouter)
 app.use('/vehicles',vehicleRouter);
 
 // Creating Objects in Database 
-const createVehicles = require('./Database/VehicleCreator');
+//const createVehicles = require('./Database/VehicleCreator');
 // Commented out since it would create vehicles everytime someone runs the server!
 // createVehicles(); 
-
 
 module.exports = app;
 
