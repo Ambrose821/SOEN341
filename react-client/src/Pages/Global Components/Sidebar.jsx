@@ -70,6 +70,15 @@ function Sidebar() {
             </Link>
           </li>
       
+          {/* link to add car page */}
+          {isLoggedIn && (
+          <li>
+            <Link to="/admindashboard" className={`sidebarLink ${location.pathname === '/admindashboard' ? 'activeLink' : ''}`}> 
+              <DriveEtaIcon className="icon" />
+              <span className="sidebarTitle">Admin Dashboard</span>
+            </Link>
+          </li>
+          )}
 
         {/* link to favourite cars page */}
         
