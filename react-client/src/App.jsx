@@ -12,7 +12,11 @@ import Careers from "./Pages/Careers";
 import Reserve from "./Pages/Reserve";
 import Reservations from "./Pages/Reservations";
 import { AuthProvider } from "./apiServices/AuthContext";
+
+import ProfileSettings from "./Pages/ProfileSettings";
+
 import AdminDashboard from "./Pages/AdminDashboard";
+
 
 
 function App() {
@@ -29,9 +33,12 @@ function App() {
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/about" element={<About />} /> 
           <Route path="/careers" element={<Careers />} /> 
+
+
           <Route path="/admindashboard" element={<AdminDashboard/>} /> 
           <Route path="/Reserve" element={<Reserve />} /> 
           <Route path="/Reservations" element={<Reservations />} /> 
+
         </Routes>
       </Layout>
       </AuthProvider>

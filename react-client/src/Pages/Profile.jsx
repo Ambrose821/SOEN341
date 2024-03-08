@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import  { useAuth } from '../apiServices/AuthContext';
 
 const Profile = () => {
@@ -9,7 +10,9 @@ const Profile = () => {
     const [profileCurrentUserFirstName, setProfileCurrentUserFirstName] = useState(currentUserFirstName);
     const [profileCurrentUserLastName, setProfileCurrentUserLastName] = useState(currentUserLastName);
     const [profileCurrentUserFlag, setProfileUserFlag] = useState(currentUserFlag);
+  
     const [profileIsLoggedIn, setProfileIsLoggedIn] = useState(isLoggedIn);
+    const [settingsClick,setSettingsClick] = useState(false)
   
 
     
@@ -44,9 +47,14 @@ const Profile = () => {
         console.error('Error:', error);
 
       }
-    }
+  }
+  async function handleSettings() {
+     setSettingsClick(true)
+  }
 
-  
+  if (settingsClick) {
+    return <Navigate to='/profileSettings' replace={true} />
+  }
     return (
 
       <div>
@@ -64,7 +72,8 @@ const Profile = () => {
          {/* # of reservations made */}
       </div>
       <div>
-        <button onClick={becomeAdmin}>Become Admin</button>
+          <button onClick={becomeAdmin}>Become Admin</button>
+          <button onClick ={handleSettings}>User Settings</button>
         <p>{update}</p>
       </div>
   </div>

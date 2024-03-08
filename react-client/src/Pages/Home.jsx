@@ -119,6 +119,7 @@ function Home() {
     return <div>Loading...</div>;
   }
 
+
   // Ensure that vehicleData is not null before calculating rows
   const columns = 3;
   const rows = Math.ceil(vehicleData.length / columns);
@@ -127,6 +128,7 @@ function Home() {
   const photoURLs = vehicleData.map(vehicle => vehicle.photoURL);
 
   return <DynamicGrid rows={rows} cols={columns} photoURLs={photoURLs} />;
+
 }
 
 export default Home;

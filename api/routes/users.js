@@ -137,5 +137,83 @@ process.env.REFRESH_TOKEN_SECRET,
 });
 
 
+router.post("/changeUserInfo", async (req, res) => {
+  const { userEmail, newFirstName = null, newLastName = null,  newPassword = null, newEmail = null } = req.body;
+  const user = await User.findOne({ email: userEmail });
+
+  try {
+
+    //make sure user password is correct
+    //const user = await User.findOne({ email: userEmail });
+    /* TEMPORARILY REMOVED FOR SIMPLICITY
+    const storedPasswordBuffer = Buffer.from(user.password, 'hex'); 
+    const isCorrectPassowrd = crypto.pbkdf2Sync(password,user.salt,310000,32,'sha256');    
+    if(!crypto.timingSafeEqual(storedPasswordBuffer,isCorrectPassowrd)){
+        return res.status(401).json({success:false, message: 'Incorrect Email or Password'})
+    }*/  
+
+   
+    if (newFirstName) {
+      console.log(`Updating firstName for user ${userEmail} to ${newFirstName}`);
+      user.firstName = newFirstName;
+      await user.save();
+      console.log(`firstName updated successfully.`);
+    }
+    else if (newPassword) {
+      console.log(`Updating password for user ${userEmail}`);
+      crypto.pbkdf2(newPassword, user.salt, 310000, 32, 'sha256', async (err, hashedPasswordBuffer) => {
+        if(err){
+          console.error(err);
+          return next(err); // Make sure 'next' is defined or use another way to handle the error.
+        }
+        user.password = hashedPasswordBuffer.toString('hex');
+        await user.save();
+        console.log(`Password updated successfully.`);
+      });
+    }
+    else if (newEmail) {
+      console.log(`Updating email for user ${userEmail} to ${newEmail}`);
+      user.email = newEmail;
+      await user.save();
+      console.log(`Email updated successfully.`);
+    }
+    else if (newLastName) {
+      console.log(`Updating last_name for user ${userEmail} to ${newLastName}`);
+      user.last_name = newLastName; // Ensure this matches the schema
+      await user.save();
+      console.log(`last_name updated successfully.`);
+    }
+
+    //Assign new token/////////////////////
+
+    const accessToken = jwt.sign(
+      {
+          "UserInfo" :{
+              "user": {"email": user.email, "firstName": user.firstName, 
+              'lastName' : user.last_name , 'user_flag': user.user_flag }
+          }
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      {expiresIn: '10m'}//Temp expirey for testing
+  )
+  
+    const refreshToken = jwt.sign(
+      {"username": user.email,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {expiresIn: '1d'} //Users wont need to re enter login for 24h
+    )
+
+    res.status(200).json({success: true, message: "Account Changes Made", accessToken: accessToken, refreshToken: refreshToken});
+
+      
+    //////////////////////////////
+    
+  } catch (err) {
+    res.status(400).json({ success: false, message: "Could not change value. Server error: " + err })
+    console.log(err)
+  }
+
+})
 
 module.exports = router;

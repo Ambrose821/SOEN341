@@ -56,9 +56,14 @@ export const AuthProvider = ({ children }) => {
     login(accessToken)
 
   }
+  const updateUserInfo = (accessToken) => {
+    logout()
+    login(accessToken)
+    
+  }
   // Providing the context with current state and functions
   return (
-    <AuthContext.Provider value={{ isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, login, logout, updateAdmin }}>
+    <AuthContext.Provider value={{ isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, login, logout, updateAdmin,updateUserInfo }}>
       {children}
     </AuthContext.Provider>
   );
