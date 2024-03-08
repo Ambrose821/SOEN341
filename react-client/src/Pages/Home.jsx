@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../apiServices/AuthContext';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,6 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const DynamicGrid = ({ photoURLs }) => {
+  const {isLoggedIn} = useAuth();
   const columns = 3; // Set your desired number of columns here
   const rows = Math.ceil(photoURLs.length / columns);
 
@@ -39,8 +41,27 @@ const DynamicGrid = ({ photoURLs }) => {
                     // Maintain aspect ratio and cover the entire container
                   }}
                 />
-                {/* Reserve Button */}
-                <Link to="/info">
+                 {isLoggedIn && (
+                  <Link to="/reserve">
+                    <Button
+                      variant="contained"
+                      style={{
+                        position: 'absolute',
+                        bottom: '5%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '30%', // Adjust the relative size using percentage or vw/vh units
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                      }}
+                    >
+                      Reserve
+                    </Button>
+                  </Link>
+                  )}
+
+                {!isLoggedIn && (
+                  <Link to="/login">
                   <Button
                     variant="contained"
                     style={{
@@ -56,6 +77,7 @@ const DynamicGrid = ({ photoURLs }) => {
                     Reserve
                   </Button>
                 </Link>
+                )}
               </div>
             </Item>
           </Grid>
