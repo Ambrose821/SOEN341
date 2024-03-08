@@ -40,7 +40,7 @@ const DynamicGrid = ({ photoURLs }) => {
                   }}
                 />
                 {/* Reserve Button */}
-                <Link to="/info">
+                <Link to="/Reservations">
                   <Button
                     variant="contained"
                     style={{
