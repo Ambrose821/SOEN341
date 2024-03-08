@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 
-function Home() {
+function Reservations() {
 
   const [vehicleData, setVehicleData] = useState(null);
 
@@ -20,9 +20,9 @@ function Home() {
 
   return (
     <div>
-        Home
+        <h2>My Reservations</h2>
     </div>
   )
 }
 
-export default Home;
+export default Reservations;
