@@ -77,7 +77,8 @@ function AdminDashboard() {
       }
   };
 
-  async function handleDelete() {
+  async function handleDelete(event) {
+    event.preventDefault();
     try {
         const response = await fetch('http://localhost:9000/vehicles/delete', {
             method: 'DELETE',
@@ -262,7 +263,9 @@ function AdminDashboard() {
         />
       <button type="submit">Delete Car</button>
       </div>
-      {reqSuccess && <p>{reqMessage}</p>}
+       <p>{reqMessage}</p>
+       
+
     </form>
     </div>
 
