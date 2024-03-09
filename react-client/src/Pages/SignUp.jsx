@@ -111,6 +111,10 @@ function SignUp() {
     }
   };
 
+  if(isSignedup) {
+    return <Navigate to='/login' replace/>
+  }
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };

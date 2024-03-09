@@ -3,7 +3,7 @@ var router = express.Router();
 var Vehicle = require('../models/Vehicle');
 var mongo = require('mongodb');
 var assert = require('assert');
-var { addCar, deleteCar } = require('../controller/vehicleController')
+var { addCar, deleteCar, updateCar } = require('../controller/vehicleController')
 
 router.get('/getCars', async function(req, res, next){
 
@@ -23,7 +23,7 @@ router.post('/insert', addCar,function(req, res, next){
     
 });
 
-router.post('/update', function(req, res, next){
+router.put('/update', updateCar, function(req, res, next){
 
 });
 
