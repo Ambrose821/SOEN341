@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../apiServices/AuthContext';
 
@@ -6,12 +6,21 @@ const ProfileSettings = () => {
     const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin, updateUserInfo,deleteUser } = useAuth();
     const [update, setUpdate] = useState("");
 
-    const [profileCurrentUser, setProfileCurrentUser] = useState(currentUser);
-    const [profileCurrentUserFirstName, setProfileCurrentUserFirstName] = useState(currentUserFirstName);
-    const [profileCurrentUserLastName, setProfileCurrentUserLastName] = useState(currentUserLastName);
-    const [profileCurrentUserFlag, setProfileUserFlag] = useState(currentUserFlag);
+    const [profileCurrentUser, setProfileCurrentUser] = useState(null);
+    const [profileCurrentUserFirstName, setProfileCurrentUserFirstName] = useState(null);
+    const [profileCurrentUserLastName, setProfileCurrentUserLastName] = useState(null);
+    const [profileCurrentUserFlag, setProfileUserFlag] = useState(null);
+    const [profileIsLoggedIn, setProfileIsLoggedIn] = useState(false);
 
-    const [profileIsLoggedIn, setProfileIsLoggedIn] = useState(isLoggedIn);
+    useEffect(() => {
+        setProfileCurrentUser(currentUser)
+        setProfileCurrentUserFirstName(currentUserFirstName);
+        setProfileCurrentUserLastName(currentUserLastName);
+        setProfileUserFlag(currentUserFlag)
+        
+        
+    }, [currentUser, currentUserFirstName, currentUserLastName, currentUserFlag])
+    
     const [changeVariable, setChangeVariable] = useState('');
     const [newVariable, setNewVariable] = useState('');
     const [requestValueKey, setRequestValueKey] = useState('');

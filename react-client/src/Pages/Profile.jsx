@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import  { useAuth } from '../apiServices/AuthContext';
 
@@ -15,6 +15,14 @@ const Profile = () => {
     const [settingsClick,setSettingsClick] = useState(false)
   
 
+  //This use effect allows the profile values to change on the profile page once AuthContext has parsed the token.
+    useEffect(() => {
+      // Update local state when auth context changes
+      setProfileCurrentUser(currentUser);
+      setProfileCurrentUserFirstName(currentUserFirstName);
+      setProfileCurrentUserLastName(currentUserLastName);
+      setProfileUserFlag(currentUserFlag);
+  }, [currentUser, currentUserFirstName, currentUserLastName, currentUserFlag]); 
     
     // user not logged in: redirect to login page
     // if (!isLoggedIn) {
