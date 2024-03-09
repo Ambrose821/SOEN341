@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AddCar() {
+function AdminDashboard() {
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [VIN, setVIN] = useState('');
@@ -16,6 +16,9 @@ function AddCar() {
   const [reservation, setReservation] = useState('');
   const [lister, setLister] = useState('');
   const [kilometers, setKilometers] = useState('');
+  const [reqMessage, setReqMessage] = useState('')
+  const [reqSuccess, setReqSuccess] = useState(false)
+  const [deleteVIN, setDeleteVIN] = useState('');
 
   const handleSubmit = async(event) => {
     event.preventDefault();
@@ -74,7 +77,25 @@ function AddCar() {
       }
   };
 
+  async function handleDelete() {
+    try {
+        const response = await fetch('http://localhost:9000/vehicles/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ deleteVIN })
+        });
+        const data = await response.json();
+        setReqMessage(data.message)
+        setReqSuccess(data.success)
+    } catch (err) {
+        console.error(err);
+    }
+}
+
   return (
+    <div>
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="brand">Brand:</label>
@@ -228,10 +249,28 @@ function AddCar() {
       </div>
       <button type="submit">Add Car</button>
     </form>
+
+    <form onSubmit={handleDelete}>
+    <div>
+        <label htmlFor="deleteVIN">VIN of car to delete:</label>
+        <input
+          type="text"
+          id="deleteVIN"
+          value={deleteVIN}
+          onChange={(event) => setDeleteVIN(event.target.value)}
+          required
+        />
+      <button type="submit">Delete Car</button>
+      </div>
+      {reqSuccess && <p>{reqMessage}</p>}
+    </form>
+    </div>
+
+
   );
 }
 
-export default AddCar;
+export default AdminDashboard;
     // setBrand('');
     // setModel('');
     // setVIN('');
