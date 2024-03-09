@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../apiServices/AuthContext';
 
 const ProfileSettings = () => {
-    const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin, updateUserInfo } = useAuth();
+    const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin, updateUserInfo,deleteUser } = useAuth();
     const [update, setUpdate] = useState("");
 
     const [profileCurrentUser, setProfileCurrentUser] = useState(currentUser);
@@ -100,7 +100,8 @@ const ProfileSettings = () => {
             });
             const data = await response.json();
             setResponseError(data.message);
-            setWorkDone(true); // Update workDone state after successful deletion
+            setWorkDone(true);
+            await deleteUser();// Update workDone state after successful deletion
         } catch (err) {
             console.error(err);
             setResponseError(err);
