@@ -48,22 +48,61 @@ const addCar = async (req, res, next) => {
 
 
 const deleteCar = async (req, res, next) => {
+    const { deleteVIN } = req.body;
+
     try {
-        // const VIN = req.body;
-        const carId = req.params.id;
-        const deletedCar = await Vehicle.findByIdAndDelete(carId);
-        
-        if (!deletedCar) {
-            return res.status(404).json({ success: false, message: 'Car not found' });
+        console.log(deleteVIN);
+        let vinToDelete = await Vehicle.findOneAndDelete({ VIN : deleteVIN }).lean();
+        console.log(vinToDelete);
+
+        if (!vinToDelete) {
+            return res.status(404).json({ success: false, message: 'No car found with the provided VIN' });
         }
+        //vinToDelete = await Vehicle.deleteOne(vinToDelete);
+        res.status(200).json({ success: true, message: 'Car deleted' });
+      
 
-
-        res.json({ success: true, message: 'Car deleted successfully' });
+        next();
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
+        next(error);
     }
 };
 
 
-module.exports = addCar, deleteCar;
+const updateCar = async (req, res, next) => {
+    const { VIN, ...updatedData } = req.body;
+  
+    try {
+      const existingCar = await Vehicle.findOne({ VIN: VIN });
+      if (!existingCar) {
+        return res.status(404).json({ success: false, message: 'No car found with the provided VIN' });
+      }
+  
+      if (updatedData.brand) {
+        existingCar.brand = updatedData.brand;
+      }
+      if (updatedData.model) {
+        existingCar.model = updatedData.model;
+      }
+      if (updatedData.year) {
+        existingCar.year = updatedData.year;
+      }
+      if (updatedData.color) {
+        existingCar.color = updatedData.color;
+      }
+      if (updatedData.color) {
+        existingCar.pricePerDay = updatedData.pricePerDay;
+      }
+  
+      const updatedCar = await existingCar.save();
+  
+      res.status(200).json({ success: true, message: 'Car updated successfully', car: updatedCar });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+  };
+  
+  module.exports = { addCar, deleteCar, updateCar };

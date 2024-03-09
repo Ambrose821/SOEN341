@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
 var session = require('express-session')
+var methodOverride = require("method-override");
 
 //Models
 const User = require('./models/User');
@@ -71,6 +72,17 @@ app.use('/vehicles',vehicleRouter);
 const createVehicles = require('./Database/VehicleCreator');
 // Commented out since it would create vehicles everytime someone runs the server!
 // createVehicles(); 
+
+//middle ware for methodOverride so use of PUT and DELETE is possible
+//from method-Overide docs
+/*app.use(methodOverride((req,res)=>{
+  if(req.body && typeof req.body === 'object' && '_method' in req.body){
+      //look in urlencoded POST  bodies and delete it
+      var method = req.body._method
+      delete req.body._method
+      return method
+  }
+}))*/
 
 
 module.exports = app;
