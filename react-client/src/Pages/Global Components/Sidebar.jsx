@@ -65,7 +65,7 @@ function Sidebar() {
         
           
           {/* link to add car page */}
-          {isLoggedIn && (
+          {isLoggedIn && currentUserFlag == "admin" && (
           <li>
             <Link to="/admindashboard" className={`sidebarLink ${location.pathname === '/admindashboard' ? 'activeLink' : ''}`}> 
               <DriveEtaIcon className="icon" />
