@@ -15,6 +15,9 @@ const LoginPage = () => {
   const[isLoggedIn, setLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [generalError, setGeneralError] = useState(false)
+
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -106,6 +109,7 @@ const LoginPage = () => {
         <button type="submit">Login</button>
       </form>
       <Link to="/signup">Don't have an account yet? <b>Create an account</b></Link>
+      {generalError && <p className='error'>{generalError}</p>}
     </div>
   );
 

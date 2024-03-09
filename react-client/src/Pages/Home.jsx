@@ -131,6 +131,7 @@ function Home() {
     return <div>Loading...</div>;
   }
 
+
   // Ensure that vehicleData is not null before calculating rows
   const columns = 3;
   const rows = Math.ceil(vehicleData.length / columns);
