@@ -25,15 +25,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default : 'customer',
         enum: ['customer','admin','customer_service'],
-        
-       
-    
     },
     img:{
         type:String,
         default: '/imgs/carlogo.jpg'
     },
+    reservations:{
+        type:[{start: String, end: String, photo:String}],
+    },
     salt: Buffer,
-
 })
 module.exports = mongoose.model('User',UserSchema);
