@@ -91,13 +91,17 @@ router.post('/token',(req,res)=>{
   });
 
 })
+
+
+//NOT USED 
 router.get('/refresh',refresh,(req,res,next)=>{
 
 });
 
+/*
 router.delete('/logout',logout,(req,res,next) =>{
 
-}); 
+}); */
 
 router.get('/users/me', authenticateToken, (req, res) => {
   // Return user info based on the provided access token

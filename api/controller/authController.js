@@ -45,7 +45,7 @@ const login =  async (req,res,next)=>{
     const {refreshTokens} = req.app.locals
     //refreshTokens.push(refreshToken);
     console.log(refreshTokens)
-    res.json({accessToken,refreshToken})
+    res.status(200).json({accessToken,refreshToken})
 
    
 }
@@ -92,6 +92,7 @@ const refresh = (req,res) =>{
 //@desc Logout
 //@route POST/user/logout
 //@access Public - clear cookie if it exists
+/*
 const logout =  (req,res,next) =>{
   var {refreshTokens} = req.app.locals;
   console.log(req.body.token)
@@ -100,7 +101,7 @@ const logout =  (req,res,next) =>{
   res.sendStatus(204)
  
   
-}
+}*/
 
 // checks if the user is an admin
 const isAdmin = async (req, res, next) => {
@@ -118,6 +119,6 @@ const isAdmin = async (req, res, next) => {
     }
 };
 
-module.exports = {login,refresh,logout, isAdmin}
+module.exports = {login,refresh,/*logout,*/ isAdmin}
 
 
