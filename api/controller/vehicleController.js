@@ -37,7 +37,8 @@ const addCar = async (req, res, next) => {
             lister: lister, 
             kilometers: kilometers,
         })
-        await car.save()
+      await car.save()
+      res.status(201).json({success:true, message: "Car Added Succesfully"})
         next();
     } catch (error) {
         console.error('Error:', error);
@@ -72,9 +73,10 @@ const deleteCar = async (req, res, next) => {
 
 
 const updateCar = async (req, res, next) => {
-    const { VIN, ...updatedData } = req.body;
+   // const { VIN, ...updatedData } = req.body;
   
-    try {
+  try {
+    const { VIN, ...updatedData } = req.body;
       const existingCar = await Vehicle.findOne({ VIN: VIN });
       if (!existingCar) {
         return res.status(404).json({ success: false, message: 'No car found with the provided VIN' });

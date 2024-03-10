@@ -31,7 +31,8 @@ const UserSchema = new mongoose.Schema({
         default: '/imgs/carlogo.jpg'
     },
     reservations:{
-        type:[{start: String, end: String, photo:String}],
+        type: [{ start: String, end: String, photo: String }],
+        default: []
     },
     salt: Buffer,
 })

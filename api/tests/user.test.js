@@ -11,7 +11,7 @@ beforeEach(async () => {
 })
 //disconnect from mongo before each unit test
 afterEach(async () => {
-    await User.deleteOne({email:"test@gmail.com"});
+    await User.deleteOne({firstName:"test"});
     await mongoose.connection.close();
 })
 
@@ -21,7 +21,7 @@ afterEach(async () => {
 const signup = async () => {
     const user = await (request(app).post("/users/signup")).send({
         email: "test@gmail.com",
-        firstName: "Jim",
+        firstName: "test",
         lastName: "Lahey",
         password: "TestingTesting123!"
     })
@@ -33,7 +33,7 @@ describe("POST /users/signup", () => {
         
         const response = await (request(app).post("/users/signup")).send({
             email: "test@gmail.com",
-            firstName: "Jim",
+            firstName: "test",
             lastName: "Lahey",
             password: "TestingTesting123!"
         })
@@ -48,7 +48,7 @@ describe("POST /users/Login", () => {
     it("Should Login a user", async () => {
         const user = await (request(app).post("/users/signup")).send({
             email: "test@gmail.com",
-            firstName: "Jim",
+            firstName: "test",
             lastName: "Lahey",
             password: "TestingTesting123!"
         })
