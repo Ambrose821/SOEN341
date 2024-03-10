@@ -4,11 +4,8 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Reserve from './Reserve';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../apiServices/AuthContext';
-
 import { useNavigate } from 'react-router-dom'; // Correctly import useNavigate
 
 
@@ -50,6 +47,8 @@ const DynamicGrid = ({ photoURLs, ids }) => { // Ensure ids are received as prop
                    height: '100%',
                  }}
                />
+
+              {isLoggedIn && (
                <Button
                  variant="contained"
                  style={{
@@ -64,7 +63,25 @@ const DynamicGrid = ({ photoURLs, ids }) => { // Ensure ids are received as prop
                  onClick={() => handleReserveClick(ids[index])} // Correct onClick event
                >
                  Reserve
-               </Button>
+               </Button>)}
+
+               {!isLoggedIn && (
+                <Link to="/login">
+               <Button
+                 variant="contained"
+                 style={{
+                   position: 'absolute',
+                   bottom: '5%',
+                   left: '50%',
+                   transform: 'translateX(-50%)',
+                   width: '30%',
+                   backgroundColor: '#4CAF50',
+                   color: 'white',
+                 }}
+                  // Correct onClick event
+               >
+                 Reserve
+               </Button></Link>)}
 
 
              </div>
