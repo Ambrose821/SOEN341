@@ -23,10 +23,33 @@ router.get('/getCars', async function(req, res, next){
 router.post('/reserve',async function(req,res,next){
     try{
 
-        const {vehicleId, startDate,endDate, currentUser}= req.body;
+        console.log("0");
+        const {vehicleId, startDate,endDate, currentUser,vehicleModifyId}= req.body;
+        console.log("1");
+        console.log(vehicleId+ " " + startDate +" " + currentUser+ " " + vehicleModifyId);
+        let id;
 
-        const car = await Vehicle.findOne({_id: vehicleId}).lean();
+
+        if(vehicleModifyId){
+            console.log("2");
+            id = vehicleModifyId;
+        }
+        else{
+            console.log("3");
+            id = vehicleId;
+        }
+
+        console.log(id);
+
+        console.log("4");
+        const car = await Vehicle.findOne({_id: id}).lean();
+
+        console.log("5");
+        console.log(car);
+
+        console.log(0);
         const photoUrl = car.photoURL;
+        console.log(1);
         if(!car){
             return res.status(404).json({message:"Vehicle Not Found"});
         }
@@ -39,8 +62,8 @@ router.post('/reserve',async function(req,res,next){
 
         //updates the the rez in the DB
         await Vehicle.findOneAndUpdate(
-            {_id: vehicleId},
-            {$push : {reservation:reservationToAdd}},
+            {_id: id},
+            {$set : {reservation:reservationToAdd}},
             {new: true}
         );
 
@@ -52,7 +75,7 @@ router.post('/reserve',async function(req,res,next){
 
         await User.findOneAndUpdate(
             {email: currentUser},
-            {$push : {reservations: NewRez }},
+            {$set : {reservations: NewRez }},
             {new: true}
         );
 
@@ -64,6 +87,21 @@ router.post('/reserve',async function(req,res,next){
     }
 });
 
+router.get('/getCarIdFromPhoto', async function(req, res, next){
+    const photoUrl = req.query.photoUrl;
+
+    try {
+        const car = await Vehicle.findOne({ photoURL: photoUrl }).lean();
+        if (car && car._id) {
+            return res.status(200).json({ message: 'Found vehicle', id: car._id });
+        } else {
+            return res.status(404).json({ message: 'Could not find vehicle' });
+        }
+    } catch(error) {
+        console.error('Server error:', error);
+        return res.status(500).json({ message: 'Server error in processing request' });
+    }
+});
 
 router.get('/getCarPhoto', async function(req, res, next){
     const vehicleID = req.query.id;
@@ -95,6 +133,44 @@ router.get('/getReservation',async function(req,res,next){
     }
     
 });
+
+router.get('/getReservation',async function(req,res,next){
+    try{
+        const currentUser = req.query.currentUser;
+
+        const user = await User.findOne({email:currentUser});
+    
+        if(!user){
+            res.status(404).json({message : "User not found"})
+        }
+    
+        const reservationsFound = user.reservations;
+    
+        console.log(reservationsFound);
+        res.status(200).json({message: "Found reservations", reservations: reservationsFound});
+    }
+    catch(error){
+        res.status(500).json({message: "Something horrible happened"});
+    }
+    
+});
+
+router.get('/deleteReservation', async function(req,res,next){
+    try{
+        const currentUser = req.query.currentUser;
+
+        await User.findOneAndUpdate(
+            {email:currentUser},
+            {$set: {reservations: []}},
+            {new: true},
+        )
+            res.status(200).json({message : "deleted reservation"});
+    }
+    catch(error){
+        res.status(500).json({message : "error in deleting reservation"})
+    }
+});
+
 
 // isAdmin
 router.post('/insert', addCar,function(req, res, next){

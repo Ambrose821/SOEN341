@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function Reservations() {
   const { currentUser } = useAuth(); // Assuming useAuth() provides the current user details correctly.
+
+  const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState("Not Set");
   const [endDate, setEndDate] = useState("Not Set");
@@ -17,13 +20,11 @@ function Reservations() {
       const response = await fetch(url);
       const data = await response.json();
       
-      console.log(data.reservations.start); // Log the entire data object for debugging
-  
       if (data) {
         // Ensures there is at least one reservation and prevents accessing properties of undefined
-        setStartDate(data.reservations.start || "Not Set");
-        setEndDate(data.reservations.end || "Not Set");
-        setPhotoUrl(data.reservations.photo || "https://via.placeholder.com/200");
+        setStartDate(data.reservations[0].start || "Not Set");
+        setEndDate(data.reservations[0].end || "Not Set");
+        setPhotoUrl(data.reservations[0].photo || "https://via.placeholder.com/200");
       } else {
         // Handle case where no reservations are found or data is not structured as expected
         console.log('No reservations found or data structure is unexpected', data);
@@ -32,6 +33,43 @@ function Reservations() {
       console.error("Error fetching reservations:", error);
     }
   }
+
+  async function changeReservation(photoUrl){
+    try{
+      const response = await fetch('http://localhost:9000/vehicles/changeReservation',{
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          photoUrl
+        })
+      });
+
+    }
+    catch(error){
+      console.log(error)
+    }
+  };
+
+  async function deleteReservation(currentUser){
+    try{
+      const url = `http://localhost:9000/vehicles/deleteReservation?currentUser=${encodeURIComponent(currentUser)}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      navigate('/');
+      
+    }
+    catch(error){
+      console.log(error);
+    }
+
+  }
+
+  const navigateToReservation = () => {
+    navigate('/reserve', { state: { photo: photoUrl } }); // Correct usage of navigate
+  };
   
   useEffect(() => {
     getReservations(currentUser);
@@ -77,8 +115,9 @@ function Reservations() {
         </div>
       </div>
       <div>
-        <button style={deleteButtonStyle}>Delete Rez</button>
-        <button style={modifyButtonStyle}>Modify Rez</button>
+        <button style={deleteButtonStyle} onClick = {()=> deleteReservation(currentUser)}>Delete Rez</button>
+        <button style={modifyButtonStyle} onClick={() => navigateToReservation()}>Modify Rez</button>
+
       </div>
     </div>
   );
