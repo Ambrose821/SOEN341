@@ -63,7 +63,7 @@ const deleteCar = async (req, res, next) => {
         res.status(200).json({ success: true, message: 'Car deleted' });
       
 
-        next();
+        //next();
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });

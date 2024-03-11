@@ -7,13 +7,27 @@ const app = require('../app')
 require('dotenv').config();
 //connect to mongo before each unit test (make a new mongo uri for this)
 beforeEach(async () => {
-    await mongoose.connect(process.env.MONGO_URI)
-})
+    if (mongoose.connection.readyState === 0) {
+        // No active connection
+        await mongoose.connect(process.env.MONGO_TEST_URI);
+    } else {
+        // There is an active connection
+        await mongoose.connection.close(); // Close the active connection
+        await mongoose.connect(process.env.MONGO_TEST_URI); // Connect to the new URI
+    }
+});
 //disconnect from mongo before each unit test
 afterEach(async () => {
-    await User.deleteOne({firstName:"test"});
+    await User.deleteMany({});
     await mongoose.connection.close();
 })
+afterAll(async () => {
+    // Drop the database after all tests
+    //await mongoose.connection.dropDatabase();
+    // Then close the connection
+    await mongoose.connection.close();
+});
+
 
 ///////////////UNIT TESTS FOR USER OPERATIONS////////////////////////
 
@@ -39,6 +53,7 @@ describe("POST /users/signup", () => {
         })
 
         expect(response.statusCode).toBe(201)
+        expect(response.body.success).toBe(true);
 
     })
 })
@@ -58,7 +73,8 @@ describe("POST /users/Login", () => {
             password: "TestingTesting123!"
         })
 
-        expect(app.response.statusCode).toBe(200)
+        expect(response.statusCode).toBe(200)
+      // expect(response.body.accessToken).toBe(true);
 
         
     })
@@ -76,7 +92,8 @@ describe("POST /users/changeInfo", () => {
             newEmail: "newEmail@gmail.com"
         }))
 
-        expect(app.response.statusCode).toBe(200)
+        expect(response.statusCode).toBe(200)
+        expect(response.body.success).toBe(true);
     })
 })
 
@@ -86,10 +103,14 @@ describe("POST /users/adminRequest", () => {
         async () => {
             const user = await signup()
             
-            const response = await (request(app).post("/user/adminRequest").send({
-                userEmail: "test@gmail.com"
+            const response = await (request(app).post("/users/adminRequest").send({
+                currentUser: "test@gmail.com"
             }))
-            expect(app.response.statusCode).toBe(200)
+            console.log(response.body.message)
+
+            expect(response.statusCode).toBe(200)
+            expect(response.body.success).toBe(true);
+
     })
 })
 
@@ -98,10 +119,12 @@ describe("DELETE /users/deleteUser", () => {
     it("Should delete a user from the database", async () => {
         const user = await signup()
 
-        const response = await (request(app).post("/user/deletUser").send({
+        const response = await (request(app).delete("/users/deleteUser").send({
             currentUser: "test@gmail.com"
         }))
+        
 
-        expect(app.response.statusCode).toBe(200)
+        expect(response.statusCode).toBe(200)
+        expect(response.body.success).toBe(true);
     })
 })

@@ -103,6 +103,7 @@ router.delete('/logout',logout,(req,res,next) =>{
 
 }); */
 
+//not used
 router.get('/users/me', authenticateToken, (req, res) => {
   // Return user info based on the provided access token
   res.json(req.user.UserInfo);
@@ -136,7 +137,7 @@ process.env.REFRESH_TOKEN_SECRET,
 
   res.status(200).json({success: true, message: "Admin Request Granted", accessToken: accessToken, refreshToken: refreshToken});
   }catch(err){
-    res.status(400).json({success: false, message: "Admin Request Denied >:( " + err});
+    res.status(400).json({success: false, message: err});
   }
 });
 
@@ -207,8 +208,8 @@ router.post("/changeUserInfo", async (req, res) => {
     process.env.REFRESH_TOKEN_SECRET,
     {expiresIn: '1d'} //Users wont need to re enter login for 24h
     )
-
-    res.status(200).json({success: true, message: "Account Changes Made", accessToken: accessToken, refreshToken: refreshToken});
+    console.log('about to send res status')
+    res.status(200).json({success:true, message: "Account Changes Made", accessToken: accessToken, refreshToken: refreshToken});
 
       
     //////////////////////////////
@@ -224,9 +225,9 @@ router.delete('/deleteUser', async(req, res) => {
   const { currentUser } = req.body;
 
   try {
-    const userToDelete = User.findOne({ email: currentUser });
+    const userToDelete = await User.findOne({ email: currentUser });
 
-    result = await User.deleteOne(userToDelete);
+    result = await User.deleteOne({email: currentUser} );
     res.status(200).json({ success: true, message: 'UserDeleted' })
   } catch (err) {
     res.status(400).json({success:false, message: 'lol Couldnt Delete.' +err })

@@ -7,16 +7,26 @@ const app = require('../app')
 require('dotenv').config();
 //connect to mongo before each unit test (make a new mongo uri for this)
 beforeEach(async () => {
-    await mongoose.connect(process.env.MONGO_URI)
-
-    
-})
+    if (mongoose.connection.readyState === 0) {
+        // No active connection
+        await mongoose.connect(process.env.MONGO_TEST_URI);
+    } else {
+        // There is an active connection
+        await mongoose.connection.close(); // Close the active connection
+        await mongoose.connect(process.env.MONGO_TEST_URI); // Connect to the new URI
+    }
+});
 //disconnect from mongo before each unit test
 afterEach(async () => {
-    await Vehicle.deleteMany({lister:'Hasbulla'}) 
+    await Vehicle.deleteMany({}) 
     await mongoose.connection.close();
 })
-
+afterAll(async () => {
+    // Drop the database after all tests
+   // await mongoose.connection.dropDatabase();
+    // Then close the connection
+    await mongoose.connection.close();
+});
 
 
 //Create vehicle and add to
@@ -40,6 +50,7 @@ describe("POST /vehicles/insert", () => {
         }))
 
         expect(response.statusCode).toBe(201)
+        expect(response.body.success).toBe(true);
     })
 })
 
@@ -89,6 +100,7 @@ describe("GET /vehicles/getCars", () => {
         const response = await (request(app).get("/vehicles/getCars"))
 
         expect(response.statusCode).toBe(200)
+       // expect(response.body.success).toBe(true);
         
     })
 })
@@ -122,6 +134,7 @@ describe("PUT /vehicles/update", () => {
         }))
 
         expect(response.statusCode).toBe(200)
+        expect(response.body.success).toBe(true);
     })
 })
 
@@ -135,6 +148,7 @@ describe("DELETE /vehicles/delete", () => {
             deleteVIN: '123456701234567'
         }))
         expect(response.statusCode).toBe(200)
+        expect(response.body.success).toBe(true);
     })
     
 })
