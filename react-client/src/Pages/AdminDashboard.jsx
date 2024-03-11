@@ -164,9 +164,9 @@ function AdminDashboard() {
       } catch (error) {
         console.error('Error:', error.message);
       }
-  };
+    };
 
-  async function handleDelete(event) {
+  async function handleDelete(event, vin) {
     event.preventDefault();
     try {
         const response = await fetch('http://localhost:9000/vehicles/delete', {
@@ -174,15 +174,19 @@ function AdminDashboard() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ deleteVIN })
+            body: JSON.stringify({ deleteVIN: vin })
         });
         const data = await response.json();
-        setReqMessage(data.message)
-        setReqSuccess(data.success)
+        setReqMessage(data.message);
+        setReqSuccess(data.success);
+        if (data.success) {
+            fetchCars();
+        }
     } catch (err) {
         console.error(err);
     }
-}
+  }
+
 
 function generateRandomVIN() {
   const min = 1000;
@@ -235,12 +239,8 @@ const handleYearChange = (event) => {
                   <p>Year: {car.year}</p>
                   <p>Color: {car.color}</p>
                   <p>Price per Day: {car.pricePerDay}</p>
-                  {/* FIX DOES NOT WORK - UPDATE DOES NOT EXIST YET */}
                   <Button onClick={(event) => handleUpdate(car)}>Update Car Information</Button>
-                  {/* FIX DOES NOT WORK */}
-
                   <Button onClick={(event) => handleDelete(event, car.VIN)}>Delete Car</Button>
-          {/* onChange={(event) => setDeleteVIN(event.target.value) */}
                 </Paper>
               </Grid>
             ))}
