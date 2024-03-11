@@ -92,8 +92,6 @@ describe('GET /vehicles/getCarIdFromPhoto', () => {
  })
 
  const getId = async() =>{
-    //await signup();
-    //await addVehicle();
     photoUrlToChange ='https://example.com/ford_mustang.jpg';
     const idResponse = await request(app).get(`/vehicles/getCarIdFromPhoto?photoUrl=${encodeURIComponent(photoUrlToChange)}`)
     return idResponse.body.id
@@ -108,7 +106,7 @@ describe('GET /vehicles/getCarIdFromPhoto', () => {
                 vehicleId: id,
                 startDate: '2024-03-14',
                 endDate: '2024-03-16',
-                currentUser: "test@gmail.com!",
+                currentUser: "test@gmail.com",
                 vehicleModifyId: id
             });
             expect(response.statusCode).toBe(200);
@@ -121,7 +119,7 @@ describe('GET /vehicles/getCarIdFromPhoto', () => {
    it('should get reservations for a specific user', async () => {
         await signup();
         await addVehicle();
-       const currentUser = 'test@example.com';
+       const currentUser = 'test@gmail.com';
        const response = await request(app).get(`/vehicles/getReservation?currentUser=${currentUser}`);
        expect(response.statusCode).toBe(200);
        expect(response.body.message).toBe('Found reservations');
@@ -146,7 +144,7 @@ describe('Reservation Routes', () => {
    it('should delete a reservation', async () => {
     await signup();
     await addVehicle();
-       const currentUser = 'test@example.com';
+       const currentUser = 'test@gmail.com';
        const response = await request(app).get(`/vehicles/deleteReservation?currentUser=${currentUser}`);
        expect(response.statusCode).toBe(200);
        expect(response.body.message).toBe('deleted reservation');
@@ -159,7 +157,7 @@ describe('Reservation Routes', () => {
     await signup();
     await addVehicle();
        const adminData = {
-           email: 'admin@example.com',
+           email: 'test@gmail.com',
            startDate: '2024-03-15',
            endDate: '2024-03-17'
        };
@@ -180,14 +178,9 @@ describe('Reservation Routes', () => {
     it('should delete a reservation as an admin', async () => {
         await signup();
         await addVehicle();
-        const deleteData = {
-            deleteEmail: 'test@example.com'
-        };
-
-        const response = await request(app)
-            .post('/vehicles/AdminDeleteReservation')
-            .send(deleteData);
-
+        const response = await request(app).post('/vehicles/AdminDeleteReservation').send({
+            deleteEmail: 'test@gmail.com'
+        });
         expect(response.statusCode).toBe(200);
         expect(response.body.message).toBe('Successfully Deleted');
     });
