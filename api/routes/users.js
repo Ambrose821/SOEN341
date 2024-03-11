@@ -48,7 +48,7 @@ res.status(400).json({success:false,message:"Email already in use"})
       })
       try{
       await newUser.save()
-        res.status(201).json({success: true,message: "Account Created"})
+        return res.status(201).json({success: true,message: "Account Created"})
 
       }catch(err){
 

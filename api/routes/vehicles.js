@@ -120,7 +120,7 @@ router.get('/getReservation',async function(req,res,next){
         const user = await User.findOne({email:currentUser});
     
         if(!user){
-            res.status(404).json({message : "User not found"})
+           return res.status(404).json({message : "User not found"})
         }
     
         const reservationsFound = user.reservations;
@@ -148,6 +148,7 @@ router.get('/getAllUserReservations',async function(req,res,next){
         res.status(500).json({message: "something went horribly wrong"});
     }
 });
+
 
 router.get('/getAllReservations', async function(req, res, next) {
     try {

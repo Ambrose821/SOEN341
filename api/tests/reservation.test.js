@@ -85,31 +85,35 @@ describe('GET /vehicles/getCarIdFromPhoto', () => {
         await addVehicle();
         photoUrlToChange ='https://example.com/ford_mustang.jpg';
         const response = await request(app).get(`/vehicles/getCarIdFromPhoto?photoUrl=${encodeURIComponent(photoUrlToChange)}`)
-        
-       
         expect(response.statusCode).toBe(200);
         expect(response.body.message).toBe('Found vehicle');
         expect(response.body.id).toBeDefined();
     });
  })
 
-
+ const getId = async() =>{
+    //await signup();
+    //await addVehicle();
+    photoUrlToChange ='https://example.com/ford_mustang.jpg';
+    const idResponse = await request(app).get(`/vehicles/getCarIdFromPhoto?photoUrl=${encodeURIComponent(photoUrlToChange)}`)
+    return idResponse.body.id
+}
     describe('Reservation Routes', () => {
 
         it('should reserve a vehicle', async () => {
             await signup();
             await addVehicle();
-
+            const id = await getId();
             const response = await request(app).post('/vehicles/reserve').send({
-                vehicleId: "test@gmail.com",
-                startDate: "test",
-                endDate: "Lahey",
-                currentUser: "TestingTesting123!",
-                vehicleModifyId: "TestingTesting123!"
+                vehicleId: id,
+                startDate: '2024-03-14',
+                endDate: '2024-03-16',
+                currentUser: "test@gmail.com!",
+                vehicleModifyId: id
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body.message).toBe('Found users');
-            expect(response.body.reservations).toBeDefined();
+            expect(response.body.message).toBe('Reservation sucessfull');
+           
         });
      })
 
