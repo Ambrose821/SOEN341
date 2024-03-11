@@ -28,7 +28,6 @@ function AdminDashboard() {
   const [lister, setLister] = useState(currentUser);
   const [kilometers, setKilometers] = useState('');
   const [reqMessage, setReqMessage] = useState('')
-  const [reqSuccess, setReqSuccess] = useState(false)
   const [deleteVIN, setDeleteVIN] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
