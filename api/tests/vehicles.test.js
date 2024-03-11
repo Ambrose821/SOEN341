@@ -18,10 +18,15 @@ beforeEach(async () => {
 });
 //disconnect from mongo before each unit test
 afterEach(async () => {
-    await Vehicle.deleteMany({lister:'Hasbulla'}) 
+    await Vehicle.deleteMany({}) 
     await mongoose.connection.close();
 })
-
+afterAll(async () => {
+    // Drop the database after all tests
+   // await mongoose.connection.dropDatabase();
+    // Then close the connection
+    await mongoose.connection.close();
+});
 
 
 //Create vehicle and add to
