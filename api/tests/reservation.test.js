@@ -79,16 +79,16 @@ const addVehicle = async () => {
     return [response, response2];
 }
     
-describe('Reservation Routes', () => {
-    it('GET /vehicles/getCarIdFromPhoto', async () => {
+describe('GET /vehicles/getCarIdFromPhoto', () => {
+    it('Should return a car model ID from the photo URL', async () => {
         await signup();
         await addVehicle();
-        photoUrlToChange ='https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/2017_Lamborghini_Huracan_LP610.jpg/420px-2017_Lamborghini_Huracan_LP610.jpg';
-        const response = await request(app).post(`/vehicles/getCarIdFromPhoto?photoUrl=${encodeURIComponent(photoUrlToChange)}`)
+        photoUrlToChange ='https://example.com/ford_mustang.jpg';
+        const response = await request(app).get(`/vehicles/getCarIdFromPhoto?photoUrl=${encodeURIComponent(photoUrlToChange)}`)
         
        
         expect(response.statusCode).toBe(200);
-        expect(response.body.message).toBe('Found vehicles');
+        expect(response.body.message).toBe('Found vehicle');
         expect(response.body.id).toBeDefined();
     });
  })
@@ -96,7 +96,7 @@ describe('Reservation Routes', () => {
 
     describe('Reservation Routes', () => {
 
-        it('should get all user reservations', async () => {
+        it('should reserve a vehicle', async () => {
             await signup();
             await addVehicle();
 
@@ -125,7 +125,7 @@ describe('Reservation Routes', () => {
    });
 
 
-describe('Reservation Routes', () => {
+describe('GET /vehicles/getAllUserReservations', () => {
 
    it('should get all user reservations', async () => {
     await signup();
