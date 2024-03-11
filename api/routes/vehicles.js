@@ -120,7 +120,7 @@ router.get('/getReservation',async function(req,res,next){
         const user = await User.findOne({email:currentUser});
     
         if(!user){
-            res.status(404).json({message : "User not found"})
+           return res.status(404).json({message : "User not found"})
         }
     
         const reservationsFound = user.reservations;
@@ -149,27 +149,6 @@ router.get('/getAllUserReservations',async function(req,res,next){
     }
 });
 
-// there are two getReservation ?????? 
-router.get('/getReservation',async function(req,res,next){
-    try{
-        const currentUser = req.query.currentUser;
-
-        const user = await User.findOne({email:currentUser});
-    
-        if(!user){
-            res.status(404).json({message : "User not found"})
-        }
-    
-        const reservationsFound = user.reservations;
-    
-        console.log(reservationsFound);
-        res.status(200).json({message: "Found reservations", reservations: reservationsFound});
-    }
-    catch(error){
-        res.status(500).json({message: "Something horrible happened"});
-    }
-    
-});
 
 router.get('/getAllReservations', async function(req, res, next) {
     try {
