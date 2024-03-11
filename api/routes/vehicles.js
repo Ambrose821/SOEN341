@@ -134,6 +134,7 @@ router.get('/getReservation',async function(req,res,next){
     
 });
 
+// there are two getReservation ?????? 
 router.get('/getReservation',async function(req,res,next){
     try{
         const currentUser = req.query.currentUser;
@@ -154,6 +155,18 @@ router.get('/getReservation',async function(req,res,next){
     }
     
 });
+
+router.get('/getAllReservations', async function(req, res, next) {
+    try {
+      const allUsers = await User.find({}, 'reservations').lean();
+      const allReservations = allUsers.flatMap(user => user.reservations);
+      res.status(200).json({ message: 'All reservations retrieved', reservations: allReservations });
+    } catch(error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error retrieving reservations' });
+    }
+  });
+  
 
 router.get('/deleteReservation', async function(req,res,next){
     try{

@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography'; 
+import { Link } from 'react-router-dom'; 
 
 
 function AdminDashboard() {
@@ -218,6 +219,9 @@ const handleYearChange = (event) => {
     <div>
       <h2>Admin Dashboard</h2>
       <div>
+      <div>
+        <Link to="/viewUserReservations">View User Reservations</Link>
+      </div>
         <h4>Cars currently up for rent</h4>
         <Box>
           <Grid>
