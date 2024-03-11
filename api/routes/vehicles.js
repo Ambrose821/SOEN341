@@ -134,6 +134,21 @@ router.get('/getReservation',async function(req,res,next){
     
 });
 
+router.get('/getAllUserReservations',async function(req,res,next){
+    try{
+        const allUsersWithReservations = await User.find({
+            reservations: { $exists: true, $ne: [] }
+          }).lean();
+
+          console.log(allUsersWithReservations);
+
+        res.status(200).json({message: "Found users", reservations: allUsersWithReservations});
+    }
+    catch(error){
+        res.status(500).json({message: "something went horribly wrong"});
+    }
+});
+
 // there are two getReservation ?????? 
 router.get('/getReservation',async function(req,res,next){
     try{
@@ -183,6 +198,61 @@ router.get('/deleteReservation', async function(req,res,next){
         res.status(500).json({message : "error in deleting reservation"})
     }
 });
+
+router.post('/AdminModifyReservation', async function(req, res, next) {
+    try {
+        const { email, startDate, endDate } = req.body;
+
+        // Updating the first reservation's start and end date for the user with the given email
+        const updateResult = await User.findOneAndUpdate(
+            { email: email }, // Find a user by email
+            { 
+                $set: { 
+                    // Update the start and end dates of the first reservation
+                    'reservations.0.start': startDate,
+                    'reservations.0.end': endDate
+                } 
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (updateResult) {
+            res.status(200).json({ message: "Reservation updated successfully", updatedUser: updateResult });
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: "Something terrible happened" });
+    }
+});
+
+router.post('/AdminDeleteReservation', async function(req, res, next) {
+    const { deleteEmail } = req.body; // Correctly destructure to get deleteEmail from the body
+
+    if (!deleteEmail) {
+        return res.status(400).json({ message: "Email is required" });
+    }
+
+    try {
+        const result = await User.findOneAndUpdate(
+            { email: deleteEmail }, // Ensure this matches exactly with how emails are stored
+            { $set: { reservations: [] } }, // Clears out the reservations array
+            { new: true }
+        );
+
+        if (result) {
+            console.log("Successfully Deleted");
+            res.status(200).json({ message: "Successfully Deleted" });
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
 
 
 // isAdmin
