@@ -69,7 +69,12 @@ const VehicleSchema = new mongoose.Schema({
     kilometers:{
         type:Number,
         required:true
-    }
+    },
+    reservationsList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "Reservation",
+        default:[]
+    }]
 
 
 })
