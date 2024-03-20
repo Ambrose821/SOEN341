@@ -74,7 +74,12 @@ const VehicleSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: "Reservation",
         default:[]
-    }]
+    }],
+    branch: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Branch",
+        default: "Montreal"
+    }
 
 
 })
