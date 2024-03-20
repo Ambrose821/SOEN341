@@ -1,4 +1,5 @@
 const Vehicle = require('../models/Vehicle')
+const Branch = require('../models/Branch')
 
 const addCar = async (req, res, next) => {
     try {
@@ -17,7 +18,8 @@ const addCar = async (req, res, next) => {
             style, 
             reservation, 
             lister, 
-            kilometers
+            kilometers, 
+            branch
          } = req.body;
          
         var car = new Vehicle({
@@ -36,6 +38,7 @@ const addCar = async (req, res, next) => {
             reservation: reservation, 
             lister: lister, 
             kilometers: kilometers,
+            reservationsList: [branch]
         })
       await car.save()
       res.status(201).json({success:true, message: "Car Added Succesfully"})
@@ -97,7 +100,12 @@ const updateCar = async (req, res, next) => {
       if (updatedData.color) {
         existingCar.pricePerDay = updatedData.pricePerDay;
       }
-  
+      if (updatedData.branch) {
+        existingCar.branch = updatedData.branch;
+        existingCar.reservationsList = [updatedData.branch];
+
+     }
+
       const updatedCar = await existingCar.save();
   
       res.status(200).json({ success: true, message: 'Car updated successfully', car: updatedCar });

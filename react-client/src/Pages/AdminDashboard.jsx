@@ -31,6 +31,7 @@ function AdminDashboard() {
   const [deleteVIN, setDeleteVIN] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
+  const [branch, setBranch] = useState('');
 
   const handleOpen = (car) => {
     setSelectedCar(car);
@@ -125,7 +126,8 @@ function AdminDashboard() {
         style, 
         reservation, 
         lister, 
-        kilometers
+        kilometers,
+        branch
       });
     
     try {
@@ -149,7 +151,8 @@ function AdminDashboard() {
             style, 
             reservation, 
             lister, 
-            kilometers
+            kilometers,
+            branch
          } ),
         });
   
@@ -177,7 +180,7 @@ function AdminDashboard() {
         });
         const data = await response.json();
         setReqMessage(data.message);
-        setReqSuccess(data.success);
+        // setReqSuccess(data.success);
         if (data.success) {
             fetchCars();
         }
@@ -238,6 +241,7 @@ const handleYearChange = (event) => {
                   <p>Year: {car.year}</p>
                   <p>Color: {car.color}</p>
                   <p>Price per Day: {car.pricePerDay}</p>
+                  <p>Branch: {car.branch}</p>
                   <Button onClick={(event) => handleUpdate(car)}>Update Car Information</Button>
                   <Button onClick={(event) => handleDelete(event, car.VIN)}>Delete Car</Button>
                 </Paper>
@@ -453,6 +457,22 @@ const handleYearChange = (event) => {
           onChange={(event) => setKilometers(event.target.value)}
           required
         />
+      </div>
+      <div>
+        <label htmlFor="branch">Branch:</label>
+        <select
+          id="branch"
+          value={branch}
+          onChange={(event) => setBranch(event.target.value)}
+          required
+        >
+        <option value="">Select Branch</option>
+        <option value="montreal">Montreal</option>
+        <option value="toronto">Toronto</option>
+        <option value="ottawa">Ottawa</option>
+        <option value="newyork">New York</option>
+        <option value="washington">Washington</option>
+        </select>
       </div>
       <button type="submit">Add Car</button>
     </form>
