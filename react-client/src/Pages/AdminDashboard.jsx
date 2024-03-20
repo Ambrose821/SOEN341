@@ -177,7 +177,7 @@ function AdminDashboard() {
         });
         const data = await response.json();
         setReqMessage(data.message);
-        setReqSuccess(data.success);
+       // setReqSuccess(data.success);
         if (data.success) {
             fetchCars();
         }

@@ -1,4 +1,5 @@
 const Vehicle = require('../models/Vehicle')
+const Branch = require('../models/Branch')
 
 const addCar = async (req, res, next) => {
     try {
@@ -105,6 +106,33 @@ const updateCar = async (req, res, next) => {
       console.error('Error:', error);
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
-  };
+};
   
-  module.exports = { addCar, deleteCar, updateCar };
+//const get_postal_code
+const find_nearest = async (req, res, next) => {
+  const postal_code = req.query.postal_code;
+  const latitude = 43//temp
+  const longitude =79//temp
+  //mechanism to find closest branch assuming you can access coordinates
+  try {
+    const nearest_branch = await Branch.findOne({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [longitude, latitude]
+          }
+        }
+      }
+    })
+
+    const branch_name = nearest_branch.BranchName
+    res.status(200).json({success:true,message:`Nearest Branch is in ${branch_name}`, branch: nearest_branch })
+  } catch (err) {
+    console.error("Error finding nearest branch" + err);
+    res.status(404).json({ success: false, message: "Couldnt Locate a branch" })
+    next(err)
+  }
+}
+  
+  module.exports = { addCar, deleteCar, updateCar,find_nearest };

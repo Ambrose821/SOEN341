@@ -5,7 +5,7 @@ var mongo = require('mongodb');
 var assert = require('assert');
 const { isValidObjectId } = require('mongoose');
 var User = require('../models/User');
-var { addCar, deleteCar, updateCar } = require('../controller/vehicleController')
+var { addCar, deleteCar, updateCar, find_nearest } = require('../controller/vehicleController')
 
 router.get('/getCars', async function(req, res, next){
 
@@ -246,5 +246,9 @@ router.put('/update', updateCar, function(req, res, next){
 router.delete('/delete', deleteCar, function(req, res, next){
 
 });
+
+router.get('/nearest', find_nearest, (req, res) => {
+    
+})
 
 module.exports = router;
