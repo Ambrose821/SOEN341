@@ -1,6 +1,6 @@
 const Vehicle = require('../models/Vehicle')
 const Branch = require('../models/Branch')
-
+const axios = require('axios')
 const addCar = async (req, res, next) => {
     try {
         const {
@@ -108,7 +108,30 @@ const updateCar = async (req, res, next) => {
     }
 };
   
-//const get_postal_code
+const get_postal_code_coords = async (postalCode) =>{
+  try {
+    const response = axios.get(`https://nominatim.openstreetmap.org/search?format=json&postalcode=${postalCode}&limit=1`)
+    const data = response.data;
+    if (data && data.length > 0) {
+      const coords = {
+        longitude : parseFloat(data[0].lon),
+        latitude: parseFloat(data[0].lat),
+        message:"No need for default"
+      }
+    } else {
+      const coords = {
+        longitude : parseFloat(data[0].lon),
+        latitude: parseFloat(data[0].lat),
+        message: "Error With Finding postal code. Defaulting to Main branch in Montreal",
+        error:true
+      }
+    }
+
+  } catch (err) {
+    console.error("postal code => coords err " + err)
+
+  }
+}
 const find_nearest = async (req, res, next) => {
   const postal_code = req.query.postal_code;
   const latitude = 43//temp
