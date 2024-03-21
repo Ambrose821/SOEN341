@@ -61,6 +61,7 @@ function AdminDashboard() {
         throw new Error('Failed to fetch cars');
       }
       setCars(data);
+      console.log(data)
     } catch (error) {
       console.error('Error:', error.message);
     }
@@ -241,7 +242,7 @@ const handleYearChange = (event) => {
                   <p>Year: {car.year}</p>
                   <p>Color: {car.color}</p>
                   <p>Price per Day: {car.pricePerDay}</p>
-                  <p>Branch: {car.branch}</p>
+                  {car.branch &&<p>Branch: {car.branch.BranchName}</p> }
                   <Button onClick={(event) => handleUpdate(car)}>Update Car Information</Button>
                   <Button onClick={(event) => handleDelete(event, car.VIN)}>Delete Car</Button>
                 </Paper>
