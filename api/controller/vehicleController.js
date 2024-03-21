@@ -110,22 +110,23 @@ const updateCar = async (req, res, next) => {
   
 const get_postal_code_coords = async (postalCode) =>{
   try {
-    const response = axios.get(`https://nominatim.openstreetmap.org/search?format=json&postalcode=${postalCode}&limit=1`)
+    const response = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&postalcode=${postalCode}&limit=1&countrycodes=ca,us`)
     const data = response.data;
     if (data && data.length > 0) {
-      const coords = {
+      var coords = {
         longitude : parseFloat(data[0].lon),
         latitude: parseFloat(data[0].lat),
         message:"No need for default"
       }
     } else {
-      const coords = {
+      var coords = {
         longitude : parseFloat(data[0].lon),
         latitude: parseFloat(data[0].lat),
         message: "Error With Finding postal code. Defaulting to Main branch in Montreal",
         error:true
       }
     }
+    return(coords)
 
   } catch (err) {
     console.error("postal code => coords err " + err)
@@ -133,9 +134,15 @@ const get_postal_code_coords = async (postalCode) =>{
   }
 }
 const find_nearest = async (req, res, next) => {
-  const postal_code = req.query.postal_code;
-  const latitude = 43//temp
-  const longitude =79//temp
+  const postal_code = '10001';
+  const coordsJson = await get_postal_code_coords(postal_code)
+  console.log(coordsJson.message)
+  var longitude = coordsJson.longitude;
+  var latitude = coordsJson.latitude;
+  console.log("lon " + longitude + "lat " +latitude)
+
+  // const latitude = 43//temp
+  // const longitude =79//temp
   //mechanism to find closest branch assuming you can access coordinates
   try {
     const nearest_branch = await Branch.findOne({

@@ -74,9 +74,9 @@ const createVehicles = require('./Database/VehicleCreator');
 //createVehicles();
 
 
-//Add branches. Please dont uncomment
-//const createBranches = require('./Database/BranchCreator')
-//createBranches();
+// Add branches. Please dont uncomment
+// const createBranches = require('./Database/BranchCreator')
+// createBranches();
 
 //middle ware for methodOverride so use of PUT and DELETE is possible
 //from method-Overide docs
