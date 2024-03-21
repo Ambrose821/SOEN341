@@ -21,6 +21,8 @@ const addCar = async (req, res, next) => {
             kilometers, 
             branch
          } = req.body;
+
+         const carBranch = await Branch.findOne({BranchName:branch}) 
          
         var car = new Vehicle({
             brand: brand,
@@ -38,7 +40,7 @@ const addCar = async (req, res, next) => {
             reservation: reservation, 
             lister: lister, 
             kilometers: kilometers,
-            reservationsList: [branch]
+            branch: carBranch._id
         })
       await car.save()
       res.status(201).json({success:true, message: "Car Added Succesfully"})
@@ -102,8 +104,6 @@ const updateCar = async (req, res, next) => {
       }
       if (updatedData.branch) {
         existingCar.branch = updatedData.branch;
-        existingCar.reservationsList = [updatedData.branch];
-
      }
 
       const updatedCar = await existingCar.save();
