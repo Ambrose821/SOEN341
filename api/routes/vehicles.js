@@ -10,7 +10,7 @@ var { addCar, deleteCar, updateCar, find_nearest } = require('../controller/vehi
 router.get('/getCars', async function(req, res, next){
 
     try{
-        const cars = await Vehicle.find({}).lean();
+        const cars = await Vehicle.find({}).populate('branch').lean();
 
         res.status(200).json(cars);
     }
