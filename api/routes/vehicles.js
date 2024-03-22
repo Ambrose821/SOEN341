@@ -54,10 +54,22 @@ router.post('/reserve',async function(req,res,next){
             return res.status(404).json({message:"Vehicle Not Found"});
         }
 
+
+        const currentDate = new Date();
+        const startDateTime = new Date(startDate);
+        if (startDateTime < currentDate) {
+            return res.status(400).json({ message: "Start date cannot be in the past" });
+        }
+
+        const endDateTime = new Date(endDate);
+        if (endDateTime <= startDateTime) {
+            return res.status(400).json({ message: "End date must be after start date" });
+        }
+
         // creates new object of reservation 
         const reservationToAdd = {
             start:startDate,
-            end: endDate
+            end: endDate,
         };
 
         //updates the the rez in the DB
@@ -75,10 +87,18 @@ router.post('/reserve',async function(req,res,next){
 
         await User.findOneAndUpdate(
             {email: currentUser},
-            {$set : {reservations: NewRez }},
+            {
+                $set: {
+                    reservations: NewRez,
+                }
+            },
             {new: true}
         );
 
+        const user = await User.findOne({ email: currentUser });
+        user.carCost = reservationCost;
+        await user.save();
+        
         res.status(200).json({message: 'Reservation sucessfull'});
     }
     catch(error){
@@ -133,6 +153,26 @@ router.get('/getReservation',async function(req,res,next){
     }
     
 });
+
+router.get('/getCarCost', async function(req, res, next) {
+    try {
+        const vehicleID = req.query.id;
+
+        const vehicle = await Vehicle.findById(vehicleID).lean();
+
+        if (!vehicle) {
+            return res.status(404).json({ message: "Vehicle not found" });
+        }
+
+        const carCost = vehicle.carCost;
+
+        res.status(200).json({ message: "Car cost retrieved successfully", carCost: carCost });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
 
 router.get('/getAllUserReservations',async function(req,res,next){
     try{
