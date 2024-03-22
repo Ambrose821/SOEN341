@@ -6,7 +6,7 @@ const createBranches = async () => {
         BranchName: "Montreal",
         location: {
             type: 'Point',
-            coordinates: [73.5779, 45.4948] //Concordia Coordinates //longitude, latitude
+            coordinates: [-73.5779, 45.4948] //Concordia Coordinates //longitude, latitude
          
         }
     })
@@ -16,7 +16,7 @@ const createBranches = async () => {
         BranchName: "Ottawa",
         location: {
             type: 'Point',
-            coordinates: [75.6972, 45.4215] //Concordia Coordinates //longitude, latitude
+            coordinates: [-75.6972, 45.4215] //Concordia Coordinates //longitude, latitude
          
         }
     })
@@ -26,7 +26,7 @@ const createBranches = async () => {
         BranchName: "Toronto",
         location: {
             type: 'Point',
-            coordinates: [79.3832, 43.6532] //Concordia Coordinates //longitude, latitude
+            coordinates: [-79.3832, 43.6532] //Concordia Coordinates //longitude, latitude
          
         }
     })
@@ -36,7 +36,7 @@ const createBranches = async () => {
         BranchName: "NYC",
         location: {
             type: 'Point',
-            coordinates: [74.0060, 40.7128] //Concordia Coordinates //longitude, latitude
+            coordinates: [-74.0060, 40.7128] //Concordia Coordinates //longitude, latitude
          
         }
     })
@@ -45,7 +45,7 @@ const createBranches = async () => {
         BranchName: "Washington",
         location: {
             type: 'Point',
-            coordinates: [74.0060, 40.7128] //Concordia Coordinates //longitude, latitude
+            coordinates: [-77.0365, 38.895] //Concordia Coordinates //longitude, latitude
          
         }
     })

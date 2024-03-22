@@ -116,7 +116,7 @@ const updateCar = async (req, res, next) => {
     }
 };
   
-//const get_postal_code
+
 const get_postal_code_coords = async (postalCode) =>{
   try {
     const response = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&postalcode=${postalCode}&limit=1&countrycodes=ca,us`)
@@ -143,8 +143,9 @@ const get_postal_code_coords = async (postalCode) =>{
   }
 }
 const find_nearest = async (req, res, next) => {
+
   const postal_code = req.query.postalCode
-  console.log(postal_code)
+ 
   const coordsJson = await get_postal_code_coords(postal_code)
   console.log(coordsJson.message)
   var longitude = coordsJson.longitude;
