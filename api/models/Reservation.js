@@ -14,7 +14,6 @@ const ReservationShchema = new mongoose.Schema({
            type:  mongoose.Schema.Types.ObjectId,
            ref: "Vehicle",
            required: true
-
         },
         user:{
             type: mongoose.Schema.Types.ObjectId,
@@ -25,8 +24,6 @@ const ReservationShchema = new mongoose.Schema({
             type: Number, 
             required: true
         }
-    
-
-})
+});
 
 module.exports = mongoose.model('Reservation',ReservationShchema);
