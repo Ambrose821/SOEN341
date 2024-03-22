@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../apiServices/AuthContext';
 import { useNavigate } from 'react-router-dom'; // Correctly import useNavigate
+import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -134,6 +135,9 @@ function Home() {
  });
   const [branchName, setBranch] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+  const [noCars, setNoCars] = useState("")
+  
+
   
 
  
@@ -147,6 +151,7 @@ function Home() {
        setVehicleData(data);
        setOriginalVehicleData(data); 
        console.log(data);
+     
      } catch (error) {
        setError(error.toString());
      }
@@ -161,7 +166,8 @@ function Home() {
     console.log(showFilters)
   }
 
-let filteredVehicles = [...vehicleData];
+let filteredVehicles = [...originalVehicleData];
+const constantVehicleData = originalVehicleData
 
 const handleApplyFilters = () => {
 
@@ -178,16 +184,20 @@ const handleApplyFilters = () => {
     filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.price === filters.price);
   }
   if (filters.branch) {
+   
     filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.branch === filters.branch);
   }
-  if (filters.brand) {
-    filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.brand === filters.brand);
+  if (branchName) {
+    filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.brand === branchName);
   }
   if (filters.year) {
     filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.year === filters.year);
   }
   if (filters.transmission) {
-    filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.transmission === filters.transmission);
+  
+    const transmissionValue = filters.transmission === 'true'; // Convert the string to a boolean
+    console.log(transmissionValue + typeof transmissionValue)
+    filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.transmission === transmissionValue);
   }
   if (filters.numberOfSeats) {
     filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.numberOfSeats === filters.numberOfSeats);
@@ -202,6 +212,7 @@ const handleApplyFilters = () => {
   setVehicleData(filteredVehicles);
 
 };
+
 
  const handleClearFilters = () => {
   setFilters({    
@@ -218,8 +229,9 @@ const handleApplyFilters = () => {
     model: '',
     branch: '',
    });
-
+   handleSeeAll()
    setVehicleData(originalVehicleData);
+   setOriginalVehicleData(originalVehicleData)
 };
 
 
@@ -239,7 +251,9 @@ const handleApplyFilters = () => {
 
 
  if (!vehicleData.length) {
-   return <div>Loading...</div>;
+   console.log("No Vehicles")
+  // setNoCars("No cars based on requested filters") this is causing serious issues
+
  }
 
   const handlePostalCode = async(event) => {
@@ -248,11 +262,18 @@ const handleApplyFilters = () => {
 
      
     try { 
-
+    
+      setVehicleData(originalVehicleData)
       const response = await fetch(`http://localhost:9000/vehicles/nearest?postalCode=${postalCode}`)
       const data = await response.json()
       console.log("from postal code:" + JSON.stringify(data))
       setBranch(data.branch.BranchName)
+
+      filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.branch.BranchName === data.branch.BranchName);
+    
+       
+    setVehicleData(filteredVehicles)
+      
       
     } catch (err) {
       console.error('React Postal Code Req error: ' +err)
@@ -261,13 +282,27 @@ const handleApplyFilters = () => {
   }
 
   const handleAirport = async (event) => {
-    setBranch(event.target.value)
+    const selectedBranch = event.target.value;
+    setBranch(selectedBranch); // Update the branch name for display purposes.
+
+    // Filter the vehicles based on the selected branch directly.
+    // This avoids issues with asynchronous state updates.
+    const filteredVehicles = originalVehicleData.filter((vehicle) => 
+        vehicle.branch.BranchName === selectedBranch
+    );
+    
+    // Update the vehicle data to reflect the vehicles from the selected branch.
+    setVehicleData(filteredVehicles);
   }
 
 const photoURLs = vehicleData.map(vehicle => vehicle.photoURL);
 const ids = vehicleData.map(vehicle => vehicle._id);
 const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
 
+const handleSeeAll = async() =>{
+   setVehicleData(originalVehicleData)
+   setBranch('')
+}
 
   return (
    
@@ -279,7 +314,12 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
     }
   }} /> 
         <p>or</p>
-        <select value="Select Destination Airport" onChange={handleAirport}>
+        <select value="Select Destination Airport" onChange={handleAirport} style={{ position:'relative',
+    
+          
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    zIndex: 1000}}>
           <option value="">Select Destination Airport</option>
           <option value = "Montreal">Montréal-Pierre Elliott Trudeau International Airport</option>
           <option value="Ottawa">Ottawa International Airport</option>
@@ -288,17 +328,22 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
           <option value="Washington">Dulles International Airport</option>
           
         </select>
-
+      
         <input type="button" value={!showFilters ? "Adjust Filters" : "Hide Filters"} onClick={toggleFilters} style={{ position: 'absolute',
-    
+    marginLeft:'100px',
     transform: 'translateX(-50%)',
           
     backgroundColor: '#4CAF50',
     color: 'white',
     zIndex: 1000}}
-/>
+/><br></br><br></br>
         {branchName && <h5>Current/Nearest Branch is {branchName}</h5>}
-        
+        {!branchName && <h5>Showing Vehicles from all branches</h5>}
+      
+     { branchName && <button onClick={handleSeeAll} style={{   position: 'relative',      
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    zIndex: 1000}}> See Cars from All Branches</button>}
        
         
       </div>
@@ -306,7 +351,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
       {showFilters && <div><select name="color" value={filters.color} onChange={handleFilterChange}
     style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Color</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.color}>
               {vehicle.color}
             </option>
@@ -316,7 +361,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="style" value={filters.style} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Style</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.style}>
               {vehicle.style}
             </option>
@@ -326,7 +371,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="model" value={filters.model} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Model</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.model}>
               {vehicle.model}
             </option>
@@ -336,27 +381,27 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="pricePerDay" value={filters.pricePerDay} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Price</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.pricePerDay}>
               {vehicle.pricePerDay}
             </option>
           ))}
         </select>
-        <br></br>
-        <select name="branch" value={filters.branch} onChange={handleFilterChange}
+       <br></br> 
+        {/* <select name="branch" value={filters.branch} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Branch</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.branch}>
               {vehicle.branch &&<p> {vehicle.branch.BranchName}</p> }
             </option>
           ))}
         </select>
-        <br></br>
+        <br></br> */}
         <select name="brand" value={filters.brand} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Brand</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.brand}>
               {vehicle.brand}
             </option>
@@ -366,7 +411,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="year" value={filters.year} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Year</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.year}>
               {vehicle.year}
             </option>
@@ -376,9 +421,9 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="transmission" value={filters.transmission} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Transmission</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.transmission}>
-              {vehicle.transmission}
+              {vehicle.transmission == true? "Automatic": "Manual" }
             </option>
           ))}
         </select>
@@ -386,7 +431,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="numberOfSeats" value={filters.numberOfSeats} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Number Of Seats</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.numberOfSeats}>
               {vehicle.numberOfSeats}
             </option>
@@ -396,7 +441,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="numberOfDoors" value={filters.numberOfDoors} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Number Of Doors</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.numberOfDoors}>
               {vehicle.numberOfDoors}
             </option>
@@ -406,7 +451,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <select name="lister" value={filters.lister} onChange={handleFilterChange}
         style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Lister</option>
-          {vehicleData.map((vehicle) => (
+          {originalVehicleData.map((vehicle) => (
             <option key={vehicle._id} value={vehicle.lister}>
               {vehicle.lister}
             </option>
@@ -415,7 +460,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
         <Button onClick={handleApplyFilters}>Apply Filters</Button>
       <Button onClick={handleClearFilters}>Clear Filters</Button> </div>}
     
-
+        
   <DynamicGrid photoURLs={photoURLs} ids={ids} />
  </div>
 
