@@ -6,6 +6,7 @@ var assert = require('assert');
 const { isValidObjectId } = require('mongoose');
 var User = require('../models/User');
 var { addCar, deleteCar, updateCar, find_nearest } = require('../controller/vehicleController')
+const Reservation = require('../models/Reservation');
 
 router.get('/getCars', async function(req, res, next){
 
@@ -21,90 +22,44 @@ router.get('/getCars', async function(req, res, next){
 });
 
 router.post('/reserve',async function(req,res,next){
+
     try{
+        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
 
-        console.log("0");
-        const {vehicleId, startDate,endDate, currentUser,vehicleModifyId}= req.body;
-        console.log("1");
-        console.log(vehicleId+ " " + startDate +" " + currentUser+ " " + vehicleModifyId);
-        let id;
+        console.log(vehicleId);
+        console.log(startDate);
+        console.log(endDate);
+        console.log(currentUser);
+        console.log(gps);
+        console.log(insurance);
+    
+        const v = await Vehicle.findOne({ _id : vehicleId });
+        vehicle = JSON.stringify(v,null,2);
 
+        const user = await User.findOne({email: currentUser});
 
-        if(vehicleModifyId){
-            console.log("2");
-            id = vehicleModifyId;
-        }
-        else{
-            console.log("3");
-            id = vehicleId;
-        }
+        console.log("Vehicle: " + vehicle);
+        console.log(v.pricePerDay);
 
-        console.log(id);
+        const reservationData = {
+            startDate: startDate,
+            endDate: endDate,
+            vehicle: v._id,
+            user: user._id,
+            carCost : v.pricePerDay
+         };
 
-        console.log("4");
-        const car = await Vehicle.findOne({_id: id}).lean();
+         const reservation = new Reservation(reservationData);
+         reservation.save();
 
-        console.log("5");
-        console.log(car);
+         res.status(200).json({message: "Sucess"});
 
-        console.log(0);
-        const photoUrl = car.photoURL;
-        console.log(1);
-        if(!car){
-            return res.status(404).json({message:"Vehicle Not Found"});
-        }
-
-
-        const currentDate = new Date();
-        const startDateTime = new Date(startDate);
-        if (startDateTime < currentDate) {
-            return res.status(400).json({ message: "Start date cannot be in the past" });
-        }
-
-        const endDateTime = new Date(endDate);
-        if (endDateTime <= startDateTime) {
-            return res.status(400).json({ message: "End date must be after start date" });
-        }
-
-        // creates new object of reservation 
-        const reservationToAdd = {
-            start:startDate,
-            end: endDate,
-        };
-
-        //updates the the rez in the DB
-        await Vehicle.findOneAndUpdate(
-            {_id: id},
-            {$set : {reservation:reservationToAdd}},
-            {new: true}
-        );
-
-        const NewRez = {
-            start:startDate,
-            end:endDate,
-            photo:photoUrl
-        }
-
-        await User.findOneAndUpdate(
-            {email: currentUser},
-            {
-                $set: {
-                    reservations: NewRez,
-                }
-            },
-            {new: true}
-        );
-
-        const user = await User.findOne({ email: currentUser });
-        user.carCost = reservationCost;
-        await user.save();
-        
-        res.status(200).json({message: 'Reservation sucessfull'});
     }
     catch(error){
+        console.log("ERROR OCCURED");
         console.log(error);
-        res.status(500).json({message: "An error occured"});
     }
+    
 });
 
 router.get('/getCarIdFromPhoto', async function(req, res, next){
@@ -172,35 +127,6 @@ router.get('/getCarCost', async function(req, res, next) {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
-
-
-router.get('/getAllUserReservations',async function(req,res,next){
-    try{
-        const allUsersWithReservations = await User.find({
-            reservations: { $exists: true, $ne: [] }
-          }).lean();
-
-          console.log(allUsersWithReservations);
-
-        res.status(200).json({message: "Found users", reservations: allUsersWithReservations});
-    }
-    catch(error){
-        res.status(500).json({message: "something went horribly wrong"});
-    }
-});
-
-
-router.get('/getAllReservations', async function(req, res, next) {
-    try {
-      const allUsers = await User.find({}, 'reservations').lean();
-      const allReservations = allUsers.flatMap(user => user.reservations);
-      res.status(200).json({ message: 'All reservations retrieved', reservations: allReservations });
-    } catch(error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error retrieving reservations' });
-    }
-  });
-  
 
 router.get('/deleteReservation', async function(req,res,next){
     try{
@@ -271,6 +197,31 @@ router.post('/AdminDeleteReservation', async function(req, res, next) {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
+
+
+router.post('/getUserReservations', async function(req, res, next) {
+    try {
+        const {currentUser} = req.body;
+        console.log("emai" + currentUser);
+
+        const user = await User.findOne({email: currentUser });
+
+        console.log("user " + JSON.stringify(user));
+
+        const reservations = await Reservation.find({ user: user._id })
+                                      .populate('vehicle')
+                                      .populate('user') // Only populate 'photoURL' from 'vehicle'
+                                      .lean();
+
+        console.log("RESERVATION"+ reservations);
+
+        res.status(200).json({ message: "Success", reservations: reservations });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Waiting for User" });
+    }
+});
+
 
 // isAdmin
 router.post('/insert', addCar,function(req, res, next){

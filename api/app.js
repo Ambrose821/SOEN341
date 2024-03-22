@@ -71,7 +71,7 @@ app.use('/vehicles',vehicleRouter);
 // Creating Objects in Database 
 const createVehicles = require('./Database/VehicleCreator');
 // Commented out since it would create vehicles everytime someone runs the server!
-//createVehicles();
+// createVehicles();
 
 
 // Add branches. Please dont uncomment
