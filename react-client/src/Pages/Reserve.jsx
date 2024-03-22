@@ -1,107 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
-import {useLocation} from 'react-router-dom'
-import {useNavigate} from 'react-router-dom';
-function Reserve() {
+import { useLocation, useNavigate } from 'react-router-dom';
 
-    const { currentUser } = useAuth(); // Assuming useAuth() provides the current user details correctly.
+function Reserve() {
+    const { currentUser } = useAuth();
     const [photoUrl, setPhotoUrl] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [gps, setGps] = useState(false); // State for GPS option
+    const [insurance, setInsurance] = useState(false); // State for Insurance option
 
     const location = useLocation();
     const vehicleId = location.state?.vehicleId;
-
-    const {photo : photoUrlToChange} = location.state || {};
-
-
-
-    const vehicleModifyId = getIdFromPhoto(photoUrlToChange);
-    console.log(vehicleModifyId);
-
-    
-
-    console.log("PHOTO URL FROM CHANGE IS: " +photoUrlToChange);
+    const { photo: photoUrlToChange } = location.state || {};
     const navigate = useNavigate();
-    console.log(vehicleId);
-    
-    useEffect(()=>{
-        if(vehicleId){
+
+    useEffect(() => {
+        if (vehicleId) {
             getPhoto(vehicleId).then(setPhotoUrl).catch(console.error);
         }
-    },[vehicleId]);
+    }, [vehicleId]);
 
-    let url = getPhoto(vehicleId);
-
-
-    async function getPhoto(vehicleId){
-        if(!vehicleId){
+    async function getPhoto(vehicleId) {
+        if (!vehicleId) {
             return;
         }
-        try{
-            console.log("1");
+        try {
             const response = await fetch(`http://localhost:9000/vehicles/getCarPhoto?id=${encodeURIComponent(vehicleId)}`);
-            console.log("2");
             const data = await response.json();
-            console.log("3");
-            console.log(data.photoURL);
-            console.log("4");
             return data.photoURL;
-        }
-        catch(error){
-            console.log("error in Fetch");
+        } catch (error) {
+            console.log("Error in Fetch:", error);
         }
     } 
 
-    async function getIdFromPhoto(photoUrlToChange){
-        if(!photoUrlToChange){
+    async function getIdFromPhoto(photoUrlToChange) {
+        if (!photoUrlToChange) {
             return null;
         }
         try {
             const response = await fetch(`http://localhost:9000/vehicles/getCarIdFromPhoto?photoUrl=${encodeURIComponent(photoUrlToChange)}`);
             const data = await response.json();
-            if(response.ok) {
-                return data.id; // Assuming your API returns the ID in the 'id' field
+            if (response.ok) {
+                return data.id;
             } else {
                 throw new Error(data.message || 'Failed to fetch vehicle ID.');
             }
-        }
-        catch(error){
+        } catch (error) {
             console.log("Error in fetching vehicle ID:", error);
-            return null; // Return null or appropriate fallback
+            return null;
         }
     };
 
-
     async function submitReservation() {
-        // Ensure all fields are filled
         console.log("Attempting to submit reservation...");
-    
         try {
-            const vehicleModifyId = await getIdFromPhoto(photoUrlToChange); // Wait for the ID to be fetched
+            const vehicleModifyId = await getIdFromPhoto(photoUrlToChange);
             console.log("Vehicle Modify ID:", vehicleModifyId);
-    
+
             const response = await fetch('http://localhost:9000/vehicles/reserve', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    vehicleId, // Use vehicleModifyId if available, else fallback to vehicleId
+                    vehicleId: vehicleModifyId || vehicleId,
                     startDate,
                     endDate,
                     currentUser,
-                    vehicleModifyId
+                    gps,
+                    insurance,
                 }),
             });
-    
+
             const data = await response.json();
-    
+
             if (!response.ok) {
                 throw new Error(data.message || 'Could not create reservation.');
             }
             alert('Reservation successfully created!');
-            // Clear the form or redirect as needed
             navigate('/');
         } catch (error) {
             console.error('Error:', error);
@@ -109,7 +86,6 @@ function Reserve() {
         }
     };
 
-    
     return (
         <div>
             <h2>Create a Reservation</h2>
@@ -117,17 +93,33 @@ function Reserve() {
                 type="date" 
                 value={startDate} 
                 onChange={e => setStartDate(e.target.value)} 
-                placeholder="Start Date"
+                placeholder="Start Date" 
             />
             <input 
                 type="date" 
                 value={endDate} 
                 onChange={e => setEndDate(e.target.value)} 
-                placeholder="End Date"
+                placeholder="End Date" 
             />
+            <div>
+                <input 
+                    type="checkbox" 
+                    checked={gps} 
+                    onChange={() => setGps(!gps)} 
+                /> GPS
+                <input 
+                    type="checkbox" 
+                    checked={insurance} 
+                    onChange={() => setInsurance(!insurance)} 
+                /> Insurance
+            </div>
             <button onClick={submitReservation}>Submit Reservation</button>
             <br/>
-            <img src={photoUrl}/>
+            <img 
+                src={photoUrl} 
+                alt="Vehicle" 
+                style={{ maxWidth: '400px', maxHeight: '400px' }} 
+            />
         </div>
     );
 }

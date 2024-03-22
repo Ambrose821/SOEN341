@@ -272,8 +272,6 @@ router.post('/AdminDeleteReservation', async function(req, res, next) {
     }
 });
 
-
-
 // isAdmin
 router.post('/insert', addCar,function(req, res, next){
     

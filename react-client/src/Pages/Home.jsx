@@ -18,79 +18,100 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-const DynamicGrid = ({ photoURLs, ids }) => { // Ensure ids are received as props
- const { isLoggedIn } = useAuth();
- const navigate = useNavigate(); // Use useNavigate inside the component
- const columns = 3;
+const DynamicGrid = ({ photoURLs, ids }) => {
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+ 
+  const columns = 3;
+ 
+  const handleReserveClick = (id) => {
+    navigate('/reserve', { state: { vehicleId: id } });
+  };
+
+  const handleInfoClick = (id) => {
+    navigate('/InfoReserve', { state: { vehicleId: id } }); // Assuming you have a route to display info
+  };
 
 
- const handleReserveClick = (id) => {
-   navigate('/reserve', { state: { vehicleId: id } }); // Use navigate with state correctly
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        {photoURLs.map((url, index) => (
+          <Grid key={index} item xs={12 / columns}>
+            <Item>
+              <div style={{ position: 'relative', paddingBottom: '75%', maxWidth: '100%' }}>
+                <img
+                  src={url}
+                  alt={`Car ${index + 1}`}
+                  style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+ 
+               <div style={{ position: 'absolute', bottom: '5%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+                {isLoggedIn && (
+                  <>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                    }}
+                    onClick={() => handleReserveClick(ids[index])}
+                  >
+                    Reserve
+                  </Button>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#2979ff',
+                      color: 'white',
+                    }}
+                    onClick={() => handleInfoClick(ids[index])}
+                  >
+                    Info
+                  </Button>
+                  </>
+                )}
+ 
+                {!isLoggedIn && (
+                  <>
+                  <Link to="/login">
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                    }}
+                  >
+                    Reserve
+                  </Button>
+                  </Link>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#2979ff',
+                      color: 'white',
+                    }}
+                    onClick={() => handleInfoClick(ids[index])}
+                  >
+                    Info
+                  </Button>
+                  </>
+                )}
+               </div>
+              </div>
+            </Item>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
  };
-
-
- return (
-   <Box sx={{ flexGrow: 1 }}>
-     <Grid container spacing={2}>
-       {photoURLs.map((url, index) => (
-         <Grid key={index} item xs={12 / columns}>
-           <Item>
-             <div style={{ position: 'relative', paddingBottom: '75%', maxWidth: '100%' }}>
-               <img
-                 src={url}
-                 alt={`Car ${index + 1}`}
-                 style={{
-                   position: 'absolute',
-                   top: '0',
-                   left: '0',
-                   width: '100%',
-                   height: '100%',
-                 }}
-               />
-
-              {isLoggedIn && (
-               <Button
-                 variant="contained"
-                 style={{
-                   position: 'absolute',
-                   bottom: '5%',
-                   left: '50%',
-                   transform: 'translateX(-50%)',
-                   width: '30%',
-                   backgroundColor: '#4CAF50',
-                   color: 'white',
-                 }}
-                 onClick={() => handleReserveClick(ids[index])} // Correct onClick event
-               >
-                 Reserve
-               </Button>)}
-
-               {!isLoggedIn && (
-                <Link to="/login">
-               <Button
-                 variant="contained"
-                 style={{
-                   position: 'absolute',
-                   bottom: '5%',
-                   left: '50%',
-                   transform: 'translateX(-50%)',
-                   width: '30%',
-                   backgroundColor: '#4CAF50',
-                   color: 'white',
-                 }}
-                  // Correct onClick event
-               >
-                 Reserve
-               </Button></Link>)}
-
-             </div>
-           </Item>
-         </Grid>
-       ))}
-     </Grid>
-   </Box>
- );
-};
 
 
 function Home() {
