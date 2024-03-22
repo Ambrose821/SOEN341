@@ -268,7 +268,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
           
         </select>
 
-        <input type="button" value={!showFilters ? "Filter Cars" : "Hide Filters"} onClick={toggleFilters} style={{ position: 'absolute',
+        <input type="button" value={!showFilters ? "Adjust Filters" : "Hide Filters"} onClick={toggleFilters} style={{ position: 'absolute',
     
     transform: 'translateX(-50%)',
           
