@@ -111,6 +111,9 @@ function Home() {
   model: '',
   branch: '',
  });
+  const [branchName, setBranch] = useState('')
+  const [showFilters, setShowFilters] = useState(false)
+  
 
  
 
@@ -131,6 +134,11 @@ function Home() {
 
    getVehicles();
  }, []);
+  
+  const toggleFilters = () => {
+    setShowFilters(!showFilters)
+    console.log(showFilters)
+  }
 
 let filteredVehicles = [...vehicleData];
 
@@ -200,7 +208,8 @@ const handleApplyFilters = () => {
     ...prevFilters,
     [name]: value,
   }));
-};
+  };
+  
 
 
  if (error) {
@@ -212,15 +221,68 @@ const handleApplyFilters = () => {
    return <div>Loading...</div>;
  }
 
+  const handlePostalCode = async(event) => {
+    const postalCode = event.target.value;
+    event.target.value = ""
+
+     
+    try { 
+
+      const response = await fetch(`http://localhost:9000/vehicles/nearest?postalCode=${postalCode}`)
+      const data = await response.json()
+      console.log("from postal code:" + JSON.stringify(data))
+      setBranch(data.branch.BranchName)
+      
+    } catch (err) {
+      console.error('React Postal Code Req error: ' +err)
+    }
+ 
+  }
+
+  const handleAirport = async (event) => {
+    setBranch(event.target.value)
+  }
 
 const photoURLs = vehicleData.map(vehicle => vehicle.photoURL);
 const ids = vehicleData.map(vehicle => vehicle._id);
 const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
 
 
- return (
-  <div>
-    <select name="color" value={filters.color} onChange={handleFilterChange}
+  return (
+   
+    <div>
+      <div> <h5>Find Nearest branch</h5>
+        <input type="text" id = "postalCode" placeholder='Enter Your Postal Code' onKeyPress={event => {
+    if (event.key === 'Enter') {
+      handlePostalCode(event);
+    }
+  }} /> 
+        <p>or</p>
+        <select value="Select Destination Airport" onChange={handleAirport}>
+          <option value="">Select Destination Airport</option>
+          <option value = "Montreal">Montréal-Pierre Elliott Trudeau International Airport</option>
+          <option value="Ottawa">Ottawa International Airport</option>
+          <option value="Toronto">Toronto Pearson International Airport</option>
+          <option value="NYC">John F. Kennedy International Airport</option>
+          <option value="Washington">Dulles International Airport</option>
+          
+        </select>
+
+        <input type="button" value={!showFilters ? "Filter Cars" : "Hide Filters"} onClick={toggleFilters} style={{ position: 'absolute',
+    
+    transform: 'translateX(-50%)',
+          
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    zIndex: 1000}}
+/>
+        {branchName && <h5>Current/Nearest Branch is {branchName}</h5>}
+        
+       
+        
+      </div>
+
+      {showFilters && <div><select name="color" value={filters.color} onChange={handleFilterChange}
     style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Color</option>
           {vehicleData.map((vehicle) => (
@@ -330,7 +392,8 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
           ))}
         </select>
         <Button onClick={handleApplyFilters}>Apply Filters</Button>
-        <Button onClick={handleClearFilters}>Clear Filters</Button>
+      <Button onClick={handleClearFilters}>Clear Filters</Button> </div>}
+    
 
   <DynamicGrid photoURLs={photoURLs} ids={ids} />; 
  </div>
