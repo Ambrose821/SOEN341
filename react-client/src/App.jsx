@@ -15,6 +15,7 @@ import { AuthProvider } from "./apiServices/AuthContext";
 import ProfileSettings from "./Pages/ProfileSettings";
 import ViewUserReservations from './Pages/ViewUserReservations';
 import AdminDashboard from "./Pages/AdminDashboard";
+import Billing from "./Pages/Billing";
 import InfoReservationPage from "./Pages/InfoReservePage";
 
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/admindashboard" element={<AdminDashboard/>} /> 
           <Route path="/Reserve" element={<Reserve />} /> 
           <Route path="/Reservations" element={<Reservations />} /> 
+          <Route path="/Billing" element={<Billing />} /> 
           <Route path="/InfoReserve" element={<InfoReservationPage />} /> 
 
         </Routes>

@@ -20,6 +20,10 @@ const ReservationShchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
+        },
+        carCost: {
+            type: Number, 
+            required: true
         }
     
 
