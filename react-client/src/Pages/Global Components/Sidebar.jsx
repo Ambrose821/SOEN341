@@ -9,6 +9,7 @@ import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import EventIcon from '@mui/icons-material/Event';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CheckIcon from '@mui/icons-material/Check';
 
 function Sidebar() {
 
@@ -95,7 +96,14 @@ function Sidebar() {
        
 
 
-        {/* Add more navigation links as needed */}
+          {isLoggedIn && (
+          <li>
+            <Link to="/checkin" className={`sidebarLink ${location.pathname === '/checkin' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/' */}
+              <CheckIcon className="icon" />
+              <span className="sidebarTitle">Check In</span>
+            </Link>
+          </li>
+        )}
       </ul>
     </div>
   );

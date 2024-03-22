@@ -207,6 +207,16 @@ font-size: small;
   background-color:#E6EBEF;
 }
 
+.form{
+  border-style: solid;
+  padding:2.5%;
+  
+  text-align: left;
+input{
+  padding:1%;
+}
+}
+
 
 .sidebarList {
   list-style: none; /* remove bullet points from list */

@@ -17,8 +17,12 @@ import ViewUserReservations from './Pages/ViewUserReservations';
 import AdminDashboard from "./Pages/AdminDashboard";
 import Billing from "./Pages/Billing";
 import InfoReservationPage from "./Pages/InfoReservePage";
+
 import Stripe from "react-stripe-checkout";
 import axios from 'axios';
+
+import Checkin from "./Pages/Checkin";
+
 
 function App() {
 
@@ -47,6 +51,9 @@ const tokenHandler = (token) => {
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/profile" element={<Profile />} />
+
+          <Route path="/checkin" element={<Checkin />} />
+
           <Route path="/profileSettings" element={<ProfileSettings/>} />   
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/about" element={<About />} /> 
