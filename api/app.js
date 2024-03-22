@@ -18,6 +18,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/apiRouter');
 var vehicleRouter = require('./routes/vehicles');
+var stripeRouter = require('./routes/stripe-route');
 
 var app = express();
 app.use(cors());
@@ -45,6 +46,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api/stripe', stripeRouter)
 
 app.use(session({
     secret: 'keyboard cat',
