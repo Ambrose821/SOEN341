@@ -395,7 +395,7 @@ const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
       <Button onClick={handleClearFilters}>Clear Filters</Button> </div>}
     
 
-  <DynamicGrid photoURLs={photoURLs} ids={ids} />; 
+  <DynamicGrid photoURLs={photoURLs} ids={ids} />
  </div>
 
  )
