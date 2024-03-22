@@ -218,7 +218,8 @@ router.post('/getUserReservations', async function(req, res, next) {
         res.status(200).json({ message: "Success", reservations: reservations });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Waiting for User" });
+        const reservations = []
+        res.status(500).json({ message: "Waiting for User" , reservations: reservations});
     }
 });
 
