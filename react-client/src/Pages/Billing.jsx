@@ -14,9 +14,11 @@ function Reservations() {
   const [deposit, setDeposit] = useState(null);
   const [totalCost, setTotalCost] = useState(null);
 
-  async function getReservations(currentUser) {
-    if (!currentUser) return; // Early return if currentUser is not defined
-    
+  async function getReservations(currentUser) { 
+    if (!currentUser) {
+        return;
+    } 
+
     try {
       const url = `http://localhost:9000/vehicles/getReservation?currentUser=${encodeURIComponent(currentUser)}`;
       const response = await fetch(url);
@@ -27,16 +29,15 @@ function Reservations() {
         setStartDate(reservation.start || "Not Set");
         setEndDate(reservation.end || "Not Set");
         
-        const carCostResponse = await fetch(`http://localhost:9000/vehicles/getCarCost`);
-        const carCostData = await carCostResponse.json()
+        const carCostData = reservation.carCost;
         const taxes = carCostData * 0.15;
         const deposit = 0;
         const totalCost = carCostData + deposit + taxes;
 
-        setCarCost(carCostData.carCost || "error");
-        setTaxes(taxes || "error");
-        setDeposit(deposit || "error");
-        setTotalCost(totalCost || "error");
+        setCarCost(carCostData || "0.00");
+        setTaxes(taxes || "0.00");
+        setDeposit(deposit || "0.00");
+        setTotalCost(totalCost || "0.00");
 
       } else {
         console.log('No reservations found or data structure is unexpected', data);
