@@ -17,6 +17,7 @@ import ViewUserReservations from './Pages/ViewUserReservations';
 import AdminDashboard from "./Pages/AdminDashboard";
 import Billing from "./Pages/Billing";
 import InfoReservationPage from "./Pages/InfoReservePage";
+import Checkin from "./Pages/Checkin";
 
 
 
@@ -30,8 +31,8 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignUp/>} />
-            <Route path="/profile" element={<Profile />} />
-
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/checkin" element={<Checkin />} />
           <Route path="/profileSettings" element={<ProfileSettings/>} />   
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/about" element={<About />} /> 
