@@ -8,6 +8,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import EventIcon from '@mui/icons-material/Event';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 function Sidebar() {
 
@@ -39,6 +40,15 @@ function Sidebar() {
             <Link to="/Reservations" className={`sidebarLink ${location.pathname === '/Reservations' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/reservations' */}
               <EventIcon className="icon" />
               <span className="sidebarTitle">My Reservations</span>
+            </Link>
+          </li>
+        )}
+
+        {isLoggedIn && (
+          <li>
+            <Link to="/Billing" className={`sidebarLink ${location.pathname === '/Billing' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/Billing' */}
+              <AttachMoneyIcon className="icon" />
+              <span className="sidebarTitle">Billing Information</span>
             </Link>
           </li>
         )}
