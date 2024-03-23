@@ -244,3 +244,10 @@ input{
   }
 }
 
+/* Images for the Admin Dashboard */
+
+.CarImage{
+
+  max-width: 200px;
+  max-height: 200px;
+}

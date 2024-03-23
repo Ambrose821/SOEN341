@@ -6,8 +6,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../apiServices/AuthContext';
-import { useNavigate } from 'react-router-dom'; // Correctly import useNavigate
-import { faSleigh } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -18,21 +17,25 @@ const Item = styled(Paper)(({ theme }) => ({
  color: theme.palette.text.secondary,
 }));
 
-
 const DynamicGrid = ({ photoURLs, ids }) => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
- 
+  //const audio = new Audio('./Background.mp3');
+
   const columns = 3;
- 
+
   const handleReserveClick = (id) => {
     navigate('/reserve', { state: { vehicleId: id } });
   };
 
   const handleInfoClick = (id) => {
-    navigate('/InfoReserve', { state: { vehicleId: id } }); // Assuming you have a route to display info
+    console.log(id);
+    navigate('/InfoCar', { state: { carId: id } });
   };
 
+  // const handleAudioClick = () => {
+  //   audio.play();
+  // };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -40,6 +43,9 @@ const DynamicGrid = ({ photoURLs, ids }) => {
         {photoURLs.map((url, index) => (
           <Grid key={index} item xs={12 / columns}>
             <Item>
+
+            {/* <Button variant="contained" onClick={handleAudioClick}>Click for a surprise</Button> */}
+
               <div style={{ position: 'relative', paddingBottom: '75%', maxWidth: '100%' }}>
                 <img
                   src={url}
@@ -52,59 +58,57 @@ const DynamicGrid = ({ photoURLs, ids }) => {
                     height: '100%',
                   }}
                 />
- 
-               <div style={{ position: 'absolute', bottom: '5%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                {isLoggedIn && (
-                  <>
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#4CAF50',
-                      color: 'white',
-                    }}
-                    onClick={() => handleReserveClick(ids[index])}
-                  >
-                    Reserve
-                  </Button>
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#2979ff',
-                      color: 'white',
-                    }}
-                    onClick={() => handleInfoClick(ids[index])}
-                  >
-                    Info
-                  </Button>
-                  </>
-                )}
- 
-                {!isLoggedIn && (
-                  <>
-                  <Link to="/login">
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#4CAF50',
-                      color: 'white',
-                    }}
-                  >
-                    Reserve
-                  </Button>
-                  </Link>
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#2979ff',
-                      color: 'white',
-                    }}
-                    onClick={() => handleInfoClick(ids[index])}
-                  >
-                    Info
-                  </Button>
-                  </>
-                )}
-               </div>
+                <div style={{ position: 'absolute', bottom: '5%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+                  {isLoggedIn && (
+                    <>
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#4CAF50',
+                          color: 'white',
+                        }}
+                        onClick={() => handleReserveClick(ids[index])}
+                      >
+                        Reserve
+                      </Button>
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#2979ff',
+                          color: 'white',
+                        }}
+                        onClick={() => handleInfoClick(ids[index])}
+                      >
+                        Info
+                      </Button>
+                    </>
+                  )}
+                  {!isLoggedIn && (
+                    <>
+                      <Link to="/login">
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                          }}
+                        >
+                          Reserve
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#2979ff',
+                          color: 'white',
+                        }}
+                        onClick={() => handleInfoClick(ids[index])}
+                      >
+                        Info
+                      </Button>
+                    </>
+                  )}
+                </div>
               </div>
             </Item>
           </Grid>
@@ -112,7 +116,7 @@ const DynamicGrid = ({ photoURLs, ids }) => {
       </Grid>
     </Box>
   );
- };
+};
 
 
 function Home() {
@@ -280,6 +284,8 @@ const handleApplyFilters = () => {
     }
  
   }
+
+  
 
   const handleAirport = async (event) => {
     const selectedBranch = event.target.value;
@@ -460,7 +466,7 @@ const handleSeeAll = async() =>{
         <Button onClick={handleApplyFilters}>Apply Filters</Button>
       <Button onClick={handleClearFilters}>Clear Filters</Button> </div>}
     
-        
+                      
   <DynamicGrid photoURLs={photoURLs} ids={ids} />
  </div>
 
