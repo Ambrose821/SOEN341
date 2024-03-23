@@ -223,6 +223,23 @@ router.post('/getUserReservations', async function(req, res, next) {
     }
 });
 
+router.post('/deleteReservations', async function(req, res,next){
+    
+    try{
+        const {reservationID} = req.body;
+        console.log("REZ: " + reservationID);
+        await Reservation.findOneAndDelete({_id: reservationID});
+       
+        res.status(200).json({message:"Sucessfully deleted reservation"});
+
+    }
+    catch(error){
+        res.status(500).json({message:"Something terrible happened error 500"});
+    }
+});
+
+
+
 
 // isAdmin
 router.post('/insert', addCar,function(req, res, next){
