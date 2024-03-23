@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Stripe from "react-stripe-checkout";
+import axios from 'axios';
 
-function Reservations() {
+function Billing() {
   const { currentUser } = useAuth(); 
-
   const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState("Not Set");
@@ -13,6 +14,8 @@ function Reservations() {
   const [taxes, setTaxes] = useState(null);
   const [deposit, setDeposit] = useState(null);
   const [totalCost, setTotalCost] = useState(null);
+  const [amountPaid, setAmountPaid] = useState(0);
+  var [remainingBalance, setRemainingBalance] = useState(null);
 
   async function getReservations(currentUser) { 
     if (!currentUser) {
@@ -46,11 +49,29 @@ function Reservations() {
       console.error("Error fetching reservations:", error);
     }
   }
-  
 
   useEffect(() => {
     getReservations(currentUser);
   }, [currentUser]); 
+
+
+  const handleToken = (totalAmount, token) => {
+    try {
+      axios.post("http://localhost:3000/api/routes/stripe-routes/pay", {
+        token: token.id,
+        amount: totalAmount
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+const tokenHandler = (token) => {
+  handleToken(100, token);
+}
+
+
+    remainingBalance = totalCost !== null ? totalCost - amountPaid : null;
 
   return (
     <div>
@@ -66,9 +87,27 @@ function Reservations() {
         </div>
       </div>
       <div>
+        <Stripe
+          stripeKey="your_stripe_public_key"
+          amount={remainingBalance !== null ? remainingBalance * 100 : 0} // Convert remaining balance to cents
+          currency="CAD"
+          name="Your Company Name"
+          description="Reservation Payment"
+          token={handleToken}
+          onClose={() => console.log('Payment closed')}
+        >
+          <button>Pay Remaining Balance</button>
+        </Stripe>
+        <input
+          type="number"
+          value={amountPaid}
+          onChange={(e) => setAmountPaid(parseFloat(e.target.value))}
+          placeholder="Enter amount to pay"
+        />
+        <button onClick={() => handleToken(amountPaid)}>Update Payment</button>    
       </div>
     </div>
   );
 }
 
-export default Reservations;
+export default Billing;
