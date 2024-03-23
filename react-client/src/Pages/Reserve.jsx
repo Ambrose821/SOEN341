@@ -12,11 +12,13 @@ function Reserve() {
 
     const [modifyID,setModifyID] = useState(0);
 
+
     const location = useLocation();
     const vehicleId = location.state?.vehicleId;
     const navigate = useNavigate();
 
     const { modifyReservation } = location.state || {}; // Default to an empty object
+
 
     useEffect(() => {
         if (vehicleId) {
@@ -90,6 +92,30 @@ function Reserve() {
         }
     };
 
+    async function modifyReservations(){
+        
+        try{
+            const response = await fetch('http://localhost:9000/vehicles/modifyReservations',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    modifyID,
+                    startDate,
+                    endDate,
+                    currentUser,
+                    gps,
+                    insurance,
+                }),
+            })
+            alert('Reservation successfully modified!');
+        }
+        catch(error){
+
+        }
+    }
+
     return (
         <div>
             <h2>Create a Reservation</h2>
@@ -118,7 +144,7 @@ function Reserve() {
                 /> Insurance
             </div>
             {modifyReservation ? (
-            <button onClick={submitReservation} style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Modify Reservation</button>
+            <button onClick={modifyReservations} style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Modify Reservation</button>
         ) : (
             <button onClick={submitReservation} style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Submit Reservation</button>
         )}

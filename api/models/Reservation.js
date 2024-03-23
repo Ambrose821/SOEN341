@@ -23,6 +23,16 @@ const ReservationShchema = new mongoose.Schema({
         carCost: {
             type: Number, 
             required: true
+        },
+        gps:{
+            type:Boolean,
+            required:true,
+            default:false
+        },
+        insurance:{
+            type:Boolean,
+            required:true,
+            default:false
         }
 });
 

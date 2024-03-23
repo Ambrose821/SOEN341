@@ -46,7 +46,9 @@ router.post('/reserve',async function(req,res,next){
             endDate: endDate,
             vehicle: v._id,
             user: user._id,
-            carCost : v.pricePerDay
+            carCost : v.pricePerDay,
+            insurance:insurance,
+            gps : gps
          };
 
          const reservation = new Reservation(reservationData);
@@ -283,6 +285,30 @@ router.post('/deleteReservations', async function(req, res,next){
     }
     catch(error){
         res.status(500).json({message:"Something terrible happened error 500"});
+    }
+});
+
+router.post('/modifyReservations', async function(req,res,next){
+
+    try{
+        const {modifyID , startDate, endDate, currentUser,gps,insurance} = req.body;
+
+        await Reservation.findOneAndUpdate(
+            {_id : modifyID},
+            {$set : {startDate : startDate ,
+                endDate: endDate,
+                gps : gps, 
+                insurance: insurance 
+                }
+            },
+            { new: true }
+        )
+
+        res.status(200).json({message: "Sucess"});
+
+    }
+    catch(error){
+        res.status(500).json({message: "Failure"});
     }
 });
 
