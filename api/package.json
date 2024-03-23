@@ -22,7 +22,8 @@
     "method-override": "^3.0.0",
     "morgan": "~1.9.1",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "stripe": "^14.22.0"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
