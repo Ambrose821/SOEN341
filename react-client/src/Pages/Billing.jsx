@@ -15,7 +15,6 @@ function Billing() {
   const [deposit, setDeposit] = useState(null);
   const [totalCost, setTotalCost] = useState(null);
   const [amountPaid, setAmountPaid] = useState(0);
-  var [remainingBalance, setRemainingBalance] = useState(null);
 
   async function getReservations(currentUser) { 
     if (!currentUser) {
@@ -66,12 +65,7 @@ function Billing() {
     }
   };
 
-const tokenHandler = (token) => {
-  handleToken(100, token);
-}
 
-
-    remainingBalance = totalCost !== null ? totalCost - amountPaid : null;
 
   return (
     <div>
@@ -88,24 +82,16 @@ const tokenHandler = (token) => {
       </div>
       <div>
         <Stripe
-          stripeKey="your_stripe_public_key"
-          amount={remainingBalance !== null ? remainingBalance * 100 : 0} // Convert remaining balance to cents
+          stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
           currency="CAD"
           name="Your Company Name"
           description="Reservation Payment"
           token={handleToken}
           onClose={() => console.log('Payment closed')}
         >
-          <button>Pay Remaining Balance</button>
+          <button>Pay  Balance</button>
         </Stripe>
-        <input
-          type="number"
-          value={amountPaid}
-          onChange={(e) => setAmountPaid(parseFloat(e.target.value))}
-          placeholder="Enter amount to pay"
-        />
-        <button onClick={() => handleToken(amountPaid)}>Update Payment</button>    
-      </div>
+        </div>
     </div>
   );
 }
