@@ -10,15 +10,23 @@ function Reserve() {
     const [gps, setGps] = useState(false); // State for GPS option
     const [insurance, setInsurance] = useState(false); // State for Insurance option
 
+    const [modifyID,setModifyID] = useState(0);
+
     const location = useLocation();
     const vehicleId = location.state?.vehicleId;
     const navigate = useNavigate();
+
+    const { modifyReservation } = location.state || {}; // Default to an empty object
 
     useEffect(() => {
         if (vehicleId) {
             getPhoto(vehicleId).then(setPhotoUrl).catch(console.error);
         }
-    }, [vehicleId]);
+        else{
+            setModifyID(modifyReservation._id);
+            setPhotoUrl(modifyReservation.vehicle.photoURL);
+        }
+    }, [vehicleId,modifyReservation]);
 
     async function getPhoto(vehicleId) {
         if (!vehicleId) {
@@ -109,7 +117,11 @@ function Reserve() {
                     onChange={() => setInsurance(!insurance)} 
                 /> Insurance
             </div>
-            <button onClick={submitReservation}>Submit Reservation</button>
+            {modifyReservation ? (
+            <button onClick={submitReservation} style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Modify Reservation</button>
+        ) : (
+            <button onClick={submitReservation} style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Submit Reservation</button>
+        )}
             <br/>
             <img 
                 src={photoUrl} 
