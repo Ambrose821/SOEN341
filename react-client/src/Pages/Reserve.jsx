@@ -12,7 +12,6 @@ function Reserve() {
 
     const location = useLocation();
     const vehicleId = location.state?.vehicleId;
-    const { photo: photoUrlToChange } = location.state || {};
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -54,17 +53,15 @@ function Reserve() {
 
     async function submitReservation() {
         console.log("Attempting to submit reservation...");
-        try {
-            const vehicleModifyId = await getIdFromPhoto(photoUrlToChange);
-            console.log("Vehicle Modify ID:", vehicleModifyId);
 
+        try {
             const response = await fetch('http://localhost:9000/vehicles/reserve', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    vehicleId: vehicleModifyId || vehicleId,
+                    vehicleId,
                     startDate,
                     endDate,
                     currentUser,
@@ -72,7 +69,6 @@ function Reserve() {
                     insurance,
                 }),
             });
-
             const data = await response.json();
 
             if (!response.ok) {
