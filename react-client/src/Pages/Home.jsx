@@ -317,8 +317,8 @@ const handleSeeAll = async() =>{
         <select value="Select Destination Airport" onChange={handleAirport} style={{ position:'relative',
     
           
-    backgroundColor: '#4CAF50',
-    color: 'white',
+    backgroundColor: '#FFFFFF',
+    color: 'black',
     zIndex: 1000}}>
           <option value="">Select Destination Airport</option>
           <option value = "Montreal">Montréal-Pierre Elliott Trudeau International Airport</option>
