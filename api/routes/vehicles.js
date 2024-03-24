@@ -7,8 +7,10 @@ const { isValidObjectId } = require('mongoose');
 var User = require('../models/User');
 var { addCar, deleteCar, updateCar, find_nearest } = require('../controller/vehicleController')
 const Reservation = require('../models/Reservation');
+const sendConfirmEmail = require('../controller/mailerRouter')
+const reserve = require('../controller/reservationController')
 
-router.get('/getCars', async function(req, res, next){
+router.get('/getCars',async function(req, res, next){
 
     try{
         const cars = await Vehicle.find({}).populate('branch').lean();
@@ -21,47 +23,8 @@ router.get('/getCars', async function(req, res, next){
     }
 });
 
-router.post('/reserve',async function(req,res,next){
+router.post('/reserve',reserve,sendConfirmEmail,async function(req,res,next){
 
-    try{
-        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
-
-        console.log(vehicleId);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(currentUser);
-        console.log(gps);
-        console.log(insurance);
-    
-        const v = await Vehicle.findOne({ _id : vehicleId });
-        vehicle = JSON.stringify(v,null,2);
-
-        const user = await User.findOne({email: currentUser});
-
-        console.log("Vehicle: " + vehicle);
-        console.log(v.pricePerDay);
-
-        const reservationData = {
-            startDate: startDate,
-            endDate: endDate,
-            vehicle: v._id,
-            user: user._id,
-            carCost : v.pricePerDay,
-            insurance:insurance,
-            gps : gps
-         };
-
-         const reservation = new Reservation(reservationData);
-         reservation.save();
-
-         res.status(200).json({message: "Sucess"});
-
-    }
-    catch(error){
-        console.log("ERROR OCCURED");
-        console.log(error);
-    }
-    
 });
 
 router.get('/getCarIdFromPhoto', async function(req, res, next){
