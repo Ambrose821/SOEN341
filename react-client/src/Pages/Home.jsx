@@ -324,6 +324,7 @@ const handleSeeAll = async() =>{
   return (
    
     <div>
+
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '20px' }}>
   <h1 style={{ marginRight: '20px' }}>Find Nearest branch</h1>
   <input 
@@ -385,9 +386,6 @@ const handleSeeAll = async() =>{
     }}
   />
 </div>
-
-
-
       {showFilters && <div><select name="color" value={filters.color} onChange={handleFilterChange}
     style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Color</option>

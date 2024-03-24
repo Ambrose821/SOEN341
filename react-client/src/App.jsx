@@ -18,6 +18,8 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import Billing from "./Pages/Billing";
 import InfoReservationPage from "./Pages/InfoReservePage";
 import Checkin from "./Pages/Checkin";
+import Agreement from "./Pages/Agreement";
+
 import InfoCarPage from "./Pages/InfoCarPage";
 
 
@@ -48,6 +50,7 @@ function App() {
           <Route path="/InfoReserve" element={<InfoReservationPage />} /> 
           <Route path="/InfoCar" element={<InfoCarPage />} /> 
 
+          <Route path="/agreement" element={<Agreement />} /> 
 
         </Routes>
       </Layout>

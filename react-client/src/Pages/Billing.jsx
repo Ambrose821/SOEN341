@@ -1,71 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../apiServices/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Stripe from "react-stripe-checkout";
 import axios from 'axios';
 
 function Billing() {
-  const { currentUser } = useAuth(); 
-  const navigate = useNavigate();
+  const location = useLocation();
+  const { reservation } = location.state;
+  const { carCost: initialCarCost } = reservation;
 
   const [startDate, setStartDate] = useState("Not Set");
   const [endDate, setEndDate] = useState("Not Set");
-  const [carCost, setCarCost] = useState(null);
-  const [taxes, setTaxes] = useState(null);
-  const [deposit, setDeposit] = useState(null);
-  const [totalCost, setTotalCost] = useState(null);
-  const [amountPaid, setAmountPaid] = useState(0);
-
-  async function getReservations(currentUser) { 
-    if (!currentUser) {
-        return;
-    } 
-
-    try {
-      const url = `http://localhost:9000/vehicles/getReservation?currentUser=${encodeURIComponent(currentUser)}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      if (data && data.reservations && data.reservations.length > 0) {
-        const reservation = data.reservations[0];
-        setStartDate(reservation.start || "Not Set");
-        setEndDate(reservation.end || "Not Set");
-        
-        const carCostData = reservation.carCost;
-        const taxes = carCostData * 0.15;
-        const deposit = 0;
-        const totalCost = carCostData + deposit + taxes;
-
-        setCarCost(carCostData || "0.00");
-        setTaxes(taxes || "0.00");
-        setDeposit(deposit || "0.00");
-        setTotalCost(totalCost || "0.00");
-
-      } else {
-        console.log('No reservations found or data structure is unexpected', data);
-      }
-    } catch (error) {
-      console.error("Error fetching reservations:", error);
-    }
-  }
+  const [carCost, setCarCost] = useState(initialCarCost || 0);
+  const [taxes, setTaxes] = useState(0);
+  const [deposit, setDeposit] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
 
   useEffect(() => {
-    getReservations(currentUser);
-  }, [currentUser]); 
+    if (reservation) {
+      const startDateString = new Date(reservation.startDate).toLocaleDateString();
+      const endDateString = new Date(reservation.endDate).toLocaleDateString();
 
+      setStartDate(startDateString || "Not Set");
+      setEndDate(endDateString || "Not Set");
+      setCarCost(reservation.carCost || 0);
+      setTaxes((reservation.carCost || 0) * 0.15);
+      setDeposit(500);
+      setTotalCost(carCost + taxes + deposit);
+    }
+  }, [reservation]);
 
-  const handleToken = (totalAmount, token) => {
+  const handleToken = async (token) => {
     try {
-      axios.post("http://localhost:3000/api/routes/stripe-routes/pay", {
-        token: token.id,
-        amount: totalAmount
+      await axios.post(`http://localhost:9000/stripe-route/pay`, {
+        token: token,
+        amount: totalCost
       });
+      
     } catch (error) {
+      setCarCost(0);
+      setTaxes(0);
+      setDeposit(0);
+      setTotalCost(0);
+
       console.log(error);
     }
   };
-
-
 
   return (
     <div>
@@ -84,14 +63,15 @@ function Billing() {
         <Stripe
           stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
           currency="CAD"
-          name="Your Company Name"
+          name="Vehicles"
           description="Reservation Payment"
           token={handleToken}
+          amount={totalCost * 100} // Amount in cents
           onClose={() => console.log('Payment closed')}
         >
-          <button>Pay  Balance</button>
+          <button>Pay Balance</button>
         </Stripe>
-        </div>
+      </div>
     </div>
   );
 }

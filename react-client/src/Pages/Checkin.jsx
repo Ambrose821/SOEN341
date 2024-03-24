@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Checkin() {
   const [isChecked, setIsChecked] = useState(false);
@@ -48,6 +49,10 @@ function Checkin() {
             <label htmlFor="photo_upload">Upload Photo:</label>
             <input type="file" id="photo_upload" name="photo_upload" accept="image/*" required/><br/>
 
+            <label htmlFor="Rental_agreement">Sign Rental agreement:</label><br/>
+            <Link to="/agreement"><button>Electronically</button></Link>
+            <button>Physically</button>
+            <br/><br/>
             <input type="submit" value="Submit"/>
             <input type="reset" value="Reset"/>
         </form>

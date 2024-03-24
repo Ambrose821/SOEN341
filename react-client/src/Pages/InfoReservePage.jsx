@@ -1,66 +1,124 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const brand = "Ferrari";
-const model = "F20";
-const price = "20";
-const transmission = "Manual"; // Fixed typo
-const email = "christopher@gmail.com";
-// Assuming you have an image URL for the Ferrari F20
-const imageUrl = "https://t3.ftcdn.net/jpg/02/98/35/82/360_F_298358259_bwYxOvtrqJn7m8dfeYkkoNkusBSYNhep.jpg";
+
 
 function InfoReservationPage() {
   const handleYesClick = () => {
     console.log('Yes clicked');
-    // Add your logic here for what happens when YES is clicked
+    
   };
 
   const handleNoClick = () => {
-    console.log('No clicked');
-    // Add your logic here for what happens when NO is clicked
+    navigate('/');
   };
 
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-      <div style={{ padding: '20px', textAlign: 'center' }}>
-        <h2>Information Display</h2>
-        {/* Image right under the header */}
-        <img src={imageUrl} alt="Car Image" style={{ maxWidth: '100%', height: 'auto' }} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-            <label>Brand:</label>
-            <span>{brand}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-            <label>Model:</label>
-            <span>{model}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-            <label>Price Per Day:</label>
-            <span>{price}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-            <label>Transmission Type:</label>
-            <span>{transmission}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-            <label>Email:</label>
-            <span>{email}</span>
-          </div>
-        </div>
-        
-        {/* Confirm section */}
-        <div style={{ marginTop: '30px' }}>
-          <h3 style={{ fontSize: '24px' }}>Confirm</h3>
-          <button onClick={handleYesClick} style={{ marginRight: '10px', backgroundColor: 'green', color: 'white', padding: '10px 20px', fontSize: '16px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            YES
-          </button>
-          <button onClick={handleNoClick} style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', fontSize: '16px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            NO
-          </button>
-        </div>
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { startDate, endDate, gps, insurance, vehicleId, currentUser, imageUrl,fromModify } = location.state || {};
+
+
+  async function submitReservation() {
+    console.log("Attempting to submit reservation...");
+  
+    try {
+        const response = await fetch('http://localhost:9000/vehicles/reserve', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                vehicleId,
+                startDate,
+                endDate,
+                currentUser,
+                gps,
+                insurance,
+                imageUrl,
+            }),
+        });
+        const data = await response.json();
+  
+        if (!response.ok) {
+            throw new Error(data.message || 'Could not create reservation.');
+        }
+        alert('Reservation successfully created!');
+        navigate('/');
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message);
+    }
+  };
+
+  async function modifyReservations(){
+    console.log("Trying to modify");
+    console.log("DATES" +startDate + " "+ endDate);
+    try{
+        const response = await fetch('http://localhost:9000/vehicles/modifyReservations',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                vehicleId,
+                startDate,
+                endDate,
+                currentUser,
+                gps,
+                insurance,
+            }),
+        })
+        alert('Reservation successfully modified!');
+    }
+    catch(error){
+
+    }
+}
+
+
+
+
+return (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h2>Reservation Confirmation</h2>
+      <img src={imageUrl} alt="Vehicle" style={{ maxWidth: '100%', height: '100px', objectFit: 'contain' }} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Information Display */}
+        <div><strong>Start Date:</strong> {startDate}</div>
+        <div><strong>End Date:</strong> {endDate}</div>
+        <div><strong>GPS:</strong> {gps ? 'Yes' : 'No'}</div>
+        <div><strong>Insurance:</strong> {insurance ? 'Yes' : 'No'}</div>
+        <div><strong>Vehicle ID:</strong> {vehicleId}</div>
+        <div><strong>User Email:</strong> {currentUser}</div>
+      </div>
+      
+      <div style={{ marginTop: '20px' }}>
+        <h3>Confirm</h3>
+        <button 
+         onClick={fromModify ? modifyReservations : submitReservation}
+          style={{ 
+            marginRight: '10px', 
+            backgroundColor: fromModify ? 'blue' : 'green', 
+            color: 'white', 
+            padding: '10px 20px', 
+            fontSize: '16px', 
+            border: 'none', 
+            borderRadius: '5px', 
+            cursor: 'pointer'
+          }}>
+          {fromModify ? 'Modify' : 'YES'}
+        </button>
+        <button  style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', fontSize: '16px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          NO
+        </button>
       </div>
     </div>
-  );
+  </div>
+);
+
 }
 
 export default InfoReservationPage;
