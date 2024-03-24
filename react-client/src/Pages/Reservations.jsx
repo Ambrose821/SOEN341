@@ -68,6 +68,42 @@ function Reservations() {
   return (
     <div>
       <h2>User Reservations</h2>
+<<<<<<<<< Temporary merge branch 1
+      {reservations.length > 0 ? (
+        reservations.map((reservation,index) => (
+          <div key={reservation._id} style={{ margin: '20px', padding: '10px', border: '1px solid #ccc', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+            {reservation.vehicle && reservation.vehicle.photoURL && (
+              <img src={reservation.vehicle.photoURL} alt="Vehicle" style={{ maxWidth: '300px', maxHeight: '300px', margin: '10px 0' }} />
+            )}
+            <p>Start Date: {new Date(reservation.startDate).toLocaleDateString()}</p>
+            <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
+            <p>Car Cost: {reservation.carCost}</p>
+            <Link to={`/checkin?variable=${testVar}`}>
+              <button style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                Check In
+              </button>
+              </Link>
+            <button 
+              onClick={() => deleteReservation(index)} 
+              style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              Delete
+            </button>
+            <button 
+              onClick={() => modifyReservation(index)}
+              style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              Modify
+            </button>
+            <button 
+              onClick={() => viewBilling(index)}
+              style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              View Billing
+            </button>
+          </div>
+        ))
+      ) : (
+        <p>No reservations found.</p>
+      )}
+=========
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
         {reservations.length > 0 ? (
           reservations.map((reservation, index) => (
@@ -99,6 +135,7 @@ function Reservations() {
           <p>No reservations found.</p>
         )}
       </div>
+>>>>>>>>> Temporary merge branch 2
     </div>
   );
 }
