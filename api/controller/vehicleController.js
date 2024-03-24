@@ -139,6 +139,7 @@ const get_postal_code_coords = async (postalCode) =>{
 
   } catch (err) {
     console.error("postal code => coords err " + err)
+    return("Use Default")
 
   }
 }
@@ -147,6 +148,9 @@ const find_nearest = async (req, res, next) => {
   const postal_code = req.query.postalCode
  
   const coordsJson = await get_postal_code_coords(postal_code)
+  if (coordsJson == "Use Default") {
+    return res.status(500).json({success: false, message:"Default",branch:"Default"})
+  }
   console.log(coordsJson.message)
   var longitude = coordsJson.longitude;
   var latitude = coordsJson.latitude;
@@ -171,7 +175,7 @@ const find_nearest = async (req, res, next) => {
     res.status(200).json({success:true,message:`Nearest Branch is in ${branch_name}`, branch: nearest_branch })
   } catch (err) {
     console.error("Error finding nearest branch" + err);
-    res.status(404).json({ success: false, message: "Couldnt Locate a branch" })
+    res.status(404).json({ success: false, message: "Default", branch:"Default" })
     next(err)
   }
 }
