@@ -33,14 +33,14 @@ function Reservations() {
     }
   };
 
-  const deleteReservation = async (id) => {
+  const deleteReservation = async (index) => {
     try {
       await fetch("http://localhost:9000/vehicles/deleteReservations", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ reservationID: id }),
+        body: JSON.stringify({ reservationID: reservations[index] }),
       });
       fetchReservations(); // Fetch reservations again after deletion
     } catch (error) {
