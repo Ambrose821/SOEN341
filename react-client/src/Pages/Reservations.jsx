@@ -53,31 +53,32 @@ function Reservations() {
     <div>
       <h2>User Reservations</h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-        {reservations.length > 0 ? (
-          reservations.map((reservation, index) => (
-            <div key={reservation._id} style={{ flexBasis: '30%', margin: '20px', padding: '10px', border: '1px solid #ccc', textAlign: 'center', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-              {reservation.vehicle && reservation.vehicle.photoURL && (
-                <img src={reservation.vehicle.photoURL} alt="Vehicle" style={{ maxWidth: '100%', maxHeight: '200px', margin: '10px 0', borderRadius: '10px' }} />
-              )}
-              <p>Start Date: {new Date(reservation.startDate).toLocaleDateString()}</p>
-              <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
-              <p>Car Cost: {reservation.carCost}</p>
-              <button
-                onClick={() => deleteReservation(reservation._id)}
-                style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                Delete
-              </button>
-              <button
-                onClick={() => modifyReservation(reservation)}
-                style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                Modify
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>No reservations found.</p>
+  {reservations.length > 0 ? (
+    reservations.map((reservation, index) => (
+      <div key={reservation._id} style={{ flexBasis: '30%', maxWidth: 'calc(30% - 40px)', margin: '20px', padding: '10px', border: '1px solid #ccc', textAlign: 'center', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
+        {reservation.vehicle && reservation.vehicle.photoURL && (
+          <img src={reservation.vehicle.photoURL} alt="Vehicle" style={{ maxWidth: '100%', maxHeight: '200px', margin: '10px 0', borderRadius: '10px' }} />
         )}
+        <p>Start Date: {new Date(reservation.startDate).toLocaleDateString()}</p>
+        <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
+        <p>Car Cost: {reservation.carCost}</p>
+        <button
+          onClick={() => deleteReservation(reservation._id)}
+          style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          Delete
+        </button>
+        <button
+          onClick={() => modifyReservation(reservation)}
+          style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          Modify
+        </button>
       </div>
+    ))
+  ) : (
+    <p>No reservations found.</p>
+  )}
+</div>
+
     </div>
   );
 }
