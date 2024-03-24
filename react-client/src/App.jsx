@@ -17,32 +17,14 @@ import ViewUserReservations from './Pages/ViewUserReservations';
 import AdminDashboard from "./Pages/AdminDashboard";
 import Billing from "./Pages/Billing";
 import InfoReservationPage from "./Pages/InfoReservePage";
-
-import Stripe from "react-stripe-checkout";
-import axios from 'axios';
-
 import Checkin from "./Pages/Checkin";
 import Agreement from "./Pages/Agreement";
+
+import InfoCarPage from "./Pages/InfoCarPage";
 
 
 
 function App() {
-
-  const handleToken = (totalAmount, token) => {
-    try {
-      axios.post("http://localhost:3000/api/routes/stripe-routes/pay", {
-        token: token.id,
-        amount: totalAmount
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-const tokenHandler = (token) => {
-  handleToken(100, token);
-}
-
 
   return (
     <Router>
@@ -66,7 +48,8 @@ const tokenHandler = (token) => {
           <Route path="/Reservations" element={<Reservations />} /> 
           <Route path="/Billing" element={<Billing />} /> 
           <Route path="/InfoReserve" element={<InfoReservationPage />} /> 
-          <Route path="/checkout" element={<Stripe stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw" token={tokenHandler} />} />
+          <Route path="/InfoCar" element={<InfoCarPage />} /> 
+
           <Route path="/agreement" element={<Agreement />} /> 
 
         </Routes>

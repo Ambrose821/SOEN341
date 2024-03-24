@@ -46,7 +46,9 @@ router.post('/reserve',async function(req,res,next){
             endDate: endDate,
             vehicle: v._id,
             user: user._id,
-            carCost : v.pricePerDay
+            carCost : v.pricePerDay,
+            insurance:insurance,
+            gps : gps
          };
 
          const reservation = new Reservation(reservationData);
@@ -127,6 +129,54 @@ router.get('/getCarCost', async function(req, res, next) {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
+
+
+
+router.get('/getVehicleByID', async function(req, res) {
+    try {
+        const vehicleId = req.query.vehicleID; // Corrected to vehicleID
+        console.log(vehicleId);
+        const vehicle = await Vehicle.findById({_id: vehicleId}).lean(); // Corrected to vehicleId
+        console.log(vehicle);
+        if (!vehicle) {
+            return res.status(404).json({ message: "There is no such Vehicle" });
+        }
+
+        res.status(200).json({ message: "The vehicle was found!", vehicle: vehicle });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: "Something went wrong!" }); // Corrected typo
+    }
+});
+
+
+router.get('/getAllUserReservations',async function(req,res,next){
+    try{
+        const allUsersWithReservations = await User.find({
+            reservations: { $exists: true, $ne: [] }
+          }).lean();
+
+          console.log(allUsersWithReservations);
+
+        res.status(200).json({message: "Found users", reservations: allUsersWithReservations});
+    }
+    catch(error){
+        res.status(500).json({message: "something went horribly wrong"});
+    }
+});
+
+
+router.get('/getAllReservations', async function(req, res, next) {
+    try {
+      const allUsers = await User.find({}, 'reservations').lean();
+      const allReservations = allUsers.flatMap(user => user.reservations);
+      res.status(200).json({ message: 'All reservations retrieved', reservations: allReservations });
+    } catch(error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error retrieving reservations' });
+    }
+  });
+  
 
 router.get('/deleteReservation', async function(req,res,next){
     try{
@@ -223,6 +273,51 @@ router.post('/getUserReservations', async function(req, res, next) {
     }
 });
 
+router.post('/deleteReservations', async function(req, res,next){
+    
+    try{
+        const {reservationID} = req.body;
+        console.log("REZ: " + reservationID);
+        await Reservation.findOneAndDelete({_id: reservationID});
+       
+        res.status(200).json({message:"Sucessfully deleted reservation"});
+
+    }
+    catch(error){
+        res.status(500).json({message:"Something terrible happened error 500"});
+    }
+});
+
+router.post('/modifyReservations', async function(req,res,next){
+
+    try{
+        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
+
+        console.log("INFOOOOO: "+vehicleId,startDate,endDate,gps,insurance );
+
+        await Reservation.findOneAndUpdate(
+            {_id : vehicleId},
+            {$set : {startDate : startDate ,
+                endDate: endDate,
+                gps : gps, 
+                insurance: insurance 
+                }
+            },
+            { new: true }
+        )
+
+        res.status(200).json({message: "Sucess"});
+
+    }
+    catch(error){
+        res.status(500).json({message: "Failure"});
+    }
+});
+
+
+
+
+
 
 // isAdmin
 router.post('/insert', addCar,function(req, res, next){
@@ -238,7 +333,7 @@ router.delete('/delete', deleteCar, function(req, res, next){
 });
 
 router.get('/nearest', find_nearest, (req, res) => {
-    
+   
 })
 
 module.exports = router;

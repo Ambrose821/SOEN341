@@ -10,15 +10,27 @@ function Reserve() {
     const [gps, setGps] = useState(false); // State for GPS option
     const [insurance, setInsurance] = useState(false); // State for Insurance option
 
+    const [modifyID,setModifyID] = useState({});
+
+
     const location = useLocation();
     const vehicleId = location.state?.vehicleId;
     const navigate = useNavigate();
+
+    const { modifyReservation } = location.state || {}; // Default to an empty object
+
 
     useEffect(() => {
         if (vehicleId) {
             getPhoto(vehicleId).then(setPhotoUrl).catch(console.error);
         }
-    }, [vehicleId]);
+        else{
+            setModifyID(modifyReservation._id);
+            setPhotoUrl(modifyReservation.vehicle.photoURL);
+
+            console.log("INSIDE ELSE:" +modifyID);
+        }
+    }, [vehicleId,modifyReservation]);
 
     async function getPhoto(vehicleId) {
         if (!vehicleId) {
@@ -52,35 +64,43 @@ function Reserve() {
     };
 
     async function submitReservation() {
-        console.log("Attempting to submit reservation...");
+        
+        const idToUse = modifyReservation ? modifyID : vehicleId;
 
-        try {
-            const response = await fetch('http://localhost:9000/vehicles/reserve', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    vehicleId,
-                    startDate,
-                    endDate,
-                    currentUser,
-                    gps,
-                    insurance,
-                }),
-            });
-            const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Could not create reservation.');
-            }
-            alert('Reservation successfully created!');
-            navigate('/');
-        } catch (error) {
-            console.error('Error:', error);
-            alert(error.message);
+
+        navigate("/InfoReserve",{state: {
+            startDate :startDate,
+            endDate : endDate,
+            gps:gps,
+            insurance:insurance,
+            vehicleId:idToUse,
+            currentUser:currentUser,
+            imageUrl: photoUrl,
+            fromModify:false,
         }
+    })
     };
+
+    async function modifyReservations(){
+
+        const idToUse = modifyReservation ? modifyID : vehicleId;
+
+        console.log("FROM MODIFY FUNCTION"+idToUse);
+        
+        navigate("/InfoReserve",{state: {
+            startDate :startDate,
+            endDate : endDate,
+            gps:gps,
+            insurance:insurance,
+            vehicleId:idToUse,
+            currentUser:currentUser,
+            imageUrl: photoUrl,
+            fromModify:true,
+        }
+    })
+    }
+
 
     return (
         <div>
@@ -109,7 +129,11 @@ function Reserve() {
                     onChange={() => setInsurance(!insurance)} 
                 /> Insurance
             </div>
-            <button onClick={submitReservation}>Submit Reservation</button>
+            {modifyReservation ? (
+            <button onClick={modifyReservations} style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Modify Reservation</button>
+        ) : (
+            <button onClick={submitReservation} style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Submit Reservation</button>
+        )}
             <br/>
             <img 
                 src={photoUrl} 

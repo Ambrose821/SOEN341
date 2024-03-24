@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
+import {useNavigate} from 'react-router-dom';
 
 
 function Reservations() {
@@ -7,6 +8,8 @@ function Reservations() {
   const [reservations, setReservations] = useState([]);
 
   const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth();
+
+  const nagivate =  useNavigate();
 
   useEffect(() => {
     if(currentUser){
@@ -33,7 +36,27 @@ function Reservations() {
     }
   };
 
-  const deleteReservation = async (reservationId) => {
+  const deleteReservation = async (index) => {
+
+    console.log(index);
+    const id = reservations[index]._id;
+    console.log(id);
+    try{
+      const response = await fetch("http://localhost:9000/vehicles/deleteReservations",{
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({reservationID: id}),
+      });
+
+
+      nagivate("/");
+    }
+    catch(error){
+      console.log("error occured in delete reservation");
+      console.log(error);
+    }
 
   };
 
@@ -41,9 +64,11 @@ function Reservations() {
 
 
   // Placeholder for modify functionality
-  const modifyReservation = (reservationId) => {
-    console.log("Modify reservation:", reservationId);
-    // Implement navigation to a modification form or directly allow editing fields here
+  const modifyReservation = (index) => {
+
+    const reservation = reservations[index];
+    console.log(reservation);
+    nagivate("/Reserve", {state : {modifyReservation : reservation}});
   };
 
 
@@ -51,7 +76,7 @@ function Reservations() {
     <div>
       <h2>User Reservations</h2>
       {reservations.length > 0 ? (
-        reservations.map((reservation) => (
+        reservations.map((reservation,index) => (
           <div key={reservation._id} style={{ margin: '20px', padding: '10px', border: '1px solid #ccc', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
             {reservation.vehicle && reservation.vehicle.photoURL && (
               <img src={reservation.vehicle.photoURL} alt="Vehicle" style={{ maxWidth: '300px', maxHeight: '300px', margin: '10px 0' }} />
@@ -60,12 +85,12 @@ function Reservations() {
             <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
             <p>Car Cost: {reservation.carCost}</p>
             <button 
-              onClick={() => deleteReservation(reservation._id)} 
+              onClick={() => deleteReservation(index)} 
               style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               Delete
             </button>
             <button 
-              onClick={() => modifyReservation(reservation._id)}
+              onClick={() => modifyReservation(index)}
               style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               Modify
             </button>

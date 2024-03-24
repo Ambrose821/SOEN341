@@ -235,7 +235,7 @@ const handleYearChange = (event) => {
             {cars.map((car) => (
               <Grid key={car.VIN} item xs={12} sm={6} md={4} lg={3}>
                 <Paper>
-                  <img src={car.photoURL} alt={`Car ${car.VIN}`} />
+                  <img class="CarImage" src={car.photoURL} alt={`Car ${car.VIN}`} />
                   <p>VIN: {car.VIN} </p>
                   <p>Brand: {car.brand}</p>
                   <p>Model: {car.model}</p>
@@ -428,16 +428,16 @@ const handleYearChange = (event) => {
         <option value="convertable">Convertable</option>
         </select>
       </div>
-      <div>
+      {/* <div>
         <label htmlFor="reservation">Reservation:</label>
         <input
           type="text"
           id="reservation"
           value={reservation}
           onChange={(event) => setReservation(event.target.value)}
-          required
+          
         />
-      </div>
+      </div> */}
       <div>
         <label htmlFor="lister">Admin email:</label>
         <input
