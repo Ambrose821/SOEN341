@@ -15,6 +15,7 @@ function Billing() {
   const [deposit, setDeposit] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
 
+  
   useEffect(() => {
     if (reservation) {
       const startDateString = new Date(reservation.startDate).toLocaleDateString();
@@ -25,7 +26,7 @@ function Billing() {
       setCarCost(reservation.carCost || 0);
       setTaxes((reservation.carCost || 0) * 0.15);
       setDeposit(500);
-      setTotalCost(carCost + taxes + deposit);
+      setTotalCost(carCost + taxes + 500);
     }
   }, [reservation]);
 
