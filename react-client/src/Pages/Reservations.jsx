@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Reservations() {
   const [reservations, setReservations] = useState([]);
@@ -13,6 +14,8 @@ function Reservations() {
       fetchReservations();
     }
   }, [currentUser]);
+
+  const testVar= "HelloWorld";
 
   const fetchReservations = async () => {
     try {
