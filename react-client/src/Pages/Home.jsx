@@ -39,82 +39,87 @@ const DynamicGrid = ({ photoURLs, ids }) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        {photoURLs.map((url, index) => (
-          <Grid key={index} item xs={12 / columns}>
-            <Item>
-
-            {/* <Button variant="contained" onClick={handleAudioClick}>Click for a surprise</Button> */}
-
-              <div style={{ position: 'relative', paddingBottom: '75%', maxWidth: '100%' }}>
-                <img
-                  src={url}
-                  alt={`Car ${index + 1}`}
-                  style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    width: '100%',
-                    height: '100%',
-                  }}
-                />
-                <div style={{ position: 'absolute', bottom: '5%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                  {isLoggedIn && (
-                    <>
+  <Grid container spacing={2}>
+    {photoURLs.map((url, index) => (
+      <Grid key={index} item xs={12 / columns}>
+        <Item>
+          <div style={{ display: 'flex', borderRadius: '15px', overflow: 'hidden', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)' }}>
+            <img
+              src={url}
+              alt={`Car ${index + 1}`}
+              style={{
+                width: '40%',
+                objectFit: 'cover', // Fit the entire photo within the space
+                borderRadius: '15px', // Round off all four corners
+                margin: '0', // Remove margin from top and bottom
+              }}
+            />
+            <div style={{ padding: '10px', textAlign: 'center', width: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <h3>Car Name</h3>
+                <p>Price: $100/day</p>
+              </div>
+              <div>
+                {isLoggedIn && (
+                  <>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                        marginRight: '10px',
+                      }}
+                      onClick={() => handleReserveClick(ids[index])}
+                    >
+                      Reserve
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#2979ff',
+                        color: 'white',
+                      }}
+                      onClick={() => handleInfoClick(ids[index])}
+                    >
+                      Info
+                    </Button>
+                  </>
+                )}
+                {!isLoggedIn && (
+                  <>
+                    <Link to="/login" style={{ textDecoration: 'none', marginRight: '10px' }}>
                       <Button
                         variant="contained"
                         style={{
                           backgroundColor: '#4CAF50',
                           color: 'white',
                         }}
-                        onClick={() => handleReserveClick(ids[index])}
                       >
                         Reserve
                       </Button>
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#2979ff',
-                          color: 'white',
-                        }}
-                        onClick={() => handleInfoClick(ids[index])}
-                      >
-                        Info
-                      </Button>
-                    </>
-                  )}
-                  {!isLoggedIn && (
-                    <>
-                      <Link to="/login">
-                        <Button
-                          variant="contained"
-                          style={{
-                            backgroundColor: '#4CAF50',
-                            color: 'white',
-                          }}
-                        >
-                          Reserve
-                        </Button>
-                      </Link>
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#2979ff',
-                          color: 'white',
-                        }}
-                        onClick={() => handleInfoClick(ids[index])}
-                      >
-                        Info
-                      </Button>
-                    </>
-                  )}
-                </div>
+                    </Link>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#2979ff',
+                        color: 'white',
+                      }}
+                      onClick={() => handleInfoClick(ids[index])}
+                    >
+                      Info
+                    </Button>
+                  </>
+                )}
               </div>
-            </Item>
-          </Grid>
-        ))}
+            </div>
+          </div>
+        </Item>
       </Grid>
-    </Box>
+    ))}
+  </Grid>
+</Box>
+
+
   );
 };
 
