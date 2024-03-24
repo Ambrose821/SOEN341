@@ -15,7 +15,7 @@ function Header() {
         {/* <div className="HeadTitle">
           Header
         </div> */}
-        
+        <h1>Boycott Kayak</h1>
         <div className="profile">
         {isLoggedIn && (
             <Link to="/profile" className={`sidebarLink ${location.pathname === '/profile' ? 'activeLink' : ''}`}>{/* Add activeLink class if current path is '/profile' */}
