@@ -24,8 +24,8 @@ function Billing() {
       setEndDate(endDateString || "Not Set");
       setCarCost(reservation.carCost || 0);
       setTaxes((reservation.carCost || 0) * 0.15);
-      setDeposit(0);
-      setTotalCost((reservation.carCost || 0) + (reservation.carCost || 0) * 0.15);
+      setDeposit(500);
+      setTotalCost(carCost + taxes + deposit);
     }
   }, [reservation]);
 
@@ -36,8 +36,12 @@ function Billing() {
         amount: totalCost
       });
       
-      setTotalCost(0);
     } catch (error) {
+      setCarCost(0);
+      setTaxes(0);
+      setDeposit(0);
+      setTotalCost(0);
+
       console.log(error);
     }
   };
