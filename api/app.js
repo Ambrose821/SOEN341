@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/api/stripe', stripeRouter)
+
 
 app.use(session({
     secret: 'keyboard cat',
@@ -70,6 +70,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/apiRoute',apiRouter)
 app.use('/vehicles',vehicleRouter);
+app.use('/stripe-route',stripeRouter)
 
 // Creating Objects in Database 
 const createVehicles = require('./Database/VehicleCreator');

@@ -25,6 +25,58 @@ router.get('/getCars',async function(req, res, next){
 
 router.post('/reserve',reserve,sendConfirmEmail,async function(req,res,next){
 
+    try{
+        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
+
+        console.log(vehicleId);
+        console.log(startDate);
+        console.log(endDate);
+        console.log(currentUser);
+        console.log(gps);
+        console.log(insurance);
+    
+        const v = await Vehicle.findOne({ _id : vehicleId });
+        vehicle = JSON.stringify(v,null,2);
+
+        const user = await User.findOne({email: currentUser});
+
+        console.log("Vehicle: " + vehicle);
+        console.log("Price" + v.pricePerDay);
+
+        const start = new Date(startDate.trim());
+        const end = new Date(endDate.trim());
+
+        start.setHours(0,0,0,0);
+        end.setHours(0,0,0,0);
+
+        const timeDifference = end.getTime() - start.getTime();
+        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        console.log("Days:" + daysDifference);
+
+        const rentalCost = v.pricePerDay * daysDifference;
+        console.log("Cost:" +rentalCost);
+
+        const reservationData = {
+            startDate: startDate,
+            endDate: endDate,
+            vehicle: v._id,
+            user: user._id,
+            carCost: rentalCost,
+            insurance: insurance,
+            gps: gps
+         };
+
+         const reservation = new Reservation(reservationData);
+         reservation.save();
+
+         res.status(200).json({message: "Sucess"});
+
+    }
+    catch(error){
+        console.log("ERROR OCCURED");
+        console.log(error);
+    }
+
 });
 
 router.get('/getCarIdFromPhoto', async function(req, res, next){
@@ -92,8 +144,6 @@ router.get('/getCarCost', async function(req, res, next) {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
-
-
 
 router.get('/getVehicleByID', async function(req, res) {
     try {
