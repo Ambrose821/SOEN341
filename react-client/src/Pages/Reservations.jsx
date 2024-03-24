@@ -78,24 +78,24 @@ function Reservations() {
             <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
             <p>Car Cost: {reservation.carCost}</p>
             <Link to={`/checkin?variable=${testVar}`}>
-              <button style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              <button style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
                 Check In
               </button>
               </Link>
             <button 
-              onClick={() => deleteReservation(index)} 
-              style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-              Delete
+              onClick={() => viewBilling(index)}
+              style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              View Billing
             </button>
             <button 
               onClick={() => modifyReservation(index)}
-              style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               Modify
             </button>
             <button 
-              onClick={() => viewBilling(index)}
-              style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-              View Billing
+              onClick={() => deleteReservation(index)} 
+              style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              Delete
             </button>
           </div>
         ))
