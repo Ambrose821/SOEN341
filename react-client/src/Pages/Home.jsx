@@ -151,6 +151,7 @@ function Home() {
   const [branchName, setBranch] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [noCars, setNoCars] = useState("")
+  const[postalError, setPostalError] = useState(false)
   
 
   
@@ -276,19 +277,27 @@ const handleApplyFilters = () => {
     event.target.value = ""
 
      
-    try { 
+    try {
     
       setVehicleData(originalVehicleData)
       const response = await fetch(`http://localhost:9000/vehicles/nearest?postalCode=${postalCode}`)
       const data = await response.json()
       console.log("from postal code:" + JSON.stringify(data))
-      setBranch(data.branch.BranchName)
+
+      if (data.message == "Default") {
+        setVehicleData(originalVehicleData);
+        setPostalError(true);
+        setBranch('')
+        
+      } else{
+        setBranch(data.branch.BranchName)
 
       filteredVehicles = filteredVehicles.filter((vehicle) => vehicle.branch.BranchName === data.branch.BranchName);
     
        
-    setVehicleData(filteredVehicles)
-      
+        setVehicleData(filteredVehicles)
+        setPostalError(false)
+    }
       
     } catch (err) {
       console.error('React Postal Code Req error: ' +err)
@@ -310,6 +319,7 @@ const handleApplyFilters = () => {
     
     // Update the vehicle data to reflect the vehicles from the selected branch.
     setVehicleData(filteredVehicles);
+    setPostalError(false)
   }
 
 const photoURLs = vehicleData.map(vehicle => vehicle.photoURL);
@@ -384,7 +394,14 @@ const handleSeeAll = async() =>{
       cursor: 'pointer', // Add pointer cursor for better UX
       marginRight: '20px' // Add spacing between button and other elements
     }}
-  />
+        
+        />
+        <br></br>
+        <br />
+        {branchName && <p>Current/Nearest branch {branchName}</p>}
+        {postalError && <p>Could not find postal Code <br></br>Showing Cars From All branches</p>}
+
+        
 </div>
       {showFilters && <div><select name="color" value={filters.color} onChange={handleFilterChange}
     style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
