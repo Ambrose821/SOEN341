@@ -7,8 +7,10 @@ const { isValidObjectId } = require('mongoose');
 var User = require('../models/User');
 var { addCar, deleteCar, updateCar, find_nearest } = require('../controller/vehicleController')
 const Reservation = require('../models/Reservation');
+const sendConfirmEmail = require('../controller/mailerRouter')
+const reserve = require('../controller/reservationController')
 
-router.get('/getCars', async function(req, res, next){
+router.get('/getCars',async function(req, res, next){
 
     try{
         const cars = await Vehicle.find({}).populate('branch').lean();
@@ -21,7 +23,7 @@ router.get('/getCars', async function(req, res, next){
     }
 });
 
-router.post('/reserve',async function(req,res,next){
+router.post('/reserve',reserve,sendConfirmEmail,async function(req,res,next){
 
     try{
         const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
@@ -74,7 +76,7 @@ router.post('/reserve',async function(req,res,next){
         console.log("ERROR OCCURED");
         console.log(error);
     }
-    
+
 });
 
 router.get('/getCarIdFromPhoto', async function(req, res, next){
@@ -302,10 +304,12 @@ router.post('/deleteReservations', async function(req, res,next){
 router.post('/modifyReservations', async function(req,res,next){
 
     try{
-        const {modifyID , startDate, endDate, currentUser,gps,insurance} = req.body;
+        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
+
+        console.log("INFOOOOO: "+vehicleId,startDate,endDate,gps,insurance );
 
         await Reservation.findOneAndUpdate(
-            {_id : modifyID},
+            {_id : vehicleId},
             {$set : {startDate : startDate ,
                 endDate: endDate,
                 gps : gps, 

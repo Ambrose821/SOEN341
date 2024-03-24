@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
-import {useNavigate} from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 function Reservations() {
-
   const [reservations, setReservations] = useState([]);
 
   const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth();
-
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if(currentUser){
+    if (currentUser) {
       fetchReservations();
     }
-    },[currentUser]);
+  }, [currentUser]);
 
   const fetchReservations = async () => {
-    console.log("Fetcher ",currentUser)
     try {
-      console.log("Fetcher ",currentUser)
-      const response = await fetch(`http://localhost:9000/vehicles/getUserReservations`,{
-        method:'POST',
+      const response = await fetch(`http://localhost:9000/vehicles/getUserReservations`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ currentUser}),
-
-      })
+        body: JSON.stringify({ currentUser }),
+      });
       const data = await response.json();
       setReservations(data.reservations);
     } catch (error) {
@@ -36,28 +30,20 @@ function Reservations() {
     }
   };
 
-  const deleteReservation = async (index) => {
-
-    console.log(index);
-    const id = reservations[index]._id;
-    console.log(id);
-    try{
-      const response = await fetch("http://localhost:9000/vehicles/deleteReservations",{
-        method:'POST',
+  const deleteReservation = async (id) => {
+    try {
+      await fetch("http://localhost:9000/vehicles/deleteReservations", {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({reservationID: id}),
+        body: JSON.stringify({ reservationID: id }),
       });
-
-
-      navigate("/");
-    }
-    catch(error){
-      console.log("error occured in delete reservation");
+      fetchReservations(); // Fetch reservations again after deletion
+    } catch (error) {
+      console.log("error occurred in delete reservation");
       console.log(error);
     }
-
   };
 
   console.log(reservations);
