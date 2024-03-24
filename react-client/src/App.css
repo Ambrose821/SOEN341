@@ -143,7 +143,7 @@ input[type="password"] {
   width: 100%;
   box-sizing: border-box;
   border-top: 1px solid #CCCCCC; /* Thin grey border on the bottom */
-font-size: small;
+  font-size: small;
   a{
     color: #FFFFFF;
   }
@@ -227,7 +227,7 @@ input{
 .icon {
   width: 60px;
   text-align: center;
-  color: #8796A1;
+  color: #8796a1;
 }
 
 .sidebarTitle {
