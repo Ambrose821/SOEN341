@@ -1,8 +1,6 @@
 var express = require('express');
-
-var stripe = require ("stripe")("process.env.STRIPE_TEST")
+var stripe = require ("stripe")(process.env.STRIPE_TEST)
 var { v4: uuidv4 } = require('uuid');
-
 var router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -12,26 +10,30 @@ router.get('/', (req, res, next) => {
     })
 });
 
-router.post("/pay", (req, res, next) => {
-    console.log(req.body.token);
-    const {token, amount} = req.body;
-    const idempotencyKey = uuidv4();
-    
-    return stripe.customers.create({
-        email: token.email,
-        source: token
-    }).then(customer=>{
-        stripe.charges.create({
-            amount: amount*100,
-            currency: 'usd',
+router.post("/pay", async (req, res, next) => {
+    try {
+        const { token, amount } = req.body;
+        const idempotencyKey = uuidv4();
+        
+        console.log('token email ' +token.email )
+        const customer = await stripe.customers.create({
+            email: token.email,
+            source: token
+        });
+        
+        console.log('Stripe customer: ' +customer.id)
+        const charge = await stripe.charges.create({
+            amount: amount * 100,
+            currency: 'cad',
             customer: customer.id,
             receipt_email: token.email
-        }, {idempotencyKey})
-    }).then(result=> {
-        res.status(200).json(result)
-    }).catch(err=> {
-        console.log(err);
-    });
+        }, { idempotencyKey });
+
+        res.status(200).json(charge);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while processing the payment:'+error });
+    }
 });
 
 

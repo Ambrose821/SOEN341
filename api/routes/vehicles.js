@@ -39,16 +39,29 @@ router.post('/reserve',async function(req,res,next){
         const user = await User.findOne({email: currentUser});
 
         console.log("Vehicle: " + vehicle);
-        console.log(v.pricePerDay);
+        console.log("Price" + v.pricePerDay);
+
+        const start = new Date(startDate.trim());
+        const end = new Date(endDate.trim());
+
+        start.setHours(0,0,0,0);
+        end.setHours(0,0,0,0);
+
+        const timeDifference = end.getTime() - start.getTime();
+        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        console.log("Days:" + daysDifference);
+
+        const rentalCost = v.pricePerDay * daysDifference;
+        console.log("Cost:" +rentalCost);
 
         const reservationData = {
             startDate: startDate,
             endDate: endDate,
             vehicle: v._id,
             user: user._id,
-            carCost : v.pricePerDay,
-            insurance:insurance,
-            gps : gps
+            carCost: rentalCost,
+            insurance: insurance,
+            gps: gps
          };
 
          const reservation = new Reservation(reservationData);
@@ -129,8 +142,6 @@ router.get('/getCarCost', async function(req, res, next) {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
-
-
 
 router.get('/getVehicleByID', async function(req, res) {
     try {

@@ -9,7 +9,7 @@ function Reservations() {
 
   const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth();
 
-  const nagivate =  useNavigate();
+  const navigate =  useNavigate();
 
   useEffect(() => {
     if(currentUser){
@@ -51,7 +51,7 @@ function Reservations() {
       });
 
 
-      nagivate("/");
+      navigate("/");
     }
     catch(error){
       console.log("error occured in delete reservation");
@@ -68,9 +68,13 @@ function Reservations() {
 
     const reservation = reservations[index];
     console.log(reservation);
-    nagivate("/Reserve", {state : {modifyReservation : reservation}});
+    navigate("/Reserve", {state : {modifyReservation : reservation}});
   };
 
+  const viewBilling = (index) => {
+    const reservation = reservations[index];
+    navigate("/Billing", { state: { reservation } });
+  };
 
   return (
     <div>
@@ -91,8 +95,13 @@ function Reservations() {
             </button>
             <button 
               onClick={() => modifyReservation(index)}
-              style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               Modify
+            </button>
+            <button 
+              onClick={() => viewBilling(index)}
+              style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              View Billing
             </button>
           </div>
         ))
