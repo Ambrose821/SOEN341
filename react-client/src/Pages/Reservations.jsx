@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Reservations() {
   const [reservations, setReservations] = useState([]);
@@ -12,6 +13,8 @@ function Reservations() {
       fetchReservations();
     }
   }, [currentUser]);
+
+  const testVar= "HelloWorld";
 
   const fetchReservations = async () => {
     try {
@@ -62,15 +65,20 @@ function Reservations() {
               <p>Start Date: {new Date(reservation.startDate).toLocaleDateString()}</p>
               <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
               <p>Car Cost: {reservation.carCost}</p>
-              <button
-                onClick={() => deleteReservation(reservation._id)}
-                style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', marginRight: '10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                Delete
+              <Link to={`/checkin?variable=${testVar}`}>
+              <button style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                Check In
               </button>
+              </Link>
               <button
                 onClick={() => modifyReservation(reservation)}
                 style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
                 Modify
+              </button>
+              <button
+                onClick={() => deleteReservation(reservation._id)}
+                style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                Delete
               </button>
             </div>
           ))

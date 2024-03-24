@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Checkin() {
   const [isChecked, setIsChecked] = useState(false);
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
+  const [isForm1Submitted, setIsForm1Submitted] = useState(false);
+  const [isForm2Submitted, setIsForm2Submitted] = useState(false);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const testVar = searchParams.get('variable');
+
+  const printTest = (e) => {
+    alert(testVar);
+}
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -23,23 +32,46 @@ function Checkin() {
     setDescription('');
   };
 
-  const handleSubmit = (e) => {
+  const handleForm1Submit = (e) => {
   e.preventDefault();
-  if (!isChecked && description.trim() === '' && images.length === 0) {
-    alert('Please select the checkbox or provide a description with photo uploads.');
-  } else if (!isChecked && description.trim() === '') {
-    alert('Please provide a description with photo uploads.');
-  } else if(description.trim() !==''  && images.length === 0){
-    alert('Please provide photo uploads.');
-  }else{
-    console.log('Form submitted successfully!');
-    // Additional submission logic if needed
+  const reservationNumber = e.target.elements.reservation_number.value;
+  const creditCardNumber = e.target.elements.credit_card_number.value;
+
+  if (reservationNumber.trim() === '') {
+    alert('Please enter a non-empty reservation number.');
+    return; // Exit the function if validation fails
   }
+
+  // Check if the credit card number has 16 digits
+  if (!(/^\d{16}$/.test(creditCardNumber))) {
+    alert('Please enter a 16-digit credit card number.');
+    return; // Exit the function if validation fails
+  }
+
+  // If both validations pass, set the form submission flag to true
+  setIsForm1Submitted(true);
+  alert("User successfully checked-in!")
 };
+  const handleForm2Submit = (e) => {
+    e.preventDefault();
+    if (!isChecked && description.trim() === '' && images.length === 0) {
+      alert('Please select the checkbox or provide a description with photo uploads.');
+    } else if (!isChecked && description.trim() === '') {
+      alert('Please provide a description with photo uploads.');
+    } else if(description.trim() !==''  && images.length === 0){
+      alert('Please provide photo uploads.');
+    }else{
+      alert("Vehicle Inspection successfully completed!");
+      setIsForm2Submitted(true);
+    }
+    
+  };
 
   return (
     <div className="Checkin">
-       <form onSubmit={handleSubmit} className="form">
+      <button onClick={printTest}>Test Variable</button>
+      <h3><u>User Check-in</u></h3>
+       <form onSubmit={handleForm1Submit} className="form">
             <label htmlFor="reservation_number">Reservation Number:</label>
             <input type="text" id="reservation_number" name="reservation_number" required/>
 
@@ -48,16 +80,12 @@ function Checkin() {
 
             <label htmlFor="photo_upload">Upload Photo:</label>
             <input type="file" id="photo_upload" name="photo_upload" accept="image/*" required/><br/>
-
-            <label htmlFor="Rental_agreement">Sign Rental agreement:</label><br/>
-            <Link to="/agreement"><button>Electronically</button></Link>
-            <button>Physically</button>
-            <br/><br/>
             <input type="submit" value="Submit"/>
             <input type="reset" value="Reset"/>
         </form>
-        <br/><br/><br/><br/>
-        <form onSubmit={handleSubmit} className="form">
+        <br/><br/>
+        <h3><u>Vehicle Inspection</u></h3>
+        <form onSubmit={handleForm2Submit} className="form">
             <input type="checkbox" id="checkbox_option" name="checkbox_option" onChange={handleCheckboxChange}/>
             <label htmlFor="checkbox_option">Vehicle is Undamaged (Required if text box is empty)</label><br/><br/>
 
@@ -72,7 +100,11 @@ function Checkin() {
 
             <input type="submit" value="Submit"/>
             <input type="reset" value="Reset"onClick={handleReset}/>
-        </form>
+        </form><br/><br/>
+        <h3><u>Sign Rental agreement:</u></h3>
+        <Link to="/agreement"><button disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button></Link>
+        <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
+            
     </div>
   );
 }

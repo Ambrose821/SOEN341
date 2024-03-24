@@ -83,33 +83,22 @@ function Agreement() {
         This Agreement constitutes the entire understanding between the parties concerning the subject matter hereof and supersedes all prior agreements and understandings, whether written or oral.
         </li>
         <li>
-        <h3>Signatures:</h3>
-        <div>
-          <label htmlFor="rental_company_signature">Rental Company:</label>
-          <input type="text" id="rental_company_signature" name="rental_company_signature" required />
-        </div>
-        <div>
-          <label htmlFor="renter_signature">Renter:</label>
-          <input type="text" id="renter_signature" name="renter_signature" required />
-        </div>
+            <h3>Signatures:</h3>
+            The parties hereto have executed this Agreement as of the date first written above.
+            <div>
+                <h4><u>Rental Company:</u></h4>
+                Signature: <input type="text" id="rental_company_signature" name="rental_company_signature" required /><br/>
+                Print Name: <input type="text" id="rental_company_name" name="rental_company_name" required /><br/>
+                Date: <input type="date" id="rental_company_date" name="rental_company_date" required />
+            </div>
 
-        <div>
-          <label htmlFor="rental_company_name">Print Name (Rental Company):</label>
-          <input type="text" id="rental_company_name" name="rental_company_name" required />
-        </div>
-        <div>
-          <label htmlFor="renter_name">Print Name (Renter):</label>
-          <input type="text" id="renter_name" name="renter_name" required />
-        </div>
-
-        <div>
-          <label htmlFor="rental_company_date">Date (Rental Company):</label>
-          <input type="date" id="rental_company_date" name="rental_company_date" required />
-        </div>
-        <div>
-          <label htmlFor="renter_date">Date (Renter):</label>
-          <input type="date" id="renter_date" name="renter_date" required />
-        </div>
+            
+            <div>
+                <h4><u>Renter:</u></h4>
+                Signature:<input type="text" id="renter_signature" name="renter_signature" required /><br/>
+                Print Name:<input type="text" id="renter_name" name="renter_name" required /><br/>
+                Date:<input type="date" id="renter_date" name="renter_date" required />
+            </div>
         </li>
         </ol>
         <button type="submit">Submit</button>

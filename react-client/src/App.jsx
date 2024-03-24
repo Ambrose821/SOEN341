@@ -19,7 +19,7 @@ import Billing from "./Pages/Billing";
 import InfoReservationPage from "./Pages/InfoReservePage";
 import Checkin from "./Pages/Checkin";
 import Agreement from "./Pages/Agreement";
-
+import AgreementPhys from "./Pages/AgreementPhys";
 import InfoCarPage from "./Pages/InfoCarPage";
 
 
@@ -35,7 +35,7 @@ function App() {
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/profile" element={<Profile />} />
-
+          <Route path="/agreementp" element={<AgreementPhys/>} />
           <Route path="/checkin" element={<Checkin />} />
 
           <Route path="/profileSettings" element={<ProfileSettings/>} />   
