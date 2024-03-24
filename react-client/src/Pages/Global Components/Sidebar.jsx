@@ -47,15 +47,6 @@ function Sidebar() {
 
         {isLoggedIn && (
           <li>
-            <Link to="/Billing" className={`sidebarLink ${location.pathname === '/Billing' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/Billing' */}
-              <AttachMoneyIcon className="icon" />
-              <span className="sidebarTitle">Billing Information</span>
-            </Link>
-          </li>
-        )}
-
-        {isLoggedIn && (
-          <li>
             <Link to="/" className={`sidebarLink ${location.pathname === '/' ? 'activeLink' : ''}`} onClick={logout}> {/* Add activeLink class if current path is '/' */}
               <LogoutIcon className="icon" />
               <span className="sidebarTitle">Logout</span>

@@ -39,82 +39,93 @@ const DynamicGrid = ({ photoURLs, ids }) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        {photoURLs.map((url, index) => (
-          <Grid key={index} item xs={12 / columns}>
-            <Item>
-
-            {/* <Button variant="contained" onClick={handleAudioClick}>Click for a surprise</Button> */}
-
-              <div style={{ position: 'relative', paddingBottom: '75%', maxWidth: '100%' }}>
-                <img
-                  src={url}
-                  alt={`Car ${index + 1}`}
-                  style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    width: '100%',
-                    height: '100%',
-                  }}
-                />
-                <div style={{ position: 'absolute', bottom: '5%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                  {isLoggedIn && (
-                    <>
+  <Grid container spacing={2}>
+    {photoURLs.map((url, index) => (
+      <Grid key={index} item xs={12 / columns}>
+        <Item>
+          <div style={{ display: 'flex', borderRadius: '15px', overflow: 'hidden', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)' }}>
+            <img
+              src={url}
+              alt={`Car ${index + 1}`}
+              style={{
+                maxWidth: '300px', // Max width for the photo
+                width: '100%',
+                borderRadius: '15px', // Round off all four corners
+                margin: '0', // Remove margin from top and bottom
+              }}
+            />
+            <div style={{ padding: '10px', textAlign: 'center', width: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <h3>Car</h3>
+                <p>Price: $100/day</p>
+              </div>
+              <div>
+                {isLoggedIn && (
+                  <>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                        marginRight: '10px',
+                        marginBottom: '5px', // Add margin to the bottom
+                      }}
+                      onClick={() => handleReserveClick(ids[index])}
+                    >
+                      Reserve
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#2979ff',
+                        color: 'white',
+                        marginBottom: '5px', // Add margin to the bottom
+                      }}
+                      onClick={() => handleInfoClick(ids[index])}
+                    >
+                      Info
+                    </Button>
+                  </>
+                )}
+                {!isLoggedIn && (
+                  <>
+                    <Link to="/login" style={{ textDecoration: 'none', marginRight: '10px' }}>
                       <Button
                         variant="contained"
                         style={{
                           backgroundColor: '#4CAF50',
                           color: 'white',
+                          marginBottom: '5px', // Add margin to the bottom
                         }}
-                        onClick={() => handleReserveClick(ids[index])}
                       >
                         Reserve
                       </Button>
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#2979ff',
-                          color: 'white',
-                        }}
-                        onClick={() => handleInfoClick(ids[index])}
-                      >
-                        Info
-                      </Button>
-                    </>
-                  )}
-                  {!isLoggedIn && (
-                    <>
-                      <Link to="/login">
-                        <Button
-                          variant="contained"
-                          style={{
-                            backgroundColor: '#4CAF50',
-                            color: 'white',
-                          }}
-                        >
-                          Reserve
-                        </Button>
-                      </Link>
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#2979ff',
-                          color: 'white',
-                        }}
-                        onClick={() => handleInfoClick(ids[index])}
-                      >
-                        Info
-                      </Button>
-                    </>
-                  )}
-                </div>
+                    </Link>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#2979ff',
+                        color: 'white',
+                        marginBottom: '5px', // Add margin to the bottom
+                      }}
+                      onClick={() => handleInfoClick(ids[index])}
+                    >
+                      Info
+                    </Button>
+                  </>
+                )}
               </div>
-            </Item>
-          </Grid>
-        ))}
+            </div>
+          </div>
+        </Item>
       </Grid>
-    </Box>
+    ))}
+  </Grid>
+</Box>
+
+
+
+
   );
 };
 
@@ -313,47 +324,68 @@ const handleSeeAll = async() =>{
   return (
    
     <div>
-      <div> <h5>Find Nearest branch</h5>
-        <input type="text" id = "postalCode" placeholder='Enter Your Postal Code' onKeyPress={event => {
-    if (event.key === 'Enter') {
-      handlePostalCode(event);
-    }
-  }} /> 
-        <p>or</p>
-        <select value="Select Destination Airport" onChange={handleAirport} style={{ position:'relative',
-    
-          
-    backgroundColor: '#FFFFFF',
-    color: 'black',
-    zIndex: 1000}}>
-          <option value="">Select Destination Airport</option>
-          <option value = "Montreal">Montréal-Pierre Elliott Trudeau International Airport</option>
-          <option value="Ottawa">Ottawa International Airport</option>
-          <option value="Toronto">Toronto Pearson International Airport</option>
-          <option value="NYC">John F. Kennedy International Airport</option>
-          <option value="Washington">Dulles International Airport</option>
-          
-        </select>
-      
-        <input type="button" value={!showFilters ? "Adjust Filters" : "Hide Filters"} onClick={toggleFilters} style={{ position: 'absolute',
-    marginLeft:'100px',
-    transform: 'translateX(-50%)',
-          
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    zIndex: 1000}}
-/><br></br><br></br>
-        {branchName && <h5>Current/Nearest Branch is {branchName}</h5>}
-        {!branchName && <h5>Showing Vehicles from all branches</h5>}
-      
-     { branchName && <button onClick={handleSeeAll} style={{   position: 'relative',      
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    zIndex: 1000}}> See Cars from All Branches</button>}
-       
-        
-      </div>
 
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '20px' }}>
+  <h1 style={{ marginRight: '20px' }}>Find Nearest branch</h1>
+  <input 
+    type="text" 
+    id="postalCode" 
+    placeholder='Enter Your Postal Code' 
+    onKeyPress={event => {
+        if (event.key === 'Enter') {
+            handlePostalCode(event);
+        }
+    }} 
+    style={{
+        width: '250px', // Adjust width as needed
+        padding: '10px',
+        border: '2px solid #ccc',
+        borderRadius: '5px',
+        fontSize: '16px',
+        outline: 'none',
+        marginRight: '20px' // Add spacing between input and select
+    }} 
+  />
+  <h3 style={{ marginRight: '20px' }}>or</h3>
+  <select 
+    value="Select Destination Airport" 
+    onChange={handleAirport} 
+    style={{
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      zIndex: 1000,
+      padding: '10px', // Add padding for better spacing
+      borderRadius: '5px', // Add border radius for rounded corners
+      border: 'none', // Remove default border
+      outline: 'none', // Remove default outline
+      cursor: 'pointer', // Add pointer cursor for better UX
+      marginRight: '20px' // Add spacing between select and button
+    }}
+  >
+    <option value="">Select Destination Airport</option>
+    <option value="Montreal">Montréal-Pierre Elliott Trudeau International Airport</option>
+    <option value="Ottawa">Ottawa International Airport</option>
+    <option value="Toronto">Toronto Pearson International Airport</option>
+    <option value="NYC">John F. Kennedy International Airport</option>
+    <option value="Washington">Dulles International Airport</option>
+  </select>
+  <input 
+    type="button" 
+    value={!showFilters ? "Adjust Filters" : "Hide Filters"} 
+    onClick={toggleFilters} 
+    style={{
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      zIndex: 1000,
+      padding: '10px', // Add padding for better spacing
+      borderRadius: '5px', // Add border radius for rounded corners
+      border: 'none', // Remove default border
+      outline: 'none', // Remove default outline
+      cursor: 'pointer', // Add pointer cursor for better UX
+      marginRight: '20px' // Add spacing between button and other elements
+    }}
+  />
+</div>
       {showFilters && <div><select name="color" value={filters.color} onChange={handleFilterChange}
     style={{ width: '200px', padding: '8px', fontSize: '16px' }}>
           <option value="">Filter by Color</option>
