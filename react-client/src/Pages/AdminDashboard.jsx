@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography'; 
 import { Link } from 'react-router-dom'; 
+import { rgbToHex } from '@mui/material';
 
 
 function AdminDashboard() {
@@ -227,29 +228,36 @@ const handleYearChange = (event) => {
       <h2>Admin Dashboard</h2>
       <div>
       <div>
-        <Link to="/viewUserReservations">View User Reservations</Link>
+      <Link to="/viewUserReservations" style={{ textDecoration: 'none', color: 'blue', fontSize: '16px', fontWeight: 'bold' }}>View User Reservations</Link>
       </div>
         <h4>Cars currently up for rent</h4>
         <Box>
-          <Grid>
-            {cars.map((car) => (
-              <Grid key={car.VIN} item xs={12} sm={6} md={4} lg={3}>
-                <Paper>
-                  <img class="CarImage" src={car.photoURL} alt={`Car ${car.VIN}`} />
-                  <p>VIN: {car.VIN} </p>
-                  <p>Brand: {car.brand}</p>
-                  <p>Model: {car.model}</p>
-                  <p>Year: {car.year}</p>
-                  <p>Color: {car.color}</p>
-                  <p>Price per Day: {car.pricePerDay}</p>
-                  {car.branch &&<p>Branch: {car.branch.BranchName}</p> }
-                  <Button onClick={(event) => handleUpdate(car)}>Update Car Information</Button>
-                  <Button onClick={(event) => handleDelete(event, car.VIN)}>Delete Car</Button>
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>      
+  <Grid container spacing={3}>
+    {cars.map((car) => (
+      <Grid key={car.VIN} item xs={12} sm={6} md={4} lg={4}>
+        <Paper style={{ padding: '20px', textAlign: 'left', borderRadius: '10px', overflow: 'hidden' }}>
+          <div style={{ overflow: 'hidden' }}>
+            <img className="CarImage" src={car.photoURL} alt={`Car ${car.VIN}`} style={{ width: '100%', marginBottom: '10px', borderRadius: '10px' }} />
+          </div>
+          <p><strong>VIN:</strong> {car.VIN}</p>
+          <p><strong>Brand:</strong> {car.brand}</p>
+          <p><strong>Model:</strong> {car.model}</p>
+          <p><strong>Year:</strong> {car.year}</p>
+          <p><strong>Color:</strong> {car.color}</p>
+          <p><strong>Price per Day:</strong> {car.pricePerDay}</p>
+          {car.branch && <p><strong>Branch:</strong> {car.branch.BranchName}</p>}
+          <Button variant="contained" color="primary" onClick={(event) => handleUpdate(car)}>Update Car Information</Button>
+          <Button variant="contained" color='secondary' onClick={(event) => handleDelete(event, car.VIN)} style={{ marginLeft: '10px' }}>Delete Car</Button>
+        </Paper>
+      </Grid>
+    ))}
+  </Grid>
+</Box>
+
+
+
+
+    
         </div>
         <Modal
         open={open}
@@ -289,212 +297,205 @@ const handleYearChange = (event) => {
         </Box>
       </Modal>
       <hr></hr>
-    <h2>Add a new car for rent</h2>
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="brand">Brand:</label>
-        <input
-          type="text"
-          id="brand"
-          value={brand}
-          onChange={(event) => setBrand(event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="model">Model:</label>
-        <input
-          type="text"
-          id="model"
-          value={model}
-          onChange={(event) => setModel(event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="VIN">VIN:</label>
-        <input
-          type="text"
-          id="VIN"
-          value={VIN}
-          onChange={(event) => setVIN(event.target.value)}
-          required
-          readOnly
-        />
-      </div>
-      <div>
-        <label htmlFor="photoURL">PhotoURL:</label>
-        <input
-          type="text"
-          id="photoURL"
-          value={photoURL}
-          onChange={(event) => setPhotoURL(event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="plate">Plate:</label>
-        <input
-          type="text"
-          id="plate"
-          value={plate}
-          onChange={(event) => setPlate(event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="year">Year:</label>
-        <input
-          type="number"
-          id="year"
-          value={year}
-          // onChange={(event) => setYear(event.target.value)}
-          onChange={handleYearChange}
-          min={1900}
-          max={2024}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="color">Color:</label>
-        <input
-          type="text"
-          id="color"
-          value={color}
-          onChange={(event) => setColor(event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="transmission">Transmission:</label>
-        <select
-          id="transmission"
-          value={transmission}
-          onChange={(event) => setTransmission(event.target.value)}
-          required
-        >
+      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+  <h2>Add a new car for rent</h2>
+  <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+    <div className="form-group">
+      <label htmlFor="brand">Brand:</label>
+      <input
+        type="text"
+        id="brand"
+        value={brand}
+        onChange={(event) => setBrand(event.target.value)}
+        className="form-control"
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="model">Model:</label>
+      <input
+        type="text"
+        id="model"
+        value={model}
+        onChange={(event) => setModel(event.target.value)}
+        className="form-control"
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="VIN">VIN:</label>
+      <input
+        type="text"
+        id="VIN"
+        value={VIN}
+        onChange={(event) => setVIN(event.target.value)}
+        className="form-control"
+        required
+        readOnly
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="photoURL">PhotoURL:</label>
+      <input
+        type="text"
+        id="photoURL"
+        value={photoURL}
+        onChange={(event) => setPhotoURL(event.target.value)}
+        className="form-control"
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="plate">Plate:</label>
+      <input
+        type="text"
+        id="plate"
+        value={plate}
+        onChange={(event) => setPlate(event.target.value)}
+        className="form-control"
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="year">Year:</label>
+      <input
+        type="number"
+        id="year"
+        value={year}
+        onChange={handleYearChange}
+        className="form-control"
+        min={1900}
+        max={2024}
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="color">Color:</label>
+      <input
+        type="text"
+        id="color"
+        value={color}
+        onChange={(event) => setColor(event.target.value)}
+        className="form-control"
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="transmission">Transmission:</label>
+      <select
+        id="transmission"
+        value={transmission}
+        onChange={(event) => setTransmission(event.target.value)}
+        className="form-control"
+        required
+      >
         <option value="">Select Transmission</option>
         <option value="true">Automatic</option>
         <option value="false">Manual</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="pricePerDay">Price per day:</label>
-        <input
-          type="text"
-          id="pricePerDay"
-          value={pricePerDay}
-          onChange={(event) => setPricePerDay(event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="numberOfSeats">Number of seats:</label>
-        <input
-          type="number"
-          id="numberOfSeats"
-          value={numberOfSeats}
-          // onChange={(event) => setNumberOfSeats(event.target.value)}
-          onChange={handleSeatsChange}
-          min={2}
-          max={9}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="numberOfDoors">Number of doors:</label>
-        <input
-          type="number"
-          id="numberOfDoors"
-          value={numberOfDoors}
-          // onChange={(event) => setNumberOfDoors(event.target.value)}
-          onChange={handleDoorsChange}
-          min={2}
-          max={4}
-          required
-        />
-      </div>
-        <div>
-        <label htmlFor="style">Car Type:</label>
-        <select
-          id="style"
-          value={style}
-          onChange={(event) => setStyle(event.target.value)}
-          required
-        >
+      </select>
+    </div>
+    <div className="form-group">
+      <label htmlFor="pricePerDay">Price per day:</label>
+      <input
+        type="text"
+        id="pricePerDay"
+        value={pricePerDay}
+        onChange={(event) => setPricePerDay(event.target.value)}
+        className="form-control"
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="numberOfSeats">Number of seats:</label>
+      <input
+        type="number"
+        id="numberOfSeats"
+        value={numberOfSeats}
+        onChange={handleSeatsChange}
+        className="form-control"
+        min={2}
+        max={9}
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="numberOfDoors">Number of doors:</label>
+      <input
+        type="number"
+        id="numberOfDoors"
+        value={numberOfDoors}
+        onChange={handleDoorsChange}
+        className="form-control"
+        min={2}
+        max={4}
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="style">Car Type:</label>
+      <select
+        id="style"
+        value={style}
+        onChange={(event) => setStyle(event.target.value)}
+        className="form-control"
+        required
+      >
         <option value="">Select Car Type</option>
         <option value="SUV">SUV</option>
         <option value="sudan">Sudan</option>
-        <option value="convertable">Convertable</option>
-        </select>
-      </div>
-      {/* <div>
-        <label htmlFor="reservation">Reservation:</label>
-        <input
-          type="text"
-          id="reservation"
-          value={reservation}
-          onChange={(event) => setReservation(event.target.value)}
-          
-        />
-      </div> */}
-      <div>
-        <label htmlFor="lister">Admin email:</label>
-        <input
-          type="text"
-          id="lister"
-          value={lister}
-          onChange={(event) => setLister(currentUser)}
-          required
-          readOnly
-        />
-      </div>
-      <div>
-        <label htmlFor="kilometers">Kilometers:</label>
-        <input
-          type="text"
-          id="kilometers"
-          value={kilometers}
-          onChange={(event) => setKilometers(event.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="branch">Branch:</label>
-        <select
-          id="branch"
-          value={branch}
-          onChange={(event) => setBranch(event.target.value)}
-          required
-        >
+        <option value="convertible">Convertible</option>
+      </select>
+    </div>
+    <div className="form-group">
+      <label htmlFor="lister">Admin email:</label>
+      <input
+        type="text"
+        id="lister"
+        value={lister}
+        onChange={(event) => setLister(currentUser)}
+        className="form-control"
+        required
+        readOnly
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="kilometers">Kilometers:</label>
+      <input
+        type="text"
+        id="kilometers"
+        value={kilometers}
+        onChange={(event) => setKilometers(event.target.value)}
+        className="form-control"
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="branch">Branch:</label>
+      <select
+        id="branch"
+        value={branch}
+        onChange={(event) => setBranch(event.target.value)}
+        className="form-control"
+        required
+      >
         <option value="">Select Branch</option>
         <option value="Montreal">Montreal</option>
         <option value="Toronto">Toronto</option>
         <option value="Ottawa">Ottawa</option>
-        <option value="NYC">New York</option>
+        <option value="New York City">New York</option>
         <option value="Washington">Washington</option>
-        </select>
-      </div>
-      <button type="submit">Add Car</button>
-    </form>
-    <hr></hr>
-    <h2>Delete a car for rent</h2>
-    <form onSubmit={handleDelete}>
-    <div>
-        <label htmlFor="deleteVIN">VIN of car to delete:</label>
-        <input
-          type="text"
-          id="deleteVIN"
-          value={deleteVIN}
-          onChange={(event) => setDeleteVIN(event.target.value)}
-          required
-        />
-      <button type="submit">Delete Car</button>
-      </div>
-       <p>{reqMessage}</p>
-       
+      </select>
+    </div>
+    <button type="submit" className="btn btn-primary">Add Car</button>
+  </form>
 
-    </form>
+  <hr />
+
+  
+</div>
+
+    <hr></hr>
+    
     </div>
 
 

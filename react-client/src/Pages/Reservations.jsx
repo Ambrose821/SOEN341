@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 
 function Reservations() {
   const [reservations, setReservations] = useState([]);
-  const { currentUser } = useAuth();
+
+  const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,8 +49,20 @@ function Reservations() {
     }
   };
 
-  const modifyReservation = (reservation) => {
-    navigate("/Reserve", { state: { modifyReservation: reservation } });
+  console.log(reservations);
+
+
+  // Placeholder for modify functionality
+  const modifyReservation = (index) => {
+
+    const reservation = reservations[index];
+    console.log(reservation);
+    navigate("/Reserve", {state : {modifyReservation : reservation}});
+  };
+
+  const viewBilling = (index) => {
+    const reservation = reservations[index];
+    navigate("/Billing", { state: { reservation } });
   };
 
   return (
