@@ -36,6 +36,7 @@ function InfoReservationPage() {
                 currentUser,
                 gps,
                 insurance,
+                imageUrl,
             }),
         });
         const data = await response.json();
