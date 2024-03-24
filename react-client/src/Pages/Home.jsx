@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
  color: theme.palette.text.secondary,
 }));
 
-const DynamicGrid = ({ photoURLs, ids }) => {
+const DynamicGrid = ({ photoURLs, ids,models,prices }) => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   //const audio = new Audio('./Background.mp3');
@@ -56,8 +56,8 @@ const DynamicGrid = ({ photoURLs, ids }) => {
             />
             <div style={{ padding: '10px', textAlign: 'center', width: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <h3>Car</h3>
-                <p>Price: $100/day</p>
+                <h3>{models[index]}</h3>
+                <p>Price: {prices[index]}</p>
               </div>
               <div>
                 {isLoggedIn && (
@@ -324,6 +324,9 @@ const handleApplyFilters = () => {
 
 const photoURLs = vehicleData.map(vehicle => vehicle.photoURL);
 const ids = vehicleData.map(vehicle => vehicle._id);
+  const models = vehicleData.map(vehicle => vehicle.model)
+  const prices = vehicleData.map(vehicle => vehicle.pricePerDay)
+  
 const idsFiltered = filteredVehicles.map((vehicle) => vehicle._id);
 
 const handleSeeAll = async() =>{
@@ -516,7 +519,7 @@ const handleSeeAll = async() =>{
       <Button onClick={handleClearFilters}>Clear Filters</Button> </div>}
     
                       
-  <DynamicGrid photoURLs={photoURLs} ids={ids} />
+      <DynamicGrid photoURLs={photoURLs} ids={ids} models={models} prices ={prices} />
  </div>
 
  )
