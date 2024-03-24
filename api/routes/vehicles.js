@@ -291,10 +291,12 @@ router.post('/deleteReservations', async function(req, res,next){
 router.post('/modifyReservations', async function(req,res,next){
 
     try{
-        const {modifyID , startDate, endDate, currentUser,gps,insurance} = req.body;
+        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
+
+        console.log("INFOOOOO: "+vehicleId,startDate,endDate,gps,insurance );
 
         await Reservation.findOneAndUpdate(
-            {_id : modifyID},
+            {_id : vehicleId},
             {$set : {startDate : startDate ,
                 endDate: endDate,
                 gps : gps, 

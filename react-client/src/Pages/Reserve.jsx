@@ -10,7 +10,7 @@ function Reserve() {
     const [gps, setGps] = useState(false); // State for GPS option
     const [insurance, setInsurance] = useState(false); // State for Insurance option
 
-    const [modifyID,setModifyID] = useState(0);
+    const [modifyID,setModifyID] = useState({});
 
 
     const location = useLocation();
@@ -27,6 +27,8 @@ function Reserve() {
         else{
             setModifyID(modifyReservation._id);
             setPhotoUrl(modifyReservation.vehicle.photoURL);
+
+            console.log("INSIDE ELSE:" +modifyID);
         }
     }, [vehicleId,modifyReservation]);
 
@@ -62,59 +64,43 @@ function Reserve() {
     };
 
     async function submitReservation() {
-        console.log("Attempting to submit reservation...");
+        
+        const idToUse = modifyReservation ? modifyID : vehicleId;
 
-        try {
-            const response = await fetch('http://localhost:9000/vehicles/reserve', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    vehicleId,
-                    startDate,
-                    endDate,
-                    currentUser,
-                    gps,
-                    insurance,
-                }),
-            });
-            const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Could not create reservation.');
-            }
-            alert('Reservation successfully created!');
-            navigate('/');
-        } catch (error) {
-            console.error('Error:', error);
-            alert(error.message);
+
+        navigate("/InfoReserve",{state: {
+            startDate :startDate,
+            endDate : endDate,
+            gps:gps,
+            insurance:insurance,
+            vehicleId:idToUse,
+            currentUser:currentUser,
+            imageUrl: photoUrl,
+            fromModify:false,
         }
+    })
     };
 
     async function modifyReservations(){
-        
-        try{
-            const response = await fetch('http://localhost:9000/vehicles/modifyReservations',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    modifyID,
-                    startDate,
-                    endDate,
-                    currentUser,
-                    gps,
-                    insurance,
-                }),
-            })
-            alert('Reservation successfully modified!');
-        }
-        catch(error){
 
+        const idToUse = modifyReservation ? modifyID : vehicleId;
+
+        console.log("FROM MODIFY FUNCTION"+idToUse);
+        
+        navigate("/InfoReserve",{state: {
+            startDate :startDate,
+            endDate : endDate,
+            gps:gps,
+            insurance:insurance,
+            vehicleId:idToUse,
+            currentUser:currentUser,
+            imageUrl: photoUrl,
+            fromModify:true,
         }
+    })
     }
+
 
     return (
         <div>
