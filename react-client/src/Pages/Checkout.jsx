@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 
 import Stripe from "react-stripe-checkout";
 
-function Checkin() {
+function Checkout() {
   const [isChecked, setIsChecked] = useState(false);
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
@@ -42,31 +42,17 @@ function Checkin() {
   };
 
   const handleForm1Submit = (e) => {
-  e.preventDefault();
-  const reservationNumber = e.target.elements.reservation_number.value;
-    const creditCardNumber = e.target.elements.credit_card_number.value;
-    const homeAddress = e.target.elements.address.value;
-    const license_number = e.target.elements.license_number.value;
-    const phone_number = e.target.elements.phone_number.value
-    form1Info =({ reservationNumber: reservationNumber, creditCardNumber: creditCardNumber, homeAddress: homeAddress, license_number: license_number, phone_number:phone_number  })
-    console.log(form1Info)
-    setAgreementVariable( [reservation,form1Info])
-    //alert(agreementVariable)
-  if (reservationNumber.trim() === '') {
-    alert('Please enter a non-empty reservation number.');
-    return; // Exit the function if validation fails
-  }
+    e.preventDefault();
 
-  // Check if the credit card number has 16 digits
-  if (!(/^\d{16}$/.test(creditCardNumber))) {
-    alert('Please enter a 16-digit credit card number.');
-    return; // Exit the function if validation fails
-  }
-
-  // If both validations pass, set the form submission flag to true
-  setIsForm1Submitted(true);
-  alert("User successfully checked-in!")
-  };
+    // Check if the checkbox is checked
+    if (!isChecked) {
+        alert('Please confirm that the vehicle was returned to the specified drop-off location.');
+        return; // Exit the function if the checkbox is not checked
+    }
+    alert('Vehicle drop off confirmed.')
+    // Proceed with form submission if the checkbox is checked
+    setIsForm1Submitted(true);
+};
   
   const sendToAgreement = () => {
     navigate('/agreement',{state :{info : agreementVariable}})
@@ -87,14 +73,16 @@ function Checkin() {
   };
 
   useEffect(() => {
-      if (reservation.deposit === 'due') {
-        setDepositPaid(false); // deposit not paid
-        setDeposit(500);
-      } else if (reservation.deposit === 'paid') {
-        setDepositPaid(true); // deposit paid
-        setDeposit(0);
-      }
-  }, [reservation]);
+    if (reservation && reservation.deposit) {
+        if (reservation.deposit === 'due') {
+            setDepositPaid(false); // deposit not paid
+            setDeposit(500);
+        } else if (reservation.deposit === 'paid') {
+            setDepositPaid(true); // deposit paid
+            setDeposit(0);
+        }
+    }
+}, [reservation]);
 
   const handleDepositToken = async (token) => {
     try {
@@ -130,35 +118,19 @@ function Checkin() {
   };
   
   return (
-    <div className="Checkin">
-      <h3><u>User Check-in</u></h3>
+    <div className="Checkout">
+      <h3><u>Vehicle Check-out</u></h3>
       <form onSubmit={handleForm1Submit} className="form">
-        
-      <label htmlFor="phone_number">Phone Number:</label>
-        <input type="text" id="phone_number" name="phone_number" required />
-
-            <label htmlFor="license_number">Drivers License Number:</label>
-        <input type="text" id="license_number" name="license_number" required />
-        
-        <label htmlFor="address">Home Address:</label>
-           <input type="text" id="address" name="address" required />
-        
-            <label htmlFor="reservation_number">Reservation Number:</label>
-            <input type="text" id="reservation_number" name="reservation_number" required/>
-
-            <label htmlFor="credit_card_number">Credit Card Number:</label>
-            <input type="text" id="credit_card_number" name="credit_card_number" required/>
-
-            <label htmlFor="photo_upload">Upload Photo:</label>
-            <input type="file" id="photo_upload" name="photo_upload" accept="image/*" required/><br/>
+      <input type="checkbox" id="checkbox_option" name="checkbox_option" onChange={handleCheckboxChange}/>
+            <label htmlFor="checkbox_option">Vehicle was returned to the speccified drop-off location </label><br/>
             <input type="submit" value="Submit"/>
             <input type="reset" value="Reset"/>
         </form>
         <br/><br/>
-        <h3><u>Vehicle Inspection</u></h3>
+        <h3><u>Vehicle Drop-Off Inspection</u></h3>
         <form onSubmit={handleForm2Submit} className="form">
             <input type="checkbox" id="checkbox_option" name="checkbox_option" onChange={handleCheckboxChange}/>
-            <label htmlFor="checkbox_option">Vehicle is Undamaged (Required if text box is empty)</label><br/><br/>
+            <label htmlFor="checkbox_option">Vehicle was returned Undamaged (Required if text box is empty)</label><br/><br/>
 
             <label htmlFor="textbox_option">Description of damages (Required if Checkbox is not selected)</label><br/>
             <textarea id="textbox_option" name="textbox_option" rows="4" cols="50" 
@@ -172,30 +144,12 @@ function Checkin() {
             <input type="submit" value="Submit"/>
             <input type="reset" value="Reset"onClick={handleReset}/>
         </form><br/><br/>
-        <h3><u>Sign Rental agreement:</u></h3>
-        <button onClick={sendToAgreement} disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button>
-        <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
-        <div>
-      <h3><u>Deposit payment:</u></h3>
-      {depositPaid ? "Deposit Paid" : `Deposit: ${deposit}` }
-      {!depositPaid && (
-        <Stripe
-          stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
-          currency="CAD"
-          name="Vehicles"
-          description="Deposit Payment"
-          token={handleDepositToken}
-          amount={deposit * 100} 
-          onClose={() => console.log('Deposit Payment closed')}
-        >
-          <br></br>
-          <button>Make a Payment</button>
-        </Stripe>
-      )}
-</div>
+        <h3><u>Generate Total Bill</u></h3>
+        <button disabled={!isForm1Submitted || !isForm2Submitted}>Generate Bill</button>
+      
 
     </div>
   );
 }
 
-export default Checkin;
+export default Checkout;

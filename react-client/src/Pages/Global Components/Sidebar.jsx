@@ -84,6 +84,15 @@ function Sidebar() {
               <span className="sidebarTitle">Favorites</span>
             </Link>
           </li>
+
+          {isLoggedIn && (
+          <li>
+            <Link to="/checkout" className={`sidebarLink ${location.pathname === '/checkout' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/' */}
+              <LogoutIcon className="icon" />
+              <span className="sidebarTitle">Check out</span>
+            </Link>
+          </li>
+        )}
        
       </ul>
     </div>
