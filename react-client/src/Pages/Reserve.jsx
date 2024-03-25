@@ -70,8 +70,6 @@ function Reserve() {
         
         const idToUse = modifyReservation ? modifyID : vehicleId;
 
-        console.log(startDate);
-
         navigate("/InfoReserve",{state: {
             startDate :startDate,
             endDate : endDate,
@@ -119,14 +117,16 @@ function Reserve() {
             });
       
             const data = await response.json();
-            console.log(data.dates);
-      
-            // Update `dates` and then immediately create excluded dates
-            const newDates = data.dates.map(dateStr => new Date(dateStr));
-            setDates(newDates);
-            
-            // Now create and set excluded dates based on the newly fetched dates
-            setExcludedDates(newDates);
+                console.log("From Server: ", data.dates);
+
+                const newDates = data.dates.map(dateStr => {
+                const [year, month, day] = dateStr.split('-').map(num => parseInt(num, 10));
+                const date = new Date(year, month - 1, day);
+                date.setHours(0, 0, 0, 0); // Ensure the time is set to midnight
+                return date;
+                });
+
+                setExcludedDates(newDates);
             console.log("Excluded Dates: ", newDates);
           } catch (error) {
             console.log(error);
@@ -136,15 +136,6 @@ function Reserve() {
         getReservationDates();
       }, [modifyReservation, modifyID, vehicleId]); // Ensures the e
 
-    async function createExcludedDates(){
-        const excludedDates = [];
-
-        for(let i=0;i<dates.length;i++){
-            excludedDates.push(new Date(dates[i]));
-        }
-        setExcludedDates(excludedDates);
-        console.log("YESSIR"+excludedDatesUse);
-    }
 
     return (
         <div>
