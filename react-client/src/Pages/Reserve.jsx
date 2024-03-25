@@ -87,8 +87,7 @@ function Reserve() {
 
         const idToUse = modifyReservation ? modifyID : vehicleId;
 
-        console.log("FROM MODIFY FUNCTION"+idToUse);
-        
+
         navigate("/InfoReserve",{state: {
             startDate :startDate,
             endDate : endDate,
@@ -106,13 +105,23 @@ function Reserve() {
         async function getReservationDates() {
           try {
             const idToUse = modifyReservation ? modifyID : vehicleId;
+
+            let isVehicle = false;
+
+            if(vehicleId){
+                isVehicle = true;
+            }
+
+            console.log("MODIFY LOLOL " + idToUse);
+
             const response = await fetch('http://localhost:9000/vehicles/getReservationDates', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                idToUse
+                idToUse,
+                isVehicle
               }),
             });
       
@@ -134,7 +143,7 @@ function Reserve() {
         }
       
         getReservationDates();
-      }, [modifyReservation, modifyID, vehicleId]); // Ensures the e
+      }, [modifyReservation, modifyID, vehicleId]); 
 
 
     return (
