@@ -13,7 +13,7 @@ function Checkout() {
   const [isForm1Submitted, setIsForm1Submitted] = useState(false);
   const [isForm2Submitted, setIsForm2Submitted] = useState(false);
   const [deposit, setDeposit] = useState(500);
-  const [depositPaid, setDepositPaid] = useState(false);
+  const [refund, setRefund] = useState(false);
   var form1Info = null;
   const [agreementVariable, setAgreementVariable] = useState('')
   const location = useLocation();
@@ -74,17 +74,15 @@ function Checkout() {
 
   useEffect(() => {
     if (reservation && reservation.deposit) {
-        if (reservation.deposit === 'due') {
-            setDepositPaid(false); // deposit not paid
-            setDeposit(500);
-        } else if (reservation.deposit === 'paid') {
-            setDepositPaid(true); // deposit paid
-            setDeposit(0);
+        if (reservation.deposit === 'paid') {
+            setRefund(false); // deposit not refunded
+        } else if (reservation.deposit === 'refunded') {
+            setRefund(true); // deposit refunded
         }
     }
 }, [reservation]);
 
-  const handleDepositToken = async (token) => {
+  const handleRefundToken = async (token) => {
     try {
       const response = await fetch(`http://localhost:9000/vehicles/update-deposit`, {
         method: 'POST',
@@ -93,7 +91,7 @@ function Checkout() {
         }, 
         body: JSON.stringify({
         reservationId: reservation, 
-        depositStatus: 'paid'
+        depositStatus: 'refunded'
       })
     });
 
@@ -106,17 +104,21 @@ function Checkout() {
     console.log(reservation);
 
     if (data.success) {
-      setDepositPaid(true); 
-      alert('Deposit payment successful!');
+      setRefund(true); 
+      alert('Refund successful!');
     } else {
-      alert('Failed to update deposit status.');
+      alert('Failed to update refund status.');
     }
   } catch (error) {
-    alert('Error processing deposit payment.');
+    alert('Error processing refund payment.');
     console.error(error);
   }
   };
   
+  const handleGenerateBill = () => {
+    navigate('/Billing');
+  };
+
   return (
     <div className="Checkout">
       <h3><u>Vehicle Check-out</u></h3>
@@ -145,8 +147,11 @@ function Checkout() {
             <input type="reset" value="Reset"onClick={handleReset}/>
         </form><br/><br/>
         <h3><u>Generate Total Bill</u></h3>
-        <button disabled={!isForm1Submitted || !isForm2Submitted}>Generate Bill</button>
-      
+        <button onClick={handleGenerateBill} disabled={!isForm1Submitted || !isForm2Submitted}>Generate Bill</button>
+        <br></br>
+        
+        <h3><u>Deposit Refund</u></h3>
+        {refund ? "Expect your refund in 4-5 business days" : <button onClick={handleRefundToken} disabled={refund}>Get deposit refund</button>}
 
     </div>
   );
