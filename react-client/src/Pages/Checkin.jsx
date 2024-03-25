@@ -172,9 +172,6 @@ function Checkin() {
             <input type="submit" value="Submit"/>
             <input type="reset" value="Reset"onClick={handleReset}/>
         </form><br/><br/>
-        <h3><u>Sign Rental agreement:</u></h3>
-        <button onClick={sendToAgreement} disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button>
-        <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
         <div>
       <h3><u>Deposit payment:</u></h3>
       {depositPaid ? "Deposit Paid" : `Deposit: ${deposit}` }
@@ -193,6 +190,10 @@ function Checkin() {
         </Stripe>
       )}
 </div>
+        <h3><u>Sign Rental agreement:</u></h3>
+        <button onClick={sendToAgreement} disabled={!isForm1Submitted || !isForm2Submitted||!depositPaid}>Electronically</button>
+        <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted||!depositPaid}>Physically</button></Link>
+       
 
     </div>
   );
