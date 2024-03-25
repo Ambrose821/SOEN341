@@ -21,13 +21,24 @@ async function reserve(req, res, next){
         const user = await User.findOne({email: currentUser});
 
         console.log(v.pricePerDay);
+        const start = new Date(startDate.trim());
+        const end = new Date(endDate.trim());
+
+        start.setHours(0,0,0,0);
+        end.setHours(0,0,0,0);
+
+        const timeDifference = end.getTime() - start.getTime();
+        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        console.log("Days:" + daysDifference);
+
+        const rentalCost = v.pricePerDay * daysDifference;
 
         const reservationData = {
             startDate: startDate,
             endDate: endDate,
             vehicle: v._id,
             user: user._id,
-            carCost : v.pricePerDay,
+            carCost : rentalCost,
             insurance:insurance,
             gps : gps
          };
