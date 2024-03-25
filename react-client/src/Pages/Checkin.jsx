@@ -81,15 +81,15 @@ function Checkin() {
     
   };
 
-  // useEffect(() => {
-  //     if (reservation.deposit === 'due') {
-  //       setDepositPaid(false); // deposit not paid
-  //       setDeposit(500);
-  //     } else if (reservation.deposit === 'paid') {
-  //       setDepositPaid(true); // deposit paid
-  //       setDeposit(0);
-  //     }
-  // }, [reservation]);
+  useEffect(() => {
+      if (reservation.deposit === 'due') {
+        setDepositPaid(false); // deposit not paid
+        setDeposit(500);
+      } else if (reservation.deposit === 'paid') {
+        setDepositPaid(true); // deposit paid
+        setDeposit(0);
+      }
+  }, [reservation]);
 
   const handleDepositToken = async (token) => {
     try {
@@ -99,12 +99,18 @@ function Checkin() {
           'Content-Type': 'application/json'
         }, 
         body: JSON.stringify({
-        reservationId: reservation.id, 
+        reservationId: reservation, 
         depositStatus: 'paid'
       })
     });
 
-      const data = await response.json(); 
+    console.log("Deposit Update Response:", response);
+
+    const data = await response.json(); 
+
+    console.log("Deposit Update Data:", data);
+
+    console.log(reservation);
 
     if (data.success) {
       setDepositPaid(true); 
@@ -164,7 +170,7 @@ function Checkin() {
         <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
         <div>
       <h3><u>Deposit payment:</u></h3>
-      {depositPaid ? `Deposit: $${deposit}` : "Deposit Paid" }
+      {depositPaid ? "Deposit Paid" : `Deposit: ${deposit}` }
       {!depositPaid && (
         <Stripe
           stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
