@@ -21,6 +21,7 @@ import Checkin from "./Pages/Checkin";
 import Agreement from "./Pages/Agreement";
 import AgreementPhys from "./Pages/AgreementPhys";
 import InfoCarPage from "./Pages/InfoCarPage";
+import Checkout from "./Pages/Checkout";
 
 
 
@@ -51,6 +52,8 @@ function App() {
           <Route path="/InfoCar" element={<InfoCarPage />} /> 
 
           <Route path="/agreement" element={<Agreement />} /> 
+          
+          <Route path="/checkout" element={<Checkout/>} />
 
         </Routes>
       </Layout>

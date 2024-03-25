@@ -18,6 +18,8 @@ function Reserve() {
     const [dropOffLocation, setDropOffLocation] = useState('');
     const [locations, setLocations] = useState([]);
 
+    const isFormValid = startDate !== null && endDate !== null && pickUpLocation !== '' && dropOffLocation !== '';
+
     useEffect(() => {
         setLocations(["Montreal", "Toronto", "Ontario"]);
     }, []);
@@ -167,7 +169,8 @@ function Reserve() {
                 onChange={(date) => setStartDate(date.toString())}
                 dateFormat="yyyy-MM-dd" 
                 excludeDates={excludedDatesUse}
-                minDate={new Date()} 
+                minDate={new Date()}
+                required
             />
 
             <p> End Date </p>
@@ -177,6 +180,7 @@ function Reserve() {
                 dateFormat="yyyy-MM-dd"
                 excludeDates={excludedDatesUse}
                 minDate={startDate || new Date()} 
+                required
             />
             <div>
                 <input 
@@ -197,6 +201,7 @@ function Reserve() {
             value={pickUpLocation} 
             onChange={(e) => setPickUpLocation(e.target.value)}
             style={{ margin: '10px' }}
+            required
         >
             <option value="">Select a location</option>
             {locations.map(location => (
@@ -210,6 +215,7 @@ function Reserve() {
             value={dropOffLocation} 
             onChange={(e) => setDropOffLocation(e.target.value)}
             style={{ margin: '10px' }}
+            required
         >
             <option value="">Select a location</option>
             {locations.map(location => (
@@ -218,9 +224,9 @@ function Reserve() {
         </select>
         </div>
             {modifyReservation ? (
-            <button onClick={modifyReservations} style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Modify Reservation</button>
+            <button onClick={modifyReservations} style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}disabled={!isFormValid} >Modify Reservation</button>
         ) : (
-            <button onClick={submitReservation} style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Submit Reservation</button>
+            <button onClick={submitReservation} style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}disabled={!isFormValid}>Submit Reservation</button>
         )}
             <br/>
             <img 
