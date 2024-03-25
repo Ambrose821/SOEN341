@@ -342,18 +342,25 @@ router.get('/nearest', find_nearest, (req, res) => {
    
 });
 
-router.post('update-deposit', async (req, res) => {
-
+router.post('/update-deposit', async (req, res) => {
     try {
         const { reservationId, depositStatus } = req.body;
         console.log('Updating deposit for reservation ID:', reservationId);
         console.log('New deposit status:', depositStatus);
-        res.json({ success: true, message: 'Deposit status updated successfully.' });
+        
+        const reservation = await Reservation.findOne(reservationId);
+
+        if (reservation) {
+            reservation.deposit = depositStatus; 
+            await reservation.save(); 
+            res.json({ success: true, message: 'Deposit status updated successfully.' });
+        } else {
+            res.status(404).json({ success: false, message: 'Reservation not found.' });
+        }
     } catch (error) {
         console.error('Error updating deposit:', error);
         res.status(500).json({ success: false, message: 'Failed to update deposit status.' });
-      }
-
+    }
 });
 
 module.exports = router;
