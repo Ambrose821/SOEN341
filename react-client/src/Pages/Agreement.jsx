@@ -11,6 +11,20 @@ function Agreement() {
   const printTest = (e) => {
     alert(JSON.stringify(info));
   }
+
+  
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  let month = currentDate.getMonth() + 1;
+  let day = currentDate.getDate();
+
+  // Append leading zeros if necessary
+  month = month < 10 ? '0' + month : month;
+  day = day < 10 ? '0' + day : day;
+
+  return `${year}-${month}-${day}`;
+}
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +50,6 @@ function Agreement() {
   return (
     
     <div className="Agreement">
-       <button onClick={printTest}>Test Variable</button>
       <h2>Car Rental Agreement</h2>
       <form onSubmit={handleSubmit}>
         {/* Rental Terms and Conditions */}
@@ -121,9 +134,9 @@ function Agreement() {
             The parties hereto have executed this Agreement as of the date first written above.
             <div>
                 <h4><u>Rental Company:</u></h4>
-                Signature: <input type="text" id="rental_company_signature" name="rental_company_signature" required /><br/>
-                Print Name: <input type="text" id="rental_company_name" name="rental_company_name" required /><br/>
-                Date: <input type="date" id="rental_company_date" name="rental_company_date" required />
+                Signature: <input type="text" id="rental_company_signature" name="rental_company_signature" required value="Vinisha Manek" readOnly /><br/>
+        Print Name: <input type="text" id="rental_company_name" name="rental_company_name" required value="Vinisha Manek" readOnly /><br/>
+        Date: <input type="date" id="rental_company_date" name="rental_company_date" required value={getCurrentDate()} readOnly />
             </div>
 
             
@@ -131,7 +144,7 @@ function Agreement() {
                 <h4><u>Renter:</u></h4>
                 Signature:<input type="text" id="renter_signature" name="renter_signature" required /><br/>
                 Print Name:<input type="text" id="renter_name" name="renter_name" required /><br/>
-                Date:<input type="date" id="renter_date" name="renter_date" required />
+                Date:<input type="date" id="renter_date" name="renter_date" required min={getCurrentDate()}/>
             </div>
         </li>
         </ol>
