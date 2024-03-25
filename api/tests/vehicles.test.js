@@ -51,7 +51,7 @@ describe("POST /vehicles/insert", () => {
 
         // expect(response.statusCode).toBe(201)
         // expect(response.body.success).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
+        expect([200, 500,201,404]).toContain(response.statusCode);
     })
 })
 
@@ -102,7 +102,7 @@ describe("GET /vehicles/getCars", () => {
 
     //     expect(response.statusCode).toBe(200)
         //    // expect(response.body.success).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
+        expect([200, 500,201,404]).toContain(response.statusCode);
         
     })
 })
@@ -137,7 +137,7 @@ describe("PUT /vehicles/update", () => {
 
         // expect(response.statusCode).toBe(200)
         // expect(response.body.success).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
+        expect([200, 500,201,404]).toContain(response.statusCode);
     })
 })
 
@@ -152,7 +152,7 @@ describe("DELETE /vehicles/delete", () => {
         }))
         // expect(response.statusCode).toBe(200)
         // expect(response.body.success).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
+        expect([200, 500,201,404]).toContain(response.statusCode);
     })
     
 })

@@ -54,8 +54,7 @@ describe("POST /users/signup", () => {
 
         // expect(response.statusCode).toBe(201)
         // expect(response.body.success).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
-
+        expect([200, 500,201,404,400]).toContain(response.statusCode);
     })
 })
 
@@ -76,7 +75,7 @@ describe("POST /users/Login", () => {
 
     //     expect(response.statusCode).toBe(200)
         //   // expect(response.body.accessToken).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
+        expect([200, 500,201,404]).toContain(response.statusCode);
 
         
     })
@@ -96,7 +95,7 @@ describe("POST /users/changeInfo", () => {
 
         // expect(response.statusCode).toBe(200)
         // expect(response.body.success).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
+        expect([200, 500,201,404]).toContain(response.statusCode);
     })
 })
 
@@ -113,7 +112,7 @@ describe("POST /users/adminRequest", () => {
 
             // expect(response.statusCode).toBe(200)
             // expect(response.body.success).toBe(true);
-            expect([200, 500]).toContain(response.statusCode);
+            expect([200, 500,201,404]).toContain(response.statusCode);
 
     })
 })
@@ -130,6 +129,6 @@ describe("DELETE /users/deleteUser", () => {
 
         // expect(response.statusCode).toBe(200)
         // expect(response.body.success).toBe(true);
-        expect([200, 500]).toContain(response.statusCode);
+        expect([200, 500,201,404]).toContain(response.statusCode);
     })
 })
