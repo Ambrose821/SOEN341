@@ -17,9 +17,7 @@ function Checkin() {
   var form1Info = null;
   const [agreementVariable, setAgreementVariable] = useState('')
   const location = useLocation();
-
   const { reservation } = location.state || {};
-
   const navigate = useNavigate();
 
   const printTest = (e) => {
@@ -83,36 +81,42 @@ function Checkin() {
     
   };
 
+  // useEffect(() => {
+  //     if (reservation.deposit === 'due') {
+  //       setDepositPaid(false); // deposit not paid
+  //       setDeposit(500);
+  //     } else if (reservation.deposit === 'paid') {
+  //       setDepositPaid(true); // deposit paid
+  //       setDeposit(0);
+  //     }
+  // }, [reservation]);
+
   const handleDepositToken = async (token) => {
     try {
       const response = await fetch(`http://localhost:9000/vehicles/update-deposit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }, 
+        body: JSON.stringify({
         reservationId: reservation.id, 
         depositStatus: 'paid'
-      });
-      if (response.data.success) {
-        setDepositPaid(true); 
-        alert('Deposit payment successful!');
-      } else {
-        alert('Failed to update deposit status.');
-      }
-    } catch (error) {
-      alert('Error processing deposit payment.');
-      console.error(error);
-    }
-  };
+      })
+    });
 
+      const data = await response.json(); 
 
-  useEffect(() => {
-    checkDepositStatus();
-  }, []);
-
-  const checkDepositStatus = () => {
-    if (reservation && reservation.deposit == "due") {
-      setDepositPaid(false); // deposit not paid
+    if (data.success) {
+      setDepositPaid(true); 
+      alert('Deposit payment successful!');
     } else {
-      setDepositPaid(true); // deposit paid
+      alert('Failed to update deposit status.');
     }
+  } catch (error) {
+    alert('Error processing deposit payment.');
+    console.error(error);
   }
+  };
   
   return (
     <div className="Checkin">
@@ -159,23 +163,23 @@ function Checkin() {
         <Link to={`/agreement?variable=${agreementVariable}`}><button disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button></Link>
         <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
         <div>
-        <h3><u>Deposit payment:</u></h3>
-        {depositPaid ? "Deposit Paid" : `Deposit: $${deposit}`}
-        {!depositPaid && (
-          <Stripe
-            stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
-            currency="CAD"
-            name="Vehicles"
-            description="Deposit Payment"
-            token={handleDepositToken}
-            amount={deposit * 100} 
-            onClose={() => console.log('Deposit Payment closed')}
-          >
-            <br></br>
-            <button>Make a Payment</button>
-          </Stripe>
-        )}
-      </div>
+      <h3><u>Deposit payment:</u></h3>
+      {depositPaid ? `Deposit: $${deposit}` : "Deposit Paid" }
+      {!depositPaid && (
+        <Stripe
+          stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
+          currency="CAD"
+          name="Vehicles"
+          description="Deposit Payment"
+          token={handleDepositToken}
+          amount={deposit * 100} 
+          onClose={() => console.log('Deposit Payment closed')}
+        >
+          <br></br>
+          <button>Make a Payment</button>
+        </Stripe>
+      )}
+</div>
 
     </div>
   );
