@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import Stripe from "react-stripe-checkout";
 
 function Checkin() {
   const [isChecked, setIsChecked] = useState(false);
@@ -7,6 +8,8 @@ function Checkin() {
   const [images, setImages] = useState([]);
   const [isForm1Submitted, setIsForm1Submitted] = useState(false);
   const [isForm2Submitted, setIsForm2Submitted] = useState(false);
+  const [deposit, setDeposit] = useState(500);
+  const [depositPaid, setDepositPaid] = useState(false);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const testVar = searchParams.get('variable');
@@ -67,6 +70,17 @@ function Checkin() {
     
   };
 
+  const handleDepositToken = async (token) => {
+    try {
+      alert('Deposit payment successful!');
+      setDeposit(0);
+      setDepositPaid(true); 
+    } catch (error) {
+      alert('Error processing deposit payment.');
+      console.error(error);
+    }
+  };
+
   return (
     <div className="Checkin">
       <button onClick={printTest}>Test Variable</button>
@@ -104,7 +118,25 @@ function Checkin() {
         <h3><u>Sign Rental agreement:</u></h3>
         <Link to="/agreement"><button disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button></Link>
         <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
-            
+        <div>
+        <h3><u>Deposit payment:</u></h3>
+        {depositPaid ? "Deposit Paid" : `Deposit: $${deposit}`}
+        {!depositPaid && (
+          <Stripe
+            stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
+            currency="CAD"
+            name="Vehicles"
+            description="Deposit Payment"
+            token={handleDepositToken}
+            amount={deposit * 100} 
+            onClose={() => console.log('Deposit Payment closed')}
+          >
+            <br></br>
+            <button>Make a Payment</button>
+          </Stripe>
+        )}
+      </div>
+
     </div>
   );
 }
