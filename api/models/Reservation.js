@@ -37,7 +37,6 @@ const ReservationShchema = new mongoose.Schema({
             type:String,
             default:"due",
             enum: ['due','paid','refunded'],            
-        }
         } ,
         pickUp:{
             type: String,
@@ -47,6 +46,7 @@ const ReservationShchema = new mongoose.Schema({
             type: String,
             default:"Montreal",
           }
+        
 });
 
 module.exports = mongoose.model('Reservation',ReservationShchema);
