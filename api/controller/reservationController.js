@@ -6,7 +6,7 @@ const Reservation = require('../models/Reservation');
 
 async function reserve(req, res, next){
     try{
-        const {vehicleId , startDate, endDate, currentUser,gps,insurance,pickUp,dropOff, deposit, imageUrl} = req.body;
+        const {vehicleId , startDate, endDate, currentUser, gps, insurance, pickUp, dropOff, deposit, imageUrl} = req.body;
 
         console.log(vehicleId);
         console.log(startDate);
@@ -31,7 +31,7 @@ async function reserve(req, res, next){
             insurance:insurance,
             gps : gps,
             deposit: deposit,
-            pickUp:pickUp,
+            pickUp: pickUp,
             dropOff,dropOff,
          };
 
