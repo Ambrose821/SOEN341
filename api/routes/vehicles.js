@@ -363,4 +363,18 @@ router.post('/update-deposit', async (req, res) => {
     }
 });
 
+router.post('/checkedIn', async (req, res) => {
+    const { reservation } = req.body;
+    try {
+        const thisReservation = await Reservation.findOne({ _id: reservation._id })
+        thisReservation.checkedIn = true;
+        await thisReservation.save()
+        res.status(200).json({ success: true, message: "Checked In" })
+        
+    } catch (err) {
+        res.status(500).json({success: true, message:"api checkIn Error: "+err})
+        
+    }
+})
+
 module.exports = router;
