@@ -23,7 +23,7 @@ router.get('/getCars',async function(req, res, next){
     }
 });
 
-router.post('/reserve',reserve,sendConfirmEmail,async function(req,res,next){
+router.post('/reserve', reserve, sendConfirmEmail,async function(req,res,next){
 
     try{
         const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
