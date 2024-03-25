@@ -26,7 +26,7 @@ router.get('/getCars',async function(req, res, next){
 router.post('/reserve', reserve, sendConfirmEmail,async function(req,res,next){
 
     try{
-        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
+        const {vehicleId , startDate, endDate, currentUser, gps, insurance, deposit} = req.body;
 
         console.log(vehicleId);
         console.log(startDate);
@@ -62,6 +62,8 @@ router.post('/reserve', reserve, sendConfirmEmail,async function(req,res,next){
             return result.toISOString();
           };
 
+          console.log("Deposit:" +deposit);
+
           const reservationData = {
             startDate: addHourToDate(startDate),
             endDate: addHourToDate(endDate),
@@ -69,7 +71,8 @@ router.post('/reserve', reserve, sendConfirmEmail,async function(req,res,next){
             user: user._id,
             carCost: rentalCost,
             insurance: insurance,
-            gps: gps
+            gps: gps,
+            deposit: deposit
           };
 
          const reservation = new Reservation(reservationData);
@@ -397,6 +400,20 @@ router.delete('/delete', deleteCar, function(req, res, next){
 
 router.get('/nearest', find_nearest, (req, res) => {
    
-})
+});
+
+router.post('update-deposit', async (req, res) => {
+
+    try {
+        const { reservationId, depositStatus } = req.body;
+        console.log('Updating deposit for reservation ID:', reservationId);
+        console.log('New deposit status:', depositStatus);
+        res.json({ success: true, message: 'Deposit status updated successfully.' });
+    } catch (error) {
+        console.error('Error updating deposit:', error);
+        res.status(500).json({ success: false, message: 'Failed to update deposit status.' });
+      }
+
+});
 
 module.exports = router;
