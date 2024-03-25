@@ -24,68 +24,6 @@ router.get('/getCars',async function(req, res, next){
 });
 
 router.post('/reserve', reserve, sendConfirmEmail,async function(req,res,next){
-
-    try{
-        const {vehicleId , startDate, endDate, currentUser, gps, insurance, deposit} = req.body;
-
-        console.log(vehicleId);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(currentUser);
-        console.log(gps);
-        console.log(insurance);
-    
-        const v = await Vehicle.findOne({ _id : vehicleId });
-        vehicle = JSON.stringify(v,null,2);
-
-        const user = await User.findOne({email: currentUser});
-
-        console.log("Vehicle: " + vehicle);
-        console.log("Price" + v.pricePerDay);
-
-        const start = new Date(startDate.trim());
-        const end = new Date(endDate.trim());
-
-        start.setHours(0,0,0,0);
-        end.setHours(0,0,0,0);
-
-        const timeDifference = end.getTime() - start.getTime();
-        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-        console.log("Days:" + daysDifference);
-
-        const rentalCost = v.pricePerDay * daysDifference;
-        console.log("Cost:" +rentalCost);
-
-        const addHourToDate = (date) => {
-            const result = new Date(date);
-            result.setHours(result.getHours() + 1);
-            return result.toISOString();
-          };
-
-          console.log("Deposit:" +deposit);
-
-          const reservationData = {
-            startDate: addHourToDate(startDate),
-            endDate: addHourToDate(endDate),
-            vehicle: v._id,
-            user: user._id,
-            carCost: rentalCost,
-            insurance: insurance,
-            gps: gps,
-            deposit: deposit
-          };
-
-         const reservation = new Reservation(reservationData);
-         reservation.save();
-
-         res.status(200).json({message: "Sucess"});
-
-    }
-    catch(error){
-        console.log("ERROR OCCURED");
-        console.log(error);
-    }
-
 });
 
 router.get('/getCarIdFromPhoto', async function(req, res, next){
@@ -313,7 +251,7 @@ router.post('/deleteReservations', async function(req, res,next){
 router.post('/modifyReservations', async function(req,res,next){
 
     try{
-        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
+        const {vehicleId , startDate, endDate, currentUser,gps,insurance,pickUp,dropOff} = req.body;
 
         console.log("INFOOOOO: "+vehicleId,startDate,endDate,gps,insurance );
 
@@ -322,7 +260,9 @@ router.post('/modifyReservations', async function(req,res,next){
             {$set : {startDate : startDate ,
                 endDate: endDate,
                 gps : gps, 
-                insurance: insurance 
+                insurance: insurance,
+                pickUp:pickUp,
+                dropOff:dropOff
                 }
             },
             { new: true }

@@ -74,9 +74,11 @@ function Reservations() {
             {reservation.vehicle && reservation.vehicle.photoURL && (
               <img src={reservation.vehicle.photoURL} alt="Vehicle" style={{ maxWidth: '300px', maxHeight: '300px', margin: '10px 0' }} />
             )}
-            <p>Start Date: {new Date(reservation.startDate).toLocaleDateString()}</p>
-            <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
-            <p>Car Cost: {reservation.carCost}</p>
+            <p> <strong>Start Date:</strong> {new Date(reservation.startDate).toLocaleDateString()}</p>
+            <p> <strong>End Date:</strong> {new Date(reservation.endDate).toLocaleDateString()}</p>
+            <p> <strong>Car Cost:</strong> {reservation.carCost}</p>
+            <p> <strong> Pick Up Location: </strong> {reservation.pickUp}</p>
+            <p> <strong>Drop Off Location:</strong> {reservation.dropOff}</p>
             <Link to={`/checkin?variable=${testVar}`}>
               <button style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
                 Check In
