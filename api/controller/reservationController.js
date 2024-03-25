@@ -30,7 +30,7 @@ async function reserve(req, res, next){
             carCost : v.pricePerDay,
             insurance:insurance,
             gps : gps,
-            deposit: deposit
+            deposit: deposit,
             pickUp:pickUp,
             dropOff,dropOff,
          };
