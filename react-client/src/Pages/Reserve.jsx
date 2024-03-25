@@ -152,16 +152,16 @@ function Reserve() {
             <p> Start Date </p>
             <DatePicker
                 selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                onChange={(date) => setStartDate(date.toString())}
                 dateFormat="yyyy-MM-dd" 
                 excludeDates={excludedDatesUse}
                 minDate={new Date()} 
-/>
+            />
 
             <p> End Date </p>
             <DatePicker
                 selected={endDate}
-                onChange={(date) => setEndDate(date)}
+                onChange={(date) => setEndDate(date.toString())}
                 dateFormat="yyyy-MM-dd"
                 excludeDates={excludedDatesUse}
                 minDate={startDate || new Date()} 
