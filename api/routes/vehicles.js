@@ -334,40 +334,50 @@ router.post('/modifyReservations', async function(req,res,next){
 });
 
 router.post('/getReservationDates', async function(req, res) {
-    try {
-      const { idToUse } = req.body;
-  
-      // Find all reservations for the given vehicle
-      const reservations = await Reservation.find({ vehicle: idToUse });
-      console.log("REZZZZ"+reservations);
-  
-      const reserveDates = [];
-  
-      reservations.forEach(reservation => {
-        let currentDate = new Date(reservation.startDate);
-  
+    console.log("I START HERE");
+        try {
 
-        while (currentDate <= reservation.endDate) {
+            var reservations;
+            const { idToUse,isVehicle} = req.body;
 
-          const formattedDate = currentDate.toISOString().split('T')[0];
-  
-          console.log(formattedDate);
+            console.log("VALUE:"+isVehicle);
 
-          if (!reserveDates.includes(formattedDate)) {
-            reserveDates.push(formattedDate);
+            if(isVehicle){
+                reservations  = await Reservation.find({ vehicle: idToUse });
+            }
+            else{
+                const temp = await Reservation.findOne({ _id: idToUse }).populate("vehicle").lean();
+                const id = temp.vehicle._id;
+                reservations  = await Reservation.find({ vehicle: id });
+            }
+
+            console.log(reservations);
+
+            const reserveDates = [];
+        
+            reservations.forEach(reservation => {
+              let currentDate = new Date(reservation.startDate);
+        
+      
+              while (currentDate <= reservation.endDate) {
+      
+                const formattedDate = currentDate.toISOString().split('T')[0];
+        
+                console.log(formattedDate);
+      
+                if (!reserveDates.includes(formattedDate)) {
+                  reserveDates.push(formattedDate);
+                }
+        
+                currentDate.setDate(currentDate.getDate() + 1);
+              }
+            });
+            res.status(200).json({message : "Sucess" , dates : reserveDates});
+        
+          } catch (error) {
+            console.error('Error fetching reservation dates:', error);
+            res.status(500).json({ message: "Error500" });
           }
-  
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-      });
-  
-      // After all reservations have been processed, send the result back
-      res.status(200).json({message : "Sucess" , dates : reserveDates});
-  
-    } catch (error) {
-      console.error('Error fetching reservation dates:', error);
-      res.status(500).json({ message: "Error500" });
-    }
   });
 
 

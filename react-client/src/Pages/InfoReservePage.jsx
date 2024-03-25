@@ -71,6 +71,7 @@ function InfoReservationPage() {
             }),
         })
         alert('Reservation successfully modified!');
+        navigate('/');
     }
     catch(error){
 
