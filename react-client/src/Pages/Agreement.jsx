@@ -45,32 +45,32 @@ function Agreement() {
         <ol>
           <li>
             <h3>Renter's Information:</h3><br/>
-            Name:{info[0].user.firstName + " " + info[0].user.last_name} <br/> 
-            Address: {info[1].homeAddress}<br/>
-            Contact Number:{info[1].phone_number}<br/>
-            Email Address:{ info[0].user.email}<br/>
-            Driver's License Number:{ info[1].license_number}<br/>
+            Name: {" "+info[0].user.firstName + " " + info[0].user.last_name} <br/> 
+            Address: {" "+info[1].homeAddress}<br/>
+            Contact Number:{" "+info[1].phone_number}<br/>
+            Email Address:{ " "+info[0].user.email}<br/>
+            Driver's License Number:{" "+ info[1].license_number}<br/>
           </li><br/>
           <li>
           <h3>Vehicle Information:</h3><br/>
-            Make:{info[0].vehicle.brand}<br/>
-            Model:{info[0].vehicle.model}<br/>
-            Year:{info[0].vehicle.year}<br/>
-            License Plate Number:{info[0].vehicle.plate}<br/>
-            Vehicle Identification Number (VIN):{info[0].vehicle.VIN}<br/>
+            Make:{" "+info[0].vehicle.brand}<br/>
+            Model:{" "+info[0].vehicle.model}<br/>
+            Year:{" "+info[0].vehicle.year}<br/>
+            License Plate Number:{" "+info[0].vehicle.plate}<br/>
+            Vehicle Identification Number (VIN):{" "+info[0].vehicle.VIN}<br/>
             Color:<br/>
 
           </li><br/>
           <li>
           <h3>Rental Details:</h3><br/>
-            Rental Start Date:{info[0].startDate} <br/>
-            Rental End Date:{info[0].endDate}<br/>
-            Pick-up Location: {info[0].pickUp}<br />
-            Drop-off Location:{info[0].dropOff}<br/>
-            Rental Period:{info[0].startDate}   to     { info[0].endDate}<br/>
+            Rental Start Date:{" "+info[0].startDate} <br/>
+            Rental End Date:{" "+info[0].endDate}<br/>
+            Pick-up Location: {" "+info[0].pickUp}<br />
+            Drop-off Location:{" "+info[0].dropOff}<br/>
+            Rental Period:{" "+info[0].startDate}   to     { info[0].endDate}<br/>
             Mileage Limit (if applicable): N/A<br/>
-            Rental Rate:info[0].vehicle.pricePerDay<br/>
-            Additional Services (if any):gps:{info[0].gps.toString()} insurance: { info[0].insurance.toString()}<br/>
+            Rental Rate:{" "+info[0].vehicle.pricePerDay}<br/>
+            Additional Services (if any):gps:{" "+info[0].gps.toString()+", "} insurance: { info[0].insurance.toString()}<br/>
 
 
           </li><br/>

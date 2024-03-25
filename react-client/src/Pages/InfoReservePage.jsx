@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 
@@ -114,9 +114,9 @@ return (
           }}>
           {fromModify ? 'Modify' : 'YES'}
         </button>
-        <button  style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', fontSize: '16px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+        <Link to="/"><button  style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', fontSize: '16px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
           NO
-        </button>
+        </button></Link>
       </div>
     </div>
   </div>

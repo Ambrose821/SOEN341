@@ -57,6 +57,12 @@ function Reservations() {
     
   }
 
+  const sendToCheckOut = async (index) => {
+    const reservation = reservations[index];
+    navigate('/checkout',{state :{reservation :reservation}})
+    
+  }
+
   // Placeholder for modify functionality
   const modifyReservation = (index) => {
 
@@ -90,7 +96,7 @@ function Reservations() {
             {!reservation.checkedIn && <button onClick={() => sendToCheckIn(index)} style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin: '5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
               Check In
             </button>}
-            {reservation.checkedIn && <button  style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin: '5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
+            {reservation.checkedIn && <button  onClick={() => sendToCheckOut(index)} style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin: '5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
               Check out
             </button>}
               
