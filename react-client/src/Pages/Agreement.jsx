@@ -3,16 +3,15 @@ import { Link, useLocation } from 'react-router-dom';
 function Agreement() {
 
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const agreementVariable = searchParams.get('variable');
+  const { info } = location.state || {}
 
-//   const printTest = (e) => {
-//     alert(agreementVariable.reservation);
-// }
+  const printTest = (e) => {
+    alert(JSON.stringify(info));
+}
   return (
     
     <div className="Agreement">
-       {/* <button onClick={printTest}>Test Variable</button> */}
+       <button onClick={printTest}>Test Variable</button>
       <h2>Car Rental Agreement</h2>
       <form>
         {/* Rental Terms and Conditions */}
@@ -21,32 +20,32 @@ function Agreement() {
         <ol>
           <li>
             <h3>Renter's Information:</h3><br/>
-            Name:<br/>
-            Address:<br/>
-            Contact Number:<br/>
-            Email Address:<br/>
-            Driver's License Number:<br/>
+            Name:{info[0].user.firstName + " " + info[0].user.last_name} <br/> 
+            Address: {info[1].homeAddress}<br/>
+            Contact Number:{info[1].phone_number}<br/>
+            Email Address:{ info[0].user.email}<br/>
+            Driver's License Number:{ info[1].license_number}<br/>
           </li><br/>
           <li>
           <h3>Vehicle Information:</h3><br/>
-            Make:<br/>
-            Model:<br/>
-            Year:<br/>
-            License Plate Number:<br/>
-            Vehicle Identification Number (VIN):<br/>
+            Make:{info[0].vehicle.brand}<br/>
+            Model:{info[0].vehicle.model}<br/>
+            Year:{info[0].vehicle.year}<br/>
+            License Plate Number:{info[0].vehicle.plate}<br/>
+            Vehicle Identification Number (VIN):{info[0].vehicle.VIN}<br/>
             Color:<br/>
 
           </li><br/>
           <li>
           <h3>Rental Details:</h3><br/>
-            Rental Start Date:<br/>
-            Rental End Date:<br/>
-            Pick-up Location:<br/>
-            Drop-off Location:<br/>
-            Rental Period:<br/>
-            Mileage Limit (if applicable):<br/>
-            Rental Rate:<br/>
-            Additional Services (if any):<br/>
+            Rental Start Date:{info[0].startDate} <br/>
+            Rental End Date:{info[0].endDate}<br/>
+            Pick-up Location: {info[0].pickUp}<br />
+            Drop-off Location:{info[0].dropOff}<br/>
+            Rental Period:{info[0].startDate}   to     { info[0].endDate}<br/>
+            Mileage Limit (if applicable): N/A<br/>
+            Rental Rate:info[0].vehicle.pricePerDay<br/>
+            Additional Services (if any):gps:{info[0].gps.toString()} insurance: { info[0].insurance.toString()}<br/>
 
 
           </li><br/>

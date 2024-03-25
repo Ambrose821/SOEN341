@@ -47,9 +47,10 @@ function Checkin() {
     const creditCardNumber = e.target.elements.credit_card_number.value;
     const homeAddress = e.target.elements.address.value;
     const license_number = e.target.elements.license_number.value;
-    form1Info =({ reservationNumber: reservationNumber, creditCardNumber: creditCardNumber, homeAddress: homeAddress, license_number: license_number })
+    const phone_number = e.target.elements.phone_number.value
+    form1Info =({ reservationNumber: reservationNumber, creditCardNumber: creditCardNumber, homeAddress: homeAddress, license_number: license_number, phone_number:phone_number  })
     console.log(form1Info)
-    setAgreementVariable({ reservation:reservation, form1: JSON.stringify(form1Info) })
+    setAgreementVariable( [reservation,form1Info])
     //alert(agreementVariable)
   if (reservationNumber.trim() === '') {
     alert('Please enter a non-empty reservation number.');
@@ -65,7 +66,11 @@ function Checkin() {
   // If both validations pass, set the form submission flag to true
   setIsForm1Submitted(true);
   alert("User successfully checked-in!")
-};
+  };
+  
+  const sendToAgreement = () => {
+    navigate('/agreement',{state :{info : agreementVariable}})
+  }
   const handleForm2Submit = (e) => {
     e.preventDefault();
     if (!isChecked && description.trim() === '' && images.length === 0) {
@@ -130,6 +135,9 @@ function Checkin() {
       <h3><u>User Check-in</u></h3>
       <form onSubmit={handleForm1Submit} className="form">
         
+      <label htmlFor="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" required />
+
             <label htmlFor="license_number">Drivers License Number:</label>
         <input type="text" id="license_number" name="license_number" required />
         
@@ -166,7 +174,7 @@ function Checkin() {
             <input type="reset" value="Reset"onClick={handleReset}/>
         </form><br/><br/>
         <h3><u>Sign Rental agreement:</u></h3>
-        <Link to={`/agreement?variable=${agreementVariable}`}><button disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button></Link>
+        <button onClick={sendToAgreement} disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button>
         <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
         <div>
       <h3><u>Deposit payment:</u></h3>
