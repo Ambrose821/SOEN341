@@ -24,7 +24,6 @@ router.get('/getCars',async function(req, res, next){
 });
 
 router.post('/reserve', reserve, sendConfirmEmail,async function(req,res,next){
-
 });
 
 router.get('/getCarIdFromPhoto', async function(req, res, next){
@@ -341,6 +340,20 @@ router.delete('/delete', deleteCar, function(req, res, next){
 
 router.get('/nearest', find_nearest, (req, res) => {
    
-})
+});
+
+router.post('update-deposit', async (req, res) => {
+
+    try {
+        const { reservationId, depositStatus } = req.body;
+        console.log('Updating deposit for reservation ID:', reservationId);
+        console.log('New deposit status:', depositStatus);
+        res.json({ success: true, message: 'Deposit status updated successfully.' });
+    } catch (error) {
+        console.error('Error updating deposit:', error);
+        res.status(500).json({ success: false, message: 'Failed to update deposit status.' });
+      }
+
+});
 
 module.exports = router;

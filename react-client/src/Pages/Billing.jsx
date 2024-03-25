@@ -17,6 +17,7 @@ function Billing() {
   const [gpsCost, setGpsCost] = useState(0);
   const [insuranceCost, setInsuranceCost] = useState(0);
 
+
   const startDateString = new Date(reservation.startDate);
   const endDateString = new Date(reservation.endDate);
   const timeDifferenceInSeconds = endDateString - startDateString;
@@ -45,11 +46,27 @@ function Billing() {
       } else {
         setInsuranceCost(0);
       }
+
+      switch (reservation.deposit) {
+        case "due":
+          setDeposit(500);
+          break;
+        case "paid":
+          setDeposit(deposit);
+          break;
+        case "refunded":
+          setDeposit(-500);
+          break;
+        default:
+          setDeposit(deposit);
+          break;
+      }
+
       setTaxes((((reservation.carCost + gpsCost + insuranceCost) || 0)) * 0.15);
-      setTotalCost((carCost + gpsCost + insuranceCost) * 1.15);
+      setTotalCost(((carCost + gpsCost + insuranceCost) * 1.15) + deposit);
 
     }
-  }, [reservation, carCost, gpsCost, insuranceCost, timeDifferenceInDays]);
+  }, [reservation, carCost, gpsCost, insuranceCost, timeDifferenceInDays, deposit]);
 
   const handleToken = async (token) => {
     try {
@@ -77,14 +94,14 @@ function Billing() {
         <div>
           <p>Reservation Start Date: {startDate}</p>
           <p>Reservation End Date: {endDate}</p>
-          <p>Car Cost: {carCost}</p>
-          <p>GPS Cost: {gpsCost}</p>
-          <p>Insurance Cost: {insuranceCost}</p>
-          <p>Taxes: {taxes}</p>
+          <p>Car Cost: {carCost}$</p>
+          <p>GPS Cost: {gpsCost}$</p>
+          <p>Insurance Cost: {insuranceCost}$</p>
+          <p>Taxes: {taxes}$</p>
           {/* <p>Taxes: {(carCost + gpsCost + insuranceCost)*0.15}</p> */}
-          <p>Deposit, if applicable: {deposit}</p>
+          <p>Deposit, if applicable: {deposit}$</p>
           {/* <p>Total Cost: {totalCost}</p> */}
-          <p> Total Cost: {(carCost + gpsCost + insuranceCost) * 1.15}</p>
+          <p> Total Cost: {((carCost + gpsCost + insuranceCost) * 1.15).toFixed(2)}$</p>
         </div>
       </div>
       <div>
