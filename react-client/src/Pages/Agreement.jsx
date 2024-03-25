@@ -1,19 +1,44 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
+
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 function Agreement() {
 
   const location = useLocation();
   const { info } = location.state || {}
-
+  const navigate = useNavigate();
+  const[checkedIn, setCheckedIn] = useState(false)
   const printTest = (e) => {
     alert(JSON.stringify(info));
-}
+  }
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:9000/vehicles/checkedIn", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reservation: info[0] }),
+        
+      });
+      const data = await response.json();
+      if (data.success == true) {
+        setCheckedIn(true);
+        
+      }
+    } catch (err) {
+      console.log("Agreement Handle Submit Error: "+ err)
+    }
+    
+  }
   return (
     
     <div className="Agreement">
        <button onClick={printTest}>Test Variable</button>
       <h2>Car Rental Agreement</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         {/* Rental Terms and Conditions */}
         <h3>Rental Agreement Number:</h3>
         <p>This Rental Agreement ("Agreement") is entered into between Vini's Vehicles Inc., located at 1455 Blvd. De Maisonneuve Ouest, Montreal, Quebec H3G 1M8, hereinafter referred to as the "Rental Company," and the individual or entity identified below, hereinafter referred to as the "Renter":</p>
@@ -112,6 +137,7 @@ function Agreement() {
         </ol>
         <button type="submit">Submit</button>
       </form>
+      {checkedIn && <p>Thank you for Checking In</p>}
     </div>
   );
 }

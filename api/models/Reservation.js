@@ -45,6 +45,10 @@ const ReservationShchema = new mongoose.Schema({
           dropOff:{
             type: String,
             default:"Montreal",
+    },
+    checkedIn: {
+        type: Boolean,
+        default: false
           }
         
 });

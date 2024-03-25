@@ -87,9 +87,12 @@ function Reservations() {
             <p> <strong>Car Cost:</strong> {reservation.carCost}</p>
             <p> <strong> Pick Up Location: </strong> {reservation.pickUp}</p>
             <p> <strong>Drop Off Location:</strong> {reservation.dropOff}</p>
- <button onClick ={()=> sendToCheckIn(index)} style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
-                Check In
-              </button>
+            {!reservation.checkedIn && <button onClick={() => sendToCheckIn(index)} style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin: '5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
+              Check In
+            </button>}
+            {reservation.checkedIn && <button  style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin: '5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
+              Check out
+            </button>}
               
             <button 
               onClick={() => viewBilling(index)}
