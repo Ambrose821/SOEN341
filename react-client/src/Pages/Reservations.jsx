@@ -51,6 +51,11 @@ function Reservations() {
 
   console.log(reservations);
 
+  const sendToCheckIn = async (index) => {
+    const reservation = reservations[index];
+    navigate('/checkin',{state :{reservation :reservation}})
+    
+  }
 
   // Placeholder for modify functionality
   const modifyReservation = (index) => {
@@ -77,11 +82,12 @@ function Reservations() {
             <p>Start Date: {new Date(reservation.startDate).toLocaleDateString()}</p>
             <p>End Date: {new Date(reservation.endDate).toLocaleDateString()}</p>
             <p>Car Cost: {reservation.carCost}</p>
-            <Link to={`/checkin?variable=${testVar}`}>
-              <button style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
+            <p>Reservation Number: {reservation._id}</p>
+            
+              <button onClick ={()=> sendToCheckIn(index)} style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
                 Check In
               </button>
-              </Link>
+              
             <button 
               onClick={() => viewBilling(index)}
               style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>

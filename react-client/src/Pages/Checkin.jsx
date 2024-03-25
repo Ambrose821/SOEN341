@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation,  useNavigate } from 'react-router-dom';
 import Stripe from "react-stripe-checkout";
 
 function Checkin() {
@@ -10,12 +10,15 @@ function Checkin() {
   const [isForm2Submitted, setIsForm2Submitted] = useState(false);
   const [deposit, setDeposit] = useState(500);
   const [depositPaid, setDepositPaid] = useState(false);
+  var form1Info = null;
+  const [agreementVariable, setAgreementVariable] = useState('')
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const testVar = searchParams.get('variable');
+  const { reservation } = location.state || {};
+
+  const navigate = useNavigate();
 
   const printTest = (e) => {
-    alert(testVar);
+    alert(JSON.stringify(reservation));
 }
 
   const handleCheckboxChange = (e) => {
@@ -38,8 +41,13 @@ function Checkin() {
   const handleForm1Submit = (e) => {
   e.preventDefault();
   const reservationNumber = e.target.elements.reservation_number.value;
-  const creditCardNumber = e.target.elements.credit_card_number.value;
-
+    const creditCardNumber = e.target.elements.credit_card_number.value;
+    const homeAddress = e.target.elements.address.value;
+    const license_number = e.target.elements.license_number.value;
+    form1Info =({ reservationNumber: reservationNumber, creditCardNumber: creditCardNumber, homeAddress: homeAddress, license_number: license_number })
+    console.log(form1Info)
+    setAgreementVariable({ reservation:reservation, form1: JSON.stringify(form1Info) })
+    //alert(agreementVariable)
   if (reservationNumber.trim() === '') {
     alert('Please enter a non-empty reservation number.');
     return; // Exit the function if validation fails
@@ -85,7 +93,14 @@ function Checkin() {
     <div className="Checkin">
       <button onClick={printTest}>Test Variable</button>
       <h3><u>User Check-in</u></h3>
-       <form onSubmit={handleForm1Submit} className="form">
+      <form onSubmit={handleForm1Submit} className="form">
+        
+            <label htmlFor="license_number">Drivers License Number:</label>
+        <input type="text" id="license_number" name="license_number" required />
+        
+        <label htmlFor="address">Home Address:</label>
+           <input type="text" id="address" name="address" required />
+        
             <label htmlFor="reservation_number">Reservation Number:</label>
             <input type="text" id="reservation_number" name="reservation_number" required/>
 
@@ -116,7 +131,7 @@ function Checkin() {
             <input type="reset" value="Reset"onClick={handleReset}/>
         </form><br/><br/>
         <h3><u>Sign Rental agreement:</u></h3>
-        <Link to="/agreement"><button disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button></Link>
+        <Link to={`/agreement?variable=${agreementVariable}`}><button disabled={!isForm1Submitted || !isForm2Submitted}>Electronically</button></Link>
         <Link to="/agreementp"><button disabled={!isForm1Submitted || !isForm2Submitted}>Physically</button></Link>
         <div>
         <h3><u>Deposit payment:</u></h3>

@@ -1,8 +1,18 @@
 import React from 'react';
-
+import { Link, useLocation } from 'react-router-dom';
 function Agreement() {
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const agreementVariable = searchParams.get('variable');
+
+//   const printTest = (e) => {
+//     alert(agreementVariable.reservation);
+// }
   return (
+    
     <div className="Agreement">
+       {/* <button onClick={printTest}>Test Variable</button> */}
       <h2>Car Rental Agreement</h2>
       <form>
         {/* Rental Terms and Conditions */}
