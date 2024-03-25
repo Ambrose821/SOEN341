@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Stripe from "react-stripe-checkout";
 import axios from 'axios';
 
 function Billing() {
@@ -103,19 +102,6 @@ function Billing() {
           {/* <p>Total Cost: {totalCost}</p> */}
           <p> Total Cost: {((carCost + gpsCost + insuranceCost) * 1.15).toFixed(2)}$</p>
         </div>
-      </div>
-      <div>
-        <Stripe 
-          stripeKey="pk_test_51OxClYRtB7HB3uoouoj90CHAzOKSboCFXA3j6SYsdDHW0N8In4m1ZfO9GZCG6jFOHedJNAMwF9DKZ8SEl0lbOqVv009DRKxgDw"
-          currency="CAD"
-          name="Vehicles"
-          description="Reservation Payment"
-          token={handleToken}
-          amount={totalCost * 100} // Amount in cents
-          onClose={() => console.log('Payment closed')}
-        >
-          <button>Pay Balance</button>
-        </Stripe>
       </div>
     </div>
   );
