@@ -24,65 +24,6 @@ router.get('/getCars',async function(req, res, next){
 });
 
 router.post('/reserve', reserve, sendConfirmEmail,async function(req,res,next){
-
-    try{
-        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
-
-        console.log(vehicleId);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(currentUser);
-        console.log(gps);
-        console.log(insurance);
-    
-        const v = await Vehicle.findOne({ _id : vehicleId });
-        vehicle = JSON.stringify(v,null,2);
-
-        const user = await User.findOne({email: currentUser});
-
-        console.log("Vehicle: " + vehicle);
-        console.log("Price" + v.pricePerDay);
-
-        const start = new Date(startDate.trim());
-        const end = new Date(endDate.trim());
-
-        start.setHours(0,0,0,0);
-        end.setHours(0,0,0,0);
-
-        const timeDifference = end.getTime() - start.getTime();
-        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-        console.log("Days:" + daysDifference);
-
-        const rentalCost = v.pricePerDay * daysDifference;
-        console.log("Cost:" +rentalCost);
-
-        const addHourToDate = (date) => {
-            const result = new Date(date);
-            result.setHours(result.getHours() + 1);
-            return result.toISOString();
-          };
-
-          const reservationData = {
-            startDate: addHourToDate(startDate),
-            endDate: addHourToDate(endDate),
-            vehicle: v._id,
-            user: user._id,
-            carCost: rentalCost,
-            insurance: insurance,
-            gps: gps
-          };
-
-         const reservation = new Reservation(reservationData);
-         reservation.save();
-
-         res.status(200).json({message: "Sucess"});
-
-    }
-    catch(error){
-        console.log("ERROR OCCURED");
-        console.log(error);
-    }
-
 });
 
 router.get('/getCarIdFromPhoto', async function(req, res, next){
@@ -310,7 +251,7 @@ router.post('/deleteReservations', async function(req, res,next){
 router.post('/modifyReservations', async function(req,res,next){
 
     try{
-        const {vehicleId , startDate, endDate, currentUser,gps,insurance} = req.body;
+        const {vehicleId , startDate, endDate, currentUser,gps,insurance,pickUp,dropOff} = req.body;
 
         console.log("INFOOOOO: "+vehicleId,startDate,endDate,gps,insurance );
 
@@ -319,7 +260,9 @@ router.post('/modifyReservations', async function(req,res,next){
             {$set : {startDate : startDate ,
                 endDate: endDate,
                 gps : gps, 
-                insurance: insurance 
+                insurance: insurance,
+                pickUp:pickUp,
+                dropOff:dropOff
                 }
             },
             { new: true }
@@ -334,40 +277,50 @@ router.post('/modifyReservations', async function(req,res,next){
 });
 
 router.post('/getReservationDates', async function(req, res) {
-    try {
-      const { idToUse } = req.body;
-  
-      // Find all reservations for the given vehicle
-      const reservations = await Reservation.find({ vehicle: idToUse });
-      console.log("REZZZZ"+reservations);
-  
-      const reserveDates = [];
-  
-      reservations.forEach(reservation => {
-        let currentDate = new Date(reservation.startDate);
-  
+    console.log("I START HERE");
+        try {
 
-        while (currentDate <= reservation.endDate) {
+            var reservations;
+            const { idToUse,isVehicle} = req.body;
 
-          const formattedDate = currentDate.toISOString().split('T')[0];
-  
-          console.log(formattedDate);
+            console.log("VALUE:"+isVehicle);
 
-          if (!reserveDates.includes(formattedDate)) {
-            reserveDates.push(formattedDate);
+            if(isVehicle){
+                reservations  = await Reservation.find({ vehicle: idToUse });
+            }
+            else{
+                const temp = await Reservation.findOne({ _id: idToUse }).populate("vehicle").lean();
+                const id = temp.vehicle._id;
+                reservations  = await Reservation.find({ vehicle: id });
+            }
+
+            console.log(reservations);
+
+            const reserveDates = [];
+        
+            reservations.forEach(reservation => {
+              let currentDate = new Date(reservation.startDate);
+        
+      
+              while (currentDate <= reservation.endDate) {
+      
+                const formattedDate = currentDate.toISOString().split('T')[0];
+        
+                console.log(formattedDate);
+      
+                if (!reserveDates.includes(formattedDate)) {
+                  reserveDates.push(formattedDate);
+                }
+        
+                currentDate.setDate(currentDate.getDate() + 1);
+              }
+            });
+            res.status(200).json({message : "Sucess" , dates : reserveDates});
+        
+          } catch (error) {
+            console.error('Error fetching reservation dates:', error);
+            res.status(500).json({ message: "Error500" });
           }
-  
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-      });
-  
-      // After all reservations have been processed, send the result back
-      res.status(200).json({message : "Sucess" , dates : reserveDates});
-  
-    } catch (error) {
-      console.error('Error fetching reservation dates:', error);
-      res.status(500).json({ message: "Error500" });
-    }
   });
 
 
@@ -387,6 +340,20 @@ router.delete('/delete', deleteCar, function(req, res, next){
 
 router.get('/nearest', find_nearest, (req, res) => {
    
-})
+});
+
+router.post('update-deposit', async (req, res) => {
+
+    try {
+        const { reservationId, depositStatus } = req.body;
+        console.log('Updating deposit for reservation ID:', reservationId);
+        console.log('New deposit status:', depositStatus);
+        res.json({ success: true, message: 'Deposit status updated successfully.' });
+    } catch (error) {
+        console.error('Error updating deposit:', error);
+        res.status(500).json({ success: false, message: 'Failed to update deposit status.' });
+      }
+
+});
 
 module.exports = router;

@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+
 import { Link, useLocation,  useNavigate } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
+
+
 import Stripe from "react-stripe-checkout";
 
 function Checkin() {
@@ -13,6 +17,7 @@ function Checkin() {
   var form1Info = null;
   const [agreementVariable, setAgreementVariable] = useState('')
   const location = useLocation();
+
   const { reservation } = location.state || {};
 
   const navigate = useNavigate();
@@ -80,15 +85,35 @@ function Checkin() {
 
   const handleDepositToken = async (token) => {
     try {
-      alert('Deposit payment successful!');
-      setDeposit(0);
-      setDepositPaid(true); 
+      const response = await fetch(`http://localhost:9000/vehicles/update-deposit`, {
+        reservationId: reservation.id, 
+        depositStatus: 'paid'
+      });
+      if (response.data.success) {
+        setDepositPaid(true); 
+        alert('Deposit payment successful!');
+      } else {
+        alert('Failed to update deposit status.');
+      }
     } catch (error) {
       alert('Error processing deposit payment.');
       console.error(error);
     }
   };
 
+
+  useEffect(() => {
+    checkDepositStatus();
+  }, []);
+
+  const checkDepositStatus = () => {
+    if (reservation && reservation.deposit == "due") {
+      setDepositPaid(false); // deposit not paid
+    } else {
+      setDepositPaid(true); // deposit paid
+    }
+  }
+  
   return (
     <div className="Checkin">
       <button onClick={printTest}>Test Variable</button>

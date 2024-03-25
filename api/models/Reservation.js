@@ -33,7 +33,20 @@ const ReservationShchema = new mongoose.Schema({
             type:Boolean,
             required:true,
             default:false
-        }
+        }, deposit: {
+            type:String,
+            default:"due",
+            enum: ['due','paid','refunded'],            
+        } ,
+        pickUp:{
+            type: String,
+            default:"Montreal",
+          },
+          dropOff:{
+            type: String,
+            default:"Montreal",
+          }
+        
 });
 
 module.exports = mongoose.model('Reservation',ReservationShchema);
