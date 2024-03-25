@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../apiServices/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Import the CSS
 
 function Reserve() {
     const { currentUser } = useAuth();
     const [photoUrl, setPhotoUrl] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     const [gps, setGps] = useState(false); // State for GPS option
     const [insurance, setInsurance] = useState(false); // State for Insurance option
+    const [dates, setDates] = useState([]); // State for Insurance option
+    const [excludedDatesUse,setExcludedDates] = useState([]);
 
     const [modifyID,setModifyID] = useState({});
-
 
     const location = useLocation();
     const vehicleId = location.state?.vehicleId;
@@ -67,7 +70,7 @@ function Reserve() {
         
         const idToUse = modifyReservation ? modifyID : vehicleId;
 
-
+        console.log(startDate);
 
         navigate("/InfoReserve",{state: {
             startDate :startDate,
@@ -101,22 +104,66 @@ function Reserve() {
     })
     }
 
+    useEffect(() => {
+        async function getReservationDates() {
+          try {
+            const idToUse = modifyReservation ? modifyID : vehicleId;
+            const response = await fetch('http://localhost:9000/vehicles/getReservationDates', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                idToUse
+              }),
+            });
+      
+            const data = await response.json();
+            console.log(data.dates);
+      
+            // Update `dates` and then immediately create excluded dates
+            const newDates = data.dates.map(dateStr => new Date(dateStr));
+            setDates(newDates);
+            
+            // Now create and set excluded dates based on the newly fetched dates
+            setExcludedDates(newDates);
+            console.log("Excluded Dates: ", newDates);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      
+        getReservationDates();
+      }, [modifyReservation, modifyID, vehicleId]); // Ensures the e
+
+    async function createExcludedDates(){
+        const excludedDates = [];
+
+        for(let i=0;i<dates.length;i++){
+            excludedDates.push(new Date(dates[i]));
+        }
+        setExcludedDates(excludedDates);
+        console.log("YESSIR"+excludedDatesUse);
+    }
 
     return (
         <div>
             <h2>Create a Reservation</h2>
-            <input 
-                type="date" 
-                value={startDate} 
-                onChange={e => setStartDate(e.target.value)} 
-                placeholder="Start Date" 
-            />
-            <input 
-                type="date" 
-                value={endDate} 
-                onChange={e => setEndDate(e.target.value)} 
-                placeholder="End Date" 
-            />
+            <p> Start Date </p>
+            <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date.toString())}
+                dateFormat="yyyy-MM-dd" 
+                excludeDates={excludedDatesUse}
+                />
+
+            <p> End Date </p>
+            <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date.toString())}
+                dateFormat="yyyy-MM-dd"
+                excludeDates={excludedDatesUse}
+                />
             <div>
                 <input 
                     type="checkbox" 
