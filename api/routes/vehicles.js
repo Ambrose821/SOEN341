@@ -56,15 +56,21 @@ router.post('/reserve',reserve,sendConfirmEmail,async function(req,res,next){
         const rentalCost = v.pricePerDay * daysDifference;
         console.log("Cost:" +rentalCost);
 
-        const reservationData = {
-            startDate: startDate,
-            endDate: endDate,
+        const addHourToDate = (date) => {
+            const result = new Date(date);
+            result.setHours(result.getHours() + 1);
+            return result.toISOString();
+          };
+
+          const reservationData = {
+            startDate: addHourToDate(startDate),
+            endDate: addHourToDate(endDate),
             vehicle: v._id,
             user: user._id,
             carCost: rentalCost,
             insurance: insurance,
             gps: gps
-         };
+          };
 
          const reservation = new Reservation(reservationData);
          reservation.save();
@@ -327,8 +333,42 @@ router.post('/modifyReservations', async function(req,res,next){
     }
 });
 
+router.post('/getReservationDates', async function(req, res) {
+    try {
+      const { idToUse } = req.body;
+  
+      // Find all reservations for the given vehicle
+      const reservations = await Reservation.find({ vehicle: idToUse });
+      console.log("REZZZZ"+reservations);
+  
+      const reserveDates = [];
+  
+      reservations.forEach(reservation => {
+        let currentDate = new Date(reservation.startDate);
+  
 
+        while (currentDate <= reservation.endDate) {
 
+          const formattedDate = currentDate.toISOString().split('T')[0];
+  
+          console.log(formattedDate);
+
+          if (!reserveDates.includes(formattedDate)) {
+            reserveDates.push(formattedDate);
+          }
+  
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+      });
+  
+      // After all reservations have been processed, send the result back
+      res.status(200).json({message : "Sucess" , dates : reserveDates});
+  
+    } catch (error) {
+      console.error('Error fetching reservation dates:', error);
+      res.status(500).json({ message: "Error500" });
+    }
+  });
 
 
 
