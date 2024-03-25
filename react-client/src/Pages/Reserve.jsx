@@ -14,6 +14,14 @@ function Reserve() {
     const [dates, setDates] = useState([]); // State for Insurance option
     const [excludedDatesUse,setExcludedDates] = useState([]);
 
+    const [pickUpLocation, setPickUpLocation] = useState('');
+    const [dropOffLocation, setDropOffLocation] = useState('');
+    const [locations, setLocations] = useState([]);
+
+    useEffect(() => {
+        setLocations(["Montreal", "Toronto", "Ontario"]);
+    }, []);
+
     const [modifyID,setModifyID] = useState({});
 
     const location = useLocation();
@@ -79,6 +87,8 @@ function Reserve() {
             currentUser:currentUser,
             imageUrl: photoUrl,
             fromModify:false,
+            pickUp: pickUpLocation,
+            dropOff:dropOffLocation,
         }
     })
     };
@@ -97,6 +107,8 @@ function Reserve() {
             currentUser:currentUser,
             imageUrl: photoUrl,
             fromModify:true,
+            pickUp:pickUpLocation,
+            dropOff:dropOffLocation,
         }
     })
     }
@@ -178,6 +190,33 @@ function Reserve() {
                     onChange={() => setInsurance(!insurance)} 
                 /> Insurance
             </div>
+            <div>
+        <label htmlFor="pickUpLocation">Pick Up Location:</label>
+        <select 
+            id="pickUpLocation" 
+            value={pickUpLocation} 
+            onChange={(e) => setPickUpLocation(e.target.value)}
+            style={{ margin: '10px' }}
+        >
+            <option value="">Select a location</option>
+            {locations.map(location => (
+            <option key={location} value={location}>{location}</option>
+            ))}
+        </select>
+        
+        <label htmlFor="dropOffLocation">Drop Off Location:</label>
+        <select 
+            id="dropOffLocation" 
+            value={dropOffLocation} 
+            onChange={(e) => setDropOffLocation(e.target.value)}
+            style={{ margin: '10px' }}
+        >
+            <option value="">Select a location</option>
+            {locations.map(location => (
+            <option key={location} value={location}>{location}</option>
+            ))}
+        </select>
+        </div>
             {modifyReservation ? (
             <button onClick={modifyReservations} style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Modify Reservation</button>
         ) : (
