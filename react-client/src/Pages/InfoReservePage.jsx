@@ -17,7 +17,7 @@ function InfoReservationPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { startDate, endDate, gps, insurance, vehicleId, currentUser, imageUrl,fromModify } = location.state || {};
+  const { startDate, endDate, gps, insurance, vehicleId, currentUser, imageUrl,fromModify,pickUp,dropOff } = location.state || {};
 
 
   async function submitReservation() {
@@ -37,6 +37,8 @@ function InfoReservationPage() {
                 gps,
                 insurance,
                 imageUrl,
+                pickUp,
+                dropOff,
             }),
         });
         const data = await response.json();
@@ -68,6 +70,8 @@ function InfoReservationPage() {
                 currentUser,
                 gps,
                 insurance,
+                pickUp,
+                dropOff
             }),
         })
         alert('Reservation successfully modified!');
@@ -77,9 +81,6 @@ function InfoReservationPage() {
 
     }
 }
-
-
-
 
 return (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
@@ -94,6 +95,7 @@ return (
         <div><strong>Insurance:</strong> {insurance ? 'Yes' : 'No'}</div>
         <div><strong>Vehicle ID:</strong> {vehicleId}</div>
         <div><strong>User Email:</strong> {currentUser}</div>
+
       </div>
       
       <div style={{ marginTop: '20px' }}>
