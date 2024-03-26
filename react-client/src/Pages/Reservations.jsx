@@ -105,16 +105,16 @@ function Reservations() {
               style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               View Billing
             </button>
-            <button 
+            {!reservation.checkedIn &&<button 
               onClick={() => modifyReservation(index)}
               style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               Modify
-            </button>
-            <button 
+            </button>}
+            {!reservation.checkedIn &&<button 
               onClick={() => deleteReservation(index)} 
               style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               Delete
-            </button>
+            </button>}
           </div>
         ))
       ) : (

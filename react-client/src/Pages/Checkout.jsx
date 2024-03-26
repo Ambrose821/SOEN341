@@ -24,16 +24,12 @@ function Checkout() {
   const [totalCost, setTotalCost] = useState(0);
   const [gpsCost, setGpsCost] = useState(0);
   const [insuranceCost, setInsuranceCost] = useState(0);
-
+  const [balancePaid, setBalancePaid] = useState(false);
   const startDateString = new Date(reservation.startDate);
   const endDateString = new Date(reservation.endDate);
   const timeDifferenceInSeconds = endDateString - startDateString;
   const timeDifferenceInDays = timeDifferenceInSeconds / (1000 * 3600 * 24);
 
-
-  const printTest = (e) => {
-    alert(JSON.stringify(reservation));
-}
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -55,19 +51,12 @@ function Checkout() {
   const handleForm1Submit = (e) => {
     e.preventDefault();
 
-    // Check if the checkbox is checked
-    if (!isChecked) {
-        alert('Please confirm that the vehicle was returned to the specified drop-off location.');
-        return; // Exit the function if the checkbox is not checked
-    }
     alert('Vehicle drop off confirmed.')
     // Proceed with form submission if the checkbox is checked
     setIsForm1Submitted(true);
 };
   
-  const sendToAgreement = () => {
-    navigate('/agreement',{state :{info : agreementVariable}})
-  }
+
   const handleForm2Submit = (e) => {
     e.preventDefault();
     if (!isChecked && description.trim() === '' && images.length === 0) {
@@ -116,10 +105,50 @@ function Checkout() {
       }
 
       setTaxes((((reservation.carCost + gpsCost + insuranceCost) || 0)) * 0.15);
-      setTotalCost(((carCost + gpsCost + insuranceCost) * 1.15) + deposit);
+      setTotalCost(((carCost + gpsCost + insuranceCost) * 1.15));
 
   } 
 }, [reservation]);
+
+const payBalance = () => {
+   
+    setBalancePaid(true);
+    console.log(balancePaid);
+  };
+
+const deleteReservation = async () => {
+    try {
+
+        if(!isForm1Submitted || !isForm2Submitted||!balancePaid)
+        {
+            if(!isForm1Submitted)
+            {
+                alert("Please complete Vehicle Checkout");
+                return;
+            }else if(!isForm2Submitted)
+            {
+                alert("Please complete Vehicle Drop-Off Inspection");
+                return;
+            }else if(!balancePaid)
+            {
+                alert("Please pay total Balance");
+                return;
+            }
+        }
+      await fetch("http://localhost:9000/vehicles/deleteReservations", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reservationID:reservation._id }),
+      });
+      navigate('/Reservations')
+
+    } catch (error) {
+      console.log("error occurred in delete reservation");
+      console.log(error);
+    }
+  };
 
 const handleToken = async (token) => {
   try {
@@ -181,7 +210,7 @@ const handleToken = async (token) => {
     <div className="Checkout">
       <h3><u>Vehicle Check-out</u></h3>
       <form onSubmit={handleForm1Submit} className="form">
-      <input type="checkbox" id="checkbox_option" name="checkbox_option" onChange={handleCheckboxChange}/>
+      <input type="checkbox" id="checkbox_option" name="checkbox_option" required/>
             <label htmlFor="checkbox_option">Vehicle was returned to the speccified drop-off location </label><br/>
             <input type="submit" value="Submit"/>
             <input type="reset" value="Reset"/>
@@ -226,14 +255,19 @@ const handleToken = async (token) => {
             amount={totalCost * 100} // Amount in cents
             onClose={() => console.log('Payment closed')}
           >
-            <button disabled={!isForm1Submitted || !isForm2Submitted}>Pay Balance</button>
+            <button disabled={!isForm1Submitted || !isForm2Submitted} onClick={payBalance}>Pay Balance</button>
           </Stripe>
         </div>
         <br></br>
         
         <h3><u>Deposit Refund</u></h3>
         {refund ? "Expect your refund in 4-5 business days on the credit card used to pay the deposit." : <button onClick={handleRefundToken} disabled={!isForm1Submitted || !isForm2Submitted}>Get deposit refund</button>}
-
+        <h3><u>Finalize Checkout</u></h3>
+        <button 
+              onClick={() => deleteReservation()} 
+              style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              Finalize Checkout
+        </button>
     </div>
   );
 }
