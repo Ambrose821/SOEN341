@@ -6,7 +6,8 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../apiServices/AuthContext';
-import { useNavigate } from 'react-router-dom';import { faSleigh } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 
 const Item = styled(Paper)(({ theme }) => ({

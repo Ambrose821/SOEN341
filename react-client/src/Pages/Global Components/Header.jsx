@@ -1,31 +1,29 @@
 import React from "react";
-import { Link, useLocation } from 'react-router-dom'; // Import useLocation
-import { useAuth } from '../../apiServices/AuthContext'
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../apiServices/AuthContext';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import websiteLogo from '../../Images/341Logo.png';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
   
   const location = useLocation(); // Get current location
+  const navigate = useNavigate(); // Corrected typo
 
-  const {currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, useFlag, logout, isLoggedIn} = useAuth();
-
+  const { isLoggedIn } = useAuth(); // Simplified destructuring for demonstration
 
   return (
     <div className="header">
-        {/* <div className="HeadTitle">
-          Header
-        </div> */}
-        <h1>Vini's Vehicles 🚗</h1>
+        <img src={websiteLogo} alt="Logo" className="headerLogo" onClick={() => navigate("/")}/>
         <div className="profile">
         {isLoggedIn && (
-            <Link to="/profile" className={`sidebarLink ${location.pathname === '/profile' ? 'activeLink' : ''}`}>{/* Add activeLink class if current path is '/profile' */}
+            <Link to="/profile" className={`sidebarLink ${location.pathname === '/profile' ? 'activeLink' : ''}`}>
               <AccountCircleIcon className="icon" />
               <span className="sidebarTitle">My Profile</span>
             </Link>
         )}
         </div>
     </div>
-    
   );
 }
 
