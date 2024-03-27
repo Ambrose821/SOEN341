@@ -252,3 +252,9 @@ input{
   max-height: 200px;
 }
 
+.headerLogo {
+  width: 300px; /* or any size */
+  height: auto; /* maintains aspect ratio */
+  border-radius: 10px; /* Adjust as needed to achieve the desired roundness */
+  margin-left: 35px;
+}
