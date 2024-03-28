@@ -20,6 +20,7 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/apiRouter');
 var vehicleRouter = require('./routes/vehicles');
 var stripeRouter = require('./routes/stripe-route');
+var reviewRouter = require("./routes/reviews");
 
 var app = express();
 app.use(cors());
@@ -69,8 +70,9 @@ app.locals.refreshTokens = refreshTokens
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/apiRoute',apiRouter)
-app.use('/vehicles',vehicleRouter);
+app.use('/vehicles',vehicleRouter);reviewRouter
 app.use('/stripe-route',stripeRouter)
+app.use('/reviews',reviewRouter)
 
 // Creating Objects in Database 
 const createVehicles = require('./Database/VehicleCreator');

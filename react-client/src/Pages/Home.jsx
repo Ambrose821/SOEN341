@@ -34,6 +34,10 @@ const DynamicGrid = ({ photoURLs, ids,models,prices }) => {
     navigate('/InfoCar', { state: { carId: id } });
   };
 
+  const handleReviewsClick = (id) =>{
+    navigate('/CarReviews', {state:{vehicleId: id}});
+  };
+
   // const handleAudioClick = () => {
   //   audio.play();
   // };
@@ -85,6 +89,17 @@ const DynamicGrid = ({ photoURLs, ids,models,prices }) => {
                       onClick={() => handleInfoClick(ids[index])}
                     >
                       Info
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#E8DE09',
+                        color: 'white',
+                        marginBottom: '5px', // Add margin to the bottom
+                      }}
+                      onClick={() => handleReviewsClick(ids[index])}
+                    >
+                      Reviews
                     </Button>
                   </>
                 )}
