@@ -94,15 +94,16 @@ const CarReviewsPage = () => {
     getReviews();
   }, [vehicleId]); 
 
+  function handleNoReview(){
+    navigate("/");
+  }
+
   return (
     <div>
       <h2>Car's Overall Review <Rating name="read-only" value={averageRating} readOnly precision={0.5} /></h2>
             {reviews.map(review => (
                 <Review key={review.id} review={review} />
             ))}
-            <Box component="form" sx={{ mt: 4 }}>
-                {/* Existing form to submit a new review */}
-            </Box>
       <Box component="form" sx={{ mt: 4 }}>
         <Typography variant="h6">Submit Your Review</Typography>
         <TextField
@@ -128,7 +129,8 @@ const CarReviewsPage = () => {
           onChange={(e) => setNewComment(e.target.value)}
           margin="normal"
         />
-        <Button variant="contained" onClick={addReview} sx={{ mt: 2 }}>Publish</Button>
+        <Button variant="contained" onClick={addReview} sx={{ mt: 2, mr: 2 }}>Publish</Button>
+        <Button variant="contained" onClick={handleNoReview} sx={{ mt: 2, backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' } }}>No Review</Button>
       </Box>
     </div>
   );
