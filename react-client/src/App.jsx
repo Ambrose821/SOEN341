@@ -22,6 +22,7 @@ import Agreement from "./Pages/Agreement";
 import AgreementPhys from "./Pages/AgreementPhys";
 import InfoCarPage from "./Pages/InfoCarPage";
 import Checkout from "./Pages/Checkout";
+import CarReviewsPage from "./Pages/CarReviews";
 
 
 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/agreement" element={<Agreement />} /> 
           
           <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/CarReviews" element={<CarReviewsPage/>} />
 
         </Routes>
       </Layout>
