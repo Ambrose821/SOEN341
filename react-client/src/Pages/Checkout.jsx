@@ -2,7 +2,7 @@ import { Link, useLocation,  useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Stripe from "react-stripe-checkout";
 import axios from 'axios';
-
+// We need to send the car ID to the CarCheckout page so that we can get the car Id's 
 function Checkout() {
   const [isChecked, setIsChecked] = useState(false);
   const [description, setDescription] = useState('');
@@ -148,6 +148,8 @@ const deleteReservation = async () => {
       console.log("error occurred in delete reservation");
       console.log(error);
     }
+
+    navigate('CarReviews', { state: { carId: id } });
   };
 
 const handleToken = async (token) => {

@@ -23,6 +23,7 @@ import AgreementPhys from "./Pages/AgreementPhys";
 import InfoCarPage from "./Pages/InfoCarPage";
 import Checkout from "./Pages/Checkout";
 import CarReviewsPage from "./Pages/CarReviews";
+import Reviews from "./Pages/ViewReservations";
 
 
 
@@ -55,7 +56,8 @@ function App() {
           <Route path="/agreement" element={<Agreement />} /> 
           
           <Route path="/checkout" element={<Checkout/>} />
-          <Route path="/CarReviews" element={<CarReviewsPage/>} />
+          <Route path="/CarReviews" element={<CarReviewsPage/>} />ReviewsPage
+          <Route path="/Reviews" element={<Reviews/>} />
 
         </Routes>
       </Layout>

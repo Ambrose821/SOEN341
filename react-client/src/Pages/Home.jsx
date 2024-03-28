@@ -35,7 +35,7 @@ const DynamicGrid = ({ photoURLs, ids,models,prices }) => {
   };
 
   const handleReviewsClick = (id) =>{
-    navigate('/CarReviews', {state:{vehicleId: id}});
+    navigate('/Reviews', {state:{vehicleId: id}});
   };
 
   // const handleAudioClick = () => {
