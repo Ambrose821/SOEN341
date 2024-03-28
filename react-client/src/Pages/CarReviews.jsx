@@ -27,6 +27,7 @@ const CarReviewsPage = () => {
 
     const {vehicleId} = location.state || {};
 
+
     const [reviews, setReviews] = useState([]);
     const [newRating, setNewRating] = useState(0);
     const [newComment, setNewComment] = useState("");
@@ -35,7 +36,7 @@ const CarReviewsPage = () => {
 
 
   const addReview = async () => {
-    
+    console.log("LOGGING THE ID: "+vehicleId);
     const response = await fetch('http://localhost:9000/reviews/uploadReview',{
         method: 'POST',
               headers: {
@@ -61,6 +62,7 @@ const CarReviewsPage = () => {
 
   useEffect(() => {
     // Define getReviews inside useEffect or make sure it's defined outside but used inside useEffect
+    console.log("ID:" + vehicleId);
     const getReviews = async () => {
       try {
         const response = await fetch('http://localhost:9000/reviews/getReviewsByCarId', {

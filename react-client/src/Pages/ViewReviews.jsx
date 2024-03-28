@@ -34,31 +34,6 @@ const Reviews = () => {
     const [averageRating, setAverageRating] = useState(0);
 
 
-  const addReview = async () => {
-    
-    const response = await fetch('http://localhost:9000/reviews/uploadReview',{
-        method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                newRating,
-                newComment,
-                newEmail,
-                vehicleId,
-              }),
-            });
-
-        const data = response.json();
-        console.log(data);
-
-        navigate('/');
-    
-        setNewRating(0);
-        setNewComment("");
-        setNewEmail("");
-  };
-
   useEffect(() => {
     // Define getReviews inside useEffect or make sure it's defined outside but used inside useEffect
     const getReviews = async () => {

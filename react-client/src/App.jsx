@@ -23,7 +23,7 @@ import AgreementPhys from "./Pages/AgreementPhys";
 import InfoCarPage from "./Pages/InfoCarPage";
 import Checkout from "./Pages/Checkout";
 import CarReviewsPage from "./Pages/CarReviews";
-import Reviews from "./Pages/ViewReservations";
+import Reviews from "./Pages/ViewReviews";
 
 
 

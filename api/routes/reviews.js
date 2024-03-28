@@ -36,6 +36,7 @@ router.post('/getReviewsByCarId' , async function(req,res,next){
 
     try{
         const {vehicleId} = req.body;
+        console.log(vehicleId);
         const reviews = await Review.find({vehicleId:vehicleId}).lean();
         res.status(200).json({message:"sucessfully added review",reviews:reviews});
     

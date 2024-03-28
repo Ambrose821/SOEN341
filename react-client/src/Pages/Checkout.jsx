@@ -150,7 +150,7 @@ const deleteReservation = async () => {
     }
     const id = reservation.vehicle._id;
     console.log(id);
-    navigate('CarReviews', { state: { vehicleId: id } });
+    navigate('/CarReviews', { state: { vehicleId: id } });
   };
 
 const handleToken = async (token) => {
