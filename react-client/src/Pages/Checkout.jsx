@@ -148,8 +148,9 @@ const deleteReservation = async () => {
       console.log("error occurred in delete reservation");
       console.log(error);
     }
-
-    navigate('CarReviews', { state: { carId: id } });
+    const id = reservation.vehicle._id;
+    console.log(id);
+    navigate('CarReviews', { state: { vehicleId: id } });
   };
 
 const handleToken = async (token) => {
