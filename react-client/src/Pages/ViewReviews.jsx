@@ -17,7 +17,7 @@ const Review = ({ review }) => {
 };
 
 // CarReviewsPage Component
-const CarReviewsPage = () => {
+const Reviews = () => {
 
     const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin, updateUserInfo,deleteUser } = useAuth();
 
@@ -27,7 +27,6 @@ const CarReviewsPage = () => {
 
     const {vehicleId} = location.state || {};
 
-
     const [reviews, setReviews] = useState([]);
     const [newRating, setNewRating] = useState(0);
     const [newComment, setNewComment] = useState("");
@@ -35,34 +34,8 @@ const CarReviewsPage = () => {
     const [averageRating, setAverageRating] = useState(0);
 
 
-  const addReview = async () => {
-    console.log("LOGGING THE ID: "+vehicleId);
-    const response = await fetch('http://localhost:9000/reviews/uploadReview',{
-        method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                newRating,
-                newComment,
-                newEmail,
-                vehicleId,
-              }),
-            });
-
-        const data = response.json();
-        console.log(data);
-
-        navigate('/');
-    
-        setNewRating(0);
-        setNewComment("");
-        setNewEmail("");
-  };
-
   useEffect(() => {
     // Define getReviews inside useEffect or make sure it's defined outside but used inside useEffect
-    console.log("ID:" + vehicleId);
     const getReviews = async () => {
       try {
         const response = await fetch('http://localhost:9000/reviews/getReviewsByCarId', {
@@ -94,46 +67,18 @@ const CarReviewsPage = () => {
     getReviews();
   }, [vehicleId]); 
 
-  function handleNoReview(){
-    navigate("/");
-  }
-
   return (
     <div>
       <h2>Car's Overall Review <Rating name="read-only" value={averageRating} readOnly precision={0.5} /></h2>
             {reviews.map(review => (
                 <Review key={review.id} review={review} />
             ))}
-      <Box component="form" sx={{ mt: 4 }}>
-        <Typography variant="h6">Submit Your Review</Typography>
-        <TextField
-          fullWidth
-          label="Email"
-          value={newEmail}
-          onChange={(e) => setNewEmail(e.target.value)}
-          margin="normal"
-        />
-        <Rating
-          name="simple-controlled"
-          value={newRating}
-          onChange={(event, newValue) => {
-            setNewRating(newValue);
-          }}
-        />
-        <TextField
-          fullWidth
-          label="Comment"
-          multiline
-          rows={4}
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          margin="normal"
-        />
-        <Button variant="contained" onClick={addReview} sx={{ mt: 2, mr: 2 }}>Publish</Button>
-        <Button variant="contained" onClick={handleNoReview} sx={{ mt: 2, backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' } }}>No Review</Button>
-      </Box>
+            <Box component="form" sx={{ mt: 4 }}>
+                {/* Existing form to submit a new review */}
+            </Box>
+      
     </div>
   );
 };
 
-export default CarReviewsPage;
+export default Reviews;
