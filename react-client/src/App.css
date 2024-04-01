@@ -259,3 +259,34 @@ input{
   border-radius: 10px; /* Adjust as needed to achieve the desired roundness */
   margin-left: 35px;
 }
+
+.dark-mode {
+  background-color: #222222;
+  color: #ffffff;
+}
+
+.dark-mode .header {
+  background-color: #333333; /* Dark background */
+  color: #FFFFFF; /* White text color */
+  border-bottom-color: #444444; /* Darker grey border on the bottom */
+}
+
+.dark-mode .profile {
+  color: #CCCCCC; /* Light grey color */
+}
+
+.dark-mode .sidebar {
+  background-color: #333333; /* Dark background */
+  color: #CCCCCC; /* Light grey color */
+}
+
+.dark-mode .footer {
+  background-color: #121212; /* Very dark background */
+  color: #CCCCCC; /* Light grey color */
+  border-top-color: #333333; /* Darker grey border on the top */
+}
+
+.dark-mode-button{
+  margin: 10px;
+}
+
