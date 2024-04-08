@@ -1,10 +1,8 @@
 import React from "react";
 import "./App.css";
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from "./Pages/Global Components/Layout";
 import Home from "./Pages/Home";
-import AiChatBot from "./AIChatbot";
 import SignUp from "./Pages/SignUp";
 import LoginPage from "./Pages/login_page";
 import Profile from "./Pages/Profile";
@@ -26,6 +24,7 @@ import InfoCarPage from "./Pages/InfoCarPage";
 import Checkout from "./Pages/Checkout";
 import CarReviewsPage from "./Pages/CarReviews";
 import Reviews from "./Pages/ViewReviews";
+
 
 
 function App() {
@@ -60,7 +59,6 @@ function App() {
           <Route path="/CarReviews" element={<CarReviewsPage/>} />ReviewsPage
           <Route path="/Reviews" element={<Reviews/>} />
 
-          <Route path = "/AskAi" element = {<AiChatBot/>} />
         </Routes>
       </Layout>
       </AuthProvider>

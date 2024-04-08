@@ -10,7 +10,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import EventIcon from '@mui/icons-material/Event';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CheckIcon from '@mui/icons-material/Check';
-import MemoryIcon from '@mui/icons-material/Memory';
 
 function Sidebar() {
 
@@ -85,14 +84,6 @@ function Sidebar() {
               <span className="sidebarTitle">Favorites</span>
             </Link>
           </li>
-
-          <li>
-          <Link to="/AskAi" className={`sidebarLink ${location.pathname === '/' ? 'activeLink' : ''}`}> {/* Add activeLink class if current path is '/' */}
-            <MemoryIcon className="icon" />
-            <span className="sidebarTitle">AI Vehicle Expert</span>
-          </Link>
-        </li>
-
        
       </ul>
     </div>
