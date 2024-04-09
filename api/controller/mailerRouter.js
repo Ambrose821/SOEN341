@@ -21,7 +21,7 @@ const sendConfirmEmail = async (req, res ,next ) =>{
   console.log(vehicleId);
   let mailOptions = {
     from: 'info@demomailtrap.com',
-    to: "temp@gmail.com", //christophermezzacappa818@gmail.com -> with out this email it should fail 
+    to: "tchristophermezzacappa818@gmail.com", //christophermezzacappa818@gmail.com -> with out this email it should fail 
     subject: "Reservation Confirmation",
     text: "Confirmation for Car Reservation",
     html: `
