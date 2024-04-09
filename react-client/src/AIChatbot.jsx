@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 
-import {MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator} from "@chatscope/chat-ui-kit-react"
+import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from "@chatscope/chat-ui-kit-react";
 import { set } from 'mongoose';
 
 
@@ -16,7 +16,6 @@ function AiChatBot(){
         }       
     ])
 
-
     const handleSend = async(message) =>{
         const newMessage ={
             message: message,
@@ -25,23 +24,15 @@ function AiChatBot(){
 
         }
 
-
         const newMessages = [...messages, newMessage] //all old messages with new message
-
-       setMessages(newMessages)
-
+        setMessages(newMessages)
         
-
-
         await processMessagetoVini(newMessages)
         //After openAi logic
     
-
-        
     }
 
     async function processMessagetoVini(someMessages){
-       
         setTyping(true)
         //with @chatscope library. our messages are bascially in the following JSON format {sender : 'user' or 'ai', message: "The message content here", } 
         let apiMessages = someMessages.map((messageObject) =>{
@@ -86,40 +77,26 @@ function AiChatBot(){
              direction:"incoming"
 
         }
-
         const newMessages = [...someMessages, AiMessage]
-
         setTyping(false)
         setMessages(newMessages)
-
-        
     }
 
-   
-
     return(
-        
         <div className ="App" style ={{position:'relative', display:'flex',textAlign:'center', justifyContent:'center'}} >
-            
             <div style = {{position: "relative", height: "21.2rem", width: "80%"}}>  
             <h4 style ={{marginTop:"0.4rem"}}>AI Vehicle Expert</h4>
                 <MainContainer>
-                    
                     <ChatContainer>
                         <MessageList typingIndicator={ typing ? <TypingIndicator content="Vini is typing"/> : ""}>
-
-                            
                             {messages.map((message,i) =>{
                                 return <Message key ={i} model ={message}/>
                             })}
                         </MessageList>
                         <MessageInput placeholder='Ask Question Here' onSend={handleSend}/>
-
                     </ChatContainer>
                 </MainContainer>
-            
             </div>    
-            
          </div>
     )
 
