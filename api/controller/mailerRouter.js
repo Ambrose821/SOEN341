@@ -1,5 +1,8 @@
+// This is the file for the email confirmation
 const nodemailer = require("nodemailer");
 
+
+// This is the connection to the fake email 
 const transporter = nodemailer.createTransport({
   host: 'live.smtp.mailtrap.io',
   port:587,
@@ -10,6 +13,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
 const sendConfirmEmail = async (req, res ,next ) =>{
 
   const { vehicleId, startDate, endDate, currentUser, gps, insurance,imageUrl } = req.body;
@@ -17,7 +21,7 @@ const sendConfirmEmail = async (req, res ,next ) =>{
   console.log(vehicleId);
   let mailOptions = {
     from: 'info@demomailtrap.com',
-    to: "temp@gmail.com", //christophermezzacappa818@gmail.com -> with out this email it should fail
+    to: "tchristophermezzacappa818@gmail.com", //christophermezzacappa818@gmail.com -> with out this email it should fail 
     subject: "Reservation Confirmation",
     text: "Confirmation for Car Reservation",
     html: `
