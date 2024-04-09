@@ -27,7 +27,6 @@ import Checkout from "./Pages/Checkout";
 import CarReviewsPage from "./Pages/CarReviews";
 import Reviews from "./Pages/ViewReviews";
 
-
 function App() {
 
   return (
