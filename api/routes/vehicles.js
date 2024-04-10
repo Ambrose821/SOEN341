@@ -16,8 +16,10 @@ const Reservation = require("../models/Reservation");
 const sendConfirmEmail = require("../controller/mailerRouter");
 const reserve = require("../controller/reservationController");
 
+
 router.get("/getCars", async function (req, res, next) {
-  try {
+    try {
+      // We want all cars, thats why we are using find({}), which will return all cars 
     const cars = await Vehicle.find({}).populate("branch").lean();
 
     res.status(200).json(cars);
@@ -28,7 +30,7 @@ router.get("/getCars", async function (req, res, next) {
       .json({ sucess: false, message: "Get vehicles Failed" + error });
   }
 });
-
+// We need to save reservations into the DB
 router.post(
   "/reserve",
   reserve,
@@ -54,6 +56,7 @@ router.get("/getCarIdFromPhoto", async function (req, res, next) {
   }
 });
 
+// Sometimes we can only send photo from ID to be querired so we need a route to do this  
 router.get("/getCarPhoto", async function (req, res, next) {
   const vehicleID = req.query.id;
 
@@ -64,6 +67,7 @@ router.get("/getCarPhoto", async function (req, res, next) {
   res.status(200).json({ message: "Found Photo", photoURL: PhotoUrl });
 });
 
+// We need to get reservation because we need to see all reservations 
 router.get("/getReservation", async function (req, res, next) {
   try {
     const currentUser = req.query.currentUser;
@@ -106,6 +110,7 @@ router.get("/getCarCost", async function (req, res, next) {
   }
 });
 
+// We need to retreive vehicles by there ID because that is the property that can be sent 
 router.get("/getVehicleByID", async function (req, res) {
   try {
     const vehicleId = req.query.vehicleID; // Corrected to vehicleID
