@@ -1,0 +1,106 @@
+Unit Testing in JavaScript with Jest
+Overview
+This documentation provides an introduction to unit testing in JavaScript using Jest. Jest is a delightful JavaScript Testing Framework with a focus on simplicity. It works out of the box for most JavaScript projects, providing an integrated experience for testing your codebase.
+
+Key Features of Jest
+Zero Configuration: Jest is designed to work out of the box, with minimal setup required.
+Snapshot Testing: Capture snapshots of large objects to simplify test writing and improve readability.
+Mock Functions: Easily mock functions, allowing you to isolate the unit of code under test.
+Coverage Reports: Automatically generate coverage reports by adding a single command line option.
+Setting Up Jest
+Installation
+Jest can be installed using npm or Yarn. To get started, run one of the following commands in your project directory:
+
+bash
+Copy code
+npm install --save-dev jest
+or
+
+bash
+Copy code
+yarn add --dev jest
+Configuring Jest
+For most projects, Jest works out of the box. However, for more fine-grained control, you can configure Jest by adding a jest.config.js file or a jest field in your package.json.
+
+Example package.json configuration:
+
+json
+Copy code
+{
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "verbose": true
+  }
+}
+Writing Tests
+A basic test in Jest consists of a describe block that groups together similar tests and an it or test function that defines an individual test case.
+
+Example test for a simple function sum.js:
+
+javascript
+Copy code
+// sum.js
+function sum(a, b) {
+  return a + b;
+}
+
+module.exports = sum;
+Test file sum.test.js:
+
+javascript
+Copy code
+const sum = require('./sum');
+
+describe('sum function', () => {
+  it('adds 1 + 2 to equal 3', () => {
+    expect(sum(1, 2)).toBe(3);
+  });
+});
+Running Tests
+To run your tests, add the following script to your package.json:
+
+json
+Copy code
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+Then, execute the tests by running:
+
+bash
+Copy code
+npm test
+or
+
+bash
+Copy code
+yarn test
+Advanced Features
+Mocking
+Jest provides a powerful mocking system that allows you to replace parts of your system under test with mock objects and functions.
+
+Example of mocking a module:
+
+javascript
+Copy code
+jest.mock('./moduleToMock');
+const moduleToMock = require('./moduleToMock');
+
+// Configure the mock to return a specific value
+moduleToMock.mockImplementation(() => 42);
+
+// Use the mock in tests
+Coverage
+To generate a coverage report, add the --coverage flag to the test script in your package.json:
+
+json
+Copy code
+{
+  "scripts": {
+    "test": "jest --coverage"
+  }
+}
+Best Practices
