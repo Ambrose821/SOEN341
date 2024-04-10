@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../apiServices/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../apiServices/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Reservations() {
   const [reservations, setReservations] = useState([]);
 
-  const { isLoggedIn, currentUser, currentUserFirstName, currentUserLastName, currentUserFlag, updateAdmin} = useAuth();
+  const {
+    isLoggedIn,
+    currentUser,
+    currentUserFirstName,
+    currentUserLastName,
+    currentUserFlag,
+    updateAdmin,
+  } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,17 +22,20 @@ function Reservations() {
     }
   }, [currentUser]);
 
-  const testVar= "HelloWorld";
+  const testVar = "HelloWorld";
 
   const fetchReservations = async () => {
     try {
-      const response = await fetch(`http://localhost:9000/vehicles/getUserReservations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ currentUser }),
-      });
+      const response = await fetch(
+        `http://localhost:9000/vehicles/getUserReservations`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ currentUser }),
+        }
+      );
       const data = await response.json();
       setReservations(data.reservations);
     } catch (error) {
@@ -36,9 +46,9 @@ function Reservations() {
   const deleteReservation = async (index) => {
     try {
       await fetch("http://localhost:9000/vehicles/deleteReservations", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ reservationID: reservations[index] }),
       });
@@ -53,22 +63,19 @@ function Reservations() {
 
   const sendToCheckIn = async (index) => {
     const reservation = reservations[index];
-    navigate('/checkin',{state :{reservation :reservation}})
-    
-  }
+    navigate("/checkin", { state: { reservation: reservation } });
+  };
 
   const sendToCheckOut = async (index) => {
     const reservation = reservations[index];
-    navigate('/checkout',{state :{reservation :reservation}})
-    
-  }
+    navigate("/checkout", { state: { reservation: reservation } });
+  };
 
   // Placeholder for modify functionality
   const modifyReservation = (index) => {
-
     const reservation = reservations[index];
     console.log(reservation);
-    navigate("/Reserve", {state : {modifyReservation : reservation}});
+    navigate("/Reserve", { state: { modifyReservation: reservation } });
   };
 
   const viewBilling = (index) => {
@@ -80,41 +87,132 @@ function Reservations() {
     <div>
       <h2>User Reservations</h2>
       {reservations.length > 0 ? (
-        reservations.map((reservation,index) => (
-          <div key={reservation._id} style={{ margin: '20px', padding: '10px', border: '1px solid #ccc', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+        reservations.map((reservation, index) => (
+          <div
+            key={reservation._id}
+            style={{
+              margin: "20px",
+              padding: "10px",
+              border: "1px solid #ccc",
+              textAlign: "center",
+              backgroundColor: "#f9f9f9",
+            }}
+          >
             {reservation.vehicle && reservation.vehicle.photoURL && (
-              <img src={reservation.vehicle.photoURL} alt="Vehicle" style={{ maxWidth: '300px', maxHeight: '300px', margin: '10px 0' }} />
+              <img
+                src={reservation.vehicle.photoURL}
+                alt="Vehicle"
+                style={{
+                  maxWidth: "300px",
+                  maxHeight: "300px",
+                  margin: "10px 0",
+                }}
+              />
             )}
-            
-             
 
-            <p> <strong>Start Date:</strong> {new Date(reservation.startDate).toLocaleDateString()}</p>
-            <p> <strong>End Date:</strong> {new Date(reservation.endDate).toLocaleDateString()}</p>
-            <p> <strong>Car Cost:</strong> {reservation.carCost}</p>
-            <p> <strong> Pick Up Location: </strong> {reservation.pickUp}</p>
-            <p> <strong>Drop Off Location:</strong> {reservation.dropOff}</p>
-            {!reservation.checkedIn && <button onClick={() => sendToCheckIn(index)} style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin: '5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
-              Check In
-            </button>}
-            {reservation.checkedIn && <button  onClick={() => sendToCheckOut(index)} style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', margin: '5px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
-              Check out
-            </button>}
-              
-            <button 
+            <p>
+              {" "}
+              <strong>Start Date:</strong>{" "}
+              {new Date(reservation.startDate).toLocaleDateString()}
+            </p>
+            <p>
+              {" "}
+              <strong>End Date:</strong>{" "}
+              {new Date(reservation.endDate).toLocaleDateString()}
+            </p>
+            <p>
+              {" "}
+              <strong>Car Cost:</strong> {reservation.carCost}
+            </p>
+            <p>
+              {" "}
+              <strong> Pick Up Location: </strong> {reservation.pickUp}
+            </p>
+            <p>
+              {" "}
+              <strong>Drop Off Location:</strong> {reservation.dropOff}
+            </p>
+            {!reservation.checkedIn && (
+              <button
+                onClick={() => sendToCheckIn(index)}
+                style={{
+                  backgroundColor: "orange",
+                  color: "white",
+                  padding: "10px 20px",
+                  margin: "5px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Check In
+              </button>
+            )}
+            {reservation.checkedIn && (
+              <button
+                onClick={() => sendToCheckOut(index)}
+                style={{
+                  backgroundColor: "orange",
+                  color: "white",
+                  padding: "10px 20px",
+                  margin: "5px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Check out
+              </button>
+            )}
+
+            <button
               onClick={() => viewBilling(index)}
-              style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                padding: "10px 20px",
+                margin: "5px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
               View Billing
             </button>
-            {!reservation.checkedIn &&<button 
-              onClick={() => modifyReservation(index)}
-              style={{ backgroundColor: 'blue', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-              Modify
-            </button>}
-            {!reservation.checkedIn &&<button 
-              onClick={() => deleteReservation(index)} 
-              style={{ backgroundColor: 'red', color: 'white', padding: '10px 20px', margin:'5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-              Delete
-            </button>}
+            {!reservation.checkedIn && (
+              <button
+                onClick={() => modifyReservation(index)}
+                style={{
+                  backgroundColor: "blue",
+                  color: "white",
+                  padding: "10px 20px",
+                  margin: "5px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Modify
+              </button>
+            )}
+            {!reservation.checkedIn && (
+              <button
+                onClick={() => deleteReservation(index)}
+                style={{
+                  backgroundColor: "red",
+                  color: "white",
+                  padding: "10px 20px",
+                  margin: "5px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Delete
+              </button>
+            )}
           </div>
         ))
       ) : (

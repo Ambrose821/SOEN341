@@ -66,10 +66,7 @@ app.use('/vehicles', vehicleRouter); reviewRouter
 app.use('/stripe-route', stripeRouter)
 app.use('/reviews', reviewRouter)
 
-// Creating Objects in Database
-const createVehicles = require('./Database/VehicleCreator')
-// Commented out since it would create vehicles everytime someone runs the server!
-// createVehicles();
+
 
 // Add branches. Please dont uncomment
 // const createBranches = require('./Database/BranchCreator')

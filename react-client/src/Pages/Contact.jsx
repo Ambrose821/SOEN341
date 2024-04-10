@@ -1,18 +1,18 @@
-import React from 'react';
-import  { useState } from 'react';
+import React from "react";
+import { useState } from "react";
 
 function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
+    name: "",
+    email: "",
+    message: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -21,12 +21,11 @@ function Contact() {
     console.log(formData);
 
     setFormData({
-      name: '',
-      email: '',
-      message: ''
+      name: "",
+      email: "",
+      message: "",
     });
-    window.alert('Your message has been sent successfully!');
-
+    window.alert("Your message has been sent successfully!");
   };
 
   return (
@@ -67,7 +66,6 @@ function Contact() {
         </div>
         <button type="submit">Submit</button>
       </form>
-
     </div>
   );
 }

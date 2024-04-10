@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ViewUserReservations() {
   const [allUsers, setAllUsers] = useState([]);
-  const [email, setEmail] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [deleteEmail, setDeleteEmail] = useState('');
+  const [email, setEmail] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [deleteEmail, setDeleteEmail] = useState("");
 
   const navigate = useNavigate();
 
@@ -16,65 +16,68 @@ function ViewUserReservations() {
 
   const fetchAllReservations = async () => {
     try {
-      const response = await fetch('http://localhost:9000/vehicles/getAllUserReservations');
+      const response = await fetch(
+        "http://localhost:9000/vehicles/getAllUserReservations"
+      );
       const data = await response.json();
       setAllUsers(data.reservations || []);
     } catch (error) {
-      console.error('Error:', error.message);
+      console.error("Error:", error.message);
     }
   };
 
   const inputStyle = {
-    width: '25%',
-    padding: '10px',
-    margin: '10px 0',
+    width: "25%",
+    padding: "10px",
+    margin: "10px 0",
   };
 
   const OnModifyClick = async () => {
     try {
-      const response = await fetch('http://localhost:9000/vehicles/AdminModifyReservation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          startDate,
-          endDate,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:9000/vehicles/AdminModifyReservation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            startDate,
+            endDate,
+          }),
+        }
+      );
 
-      if(response.ok){
-        navigate('/admindashboard');
+      if (response.ok) {
+        navigate("/admindashboard");
       }
-
-      
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
   const handleDelete = async () => {
     try {
-      const response = await fetch('http://localhost:9000/vehicles/AdminDeleteReservation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          deleteEmail,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:9000/vehicles/AdminDeleteReservation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            deleteEmail,
+          }),
+        }
+      );
 
-      if(response.ok){
-        navigate('/admindashboard');
+      if (response.ok) {
+        navigate("/admindashboard");
       }
-
-      
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
-    
   };
 
   return (
@@ -120,7 +123,11 @@ function ViewUserReservations() {
         />
         <button
           onClick={OnModifyClick}
-          style={{ padding: '10px 15px 10px 10px', cursor: 'pointer', backgroundColor:'lightblue' }}
+          style={{
+            padding: "10px 15px 10px 10px",
+            cursor: "pointer",
+            backgroundColor: "lightblue",
+          }}
         >
           Modify
         </button>
@@ -135,7 +142,12 @@ function ViewUserReservations() {
         />
         <button
           onClick={handleDelete}
-          style={{ backgroundColor: 'red', color: 'white', padding: '10px 15px', cursor: 'pointer' }}
+          style={{
+            backgroundColor: "red",
+            color: "white",
+            padding: "10px 15px",
+            cursor: "pointer",
+          }}
         >
           Delete
         </button>
