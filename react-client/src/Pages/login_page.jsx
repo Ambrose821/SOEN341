@@ -7,6 +7,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const LoginPage = () => {
   
+  // We are setting all vars we need to log someone in 
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,14 +19,16 @@ const LoginPage = () => {
   const [generalError, setGeneralError] = useState(false)
 
 
+  // We are handleing email change with events which will be super quick to update 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
-
+  // We are handleing password change with events which will be super quick to update 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
+    // We are handleing passworld visibility change with events which will be super quick to update 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };

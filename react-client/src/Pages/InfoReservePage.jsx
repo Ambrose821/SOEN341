@@ -24,11 +24,15 @@ function InfoReservationPage() {
     console.log("Attempting to submit reservation...");
   
     try {
+      // This will fetch a request to the API using an HTTP request 
         const response = await fetch('http://localhost:9000/vehicles/reserve', {
+            // We are using a POST which needs a body and it more secure than a GET also needs header 
             method: 'POST',
+            // this is the header 
             headers: {
                 'Content-Type': 'application/json',
-            },
+          },
+            // This is the body of the request which will be found in the back end paramaters 
             body: JSON.stringify({
                 vehicleId,
                 startDate,
