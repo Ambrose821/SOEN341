@@ -54,6 +54,7 @@ function AdminDashboard() {
     fetchCars();
   }, []);
 
+  //Using fetch card because we need to see all reserved cars 
   const fetchCars = async () => {
     try {
       const response = await fetch("http://localhost:9000/vehicles/getCars");
@@ -68,6 +69,7 @@ function AdminDashboard() {
     }
   };
 
+  // This we need becuase we need to handle the inoput change of the field 
   const handleInputChange = (event) => {
     const changeField = event.target.id;
     const changedValue = event.target.value;
@@ -213,6 +215,7 @@ function AdminDashboard() {
 
   const handleYearChange = (event) => {
     const yearValue = event.target.value;
+    //used Regex to test the values 
     if (/^\d{4}$/.test(yearValue) && yearValue >= 1900 && yearValue <= 2024) {
       setYear(yearValue);
     } else {

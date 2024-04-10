@@ -1,5 +1,6 @@
 import React from "react";
 
+// Thiis is the agreement component of the website 
 function AgreementPhys() {
   return (
     <div className="AgreementPhys">
