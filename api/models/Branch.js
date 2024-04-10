@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const BranchSchema = new mongoose.Schema({
   BranchName: {
@@ -18,10 +18,10 @@ const BranchSchema = new mongoose.Schema({
     }
     // Note: 'unique: true' is not applicable to individual fields in a subdocument like 'location'.
     // If you want 'location' to be unique, you would need a custom validation approach.
-  },
-});
+  }
+})
 
 // Apply a 2dsphere index to 'location' for GeoJSON coordinates
-BranchSchema.index({ location: '2dsphere' });
+BranchSchema.index({ location: '2dsphere' })
 
-module.exports = mongoose.model("Branch", BranchSchema);
+module.exports = mongoose.model('Branch', BranchSchema)
