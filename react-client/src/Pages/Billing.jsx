@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 function Billing() {
   const location = useLocation();
@@ -16,15 +16,16 @@ function Billing() {
   const [gpsCost, setGpsCost] = useState(0);
   const [insuranceCost, setInsuranceCost] = useState(0);
 
-
   const startDateString = new Date(reservation.startDate);
   const endDateString = new Date(reservation.endDate);
   const timeDifferenceInSeconds = endDateString - startDateString;
   const timeDifferenceInDays = timeDifferenceInSeconds / (1000 * 3600 * 24);
-  
+
   useEffect(() => {
     if (reservation) {
-      const startDateString = new Date(reservation.startDate).toLocaleDateString();
+      const startDateString = new Date(
+        reservation.startDate
+      ).toLocaleDateString();
       const endDateString = new Date(reservation.endDate).toLocaleDateString();
 
       setStartDate(startDateString || "Not Set");
@@ -35,13 +36,13 @@ function Billing() {
       setDeposit(0);
 
       if (reservation.gps) {
-        setGpsCost(30*timeDifferenceInDays);
+        setGpsCost(30 * timeDifferenceInDays);
       } else {
         setGpsCost(0);
       }
 
       if (reservation.insurance) {
-        setInsuranceCost(100*timeDifferenceInDays);
+        setInsuranceCost(100 * timeDifferenceInDays);
       } else {
         setInsuranceCost(0);
       }
@@ -61,19 +62,24 @@ function Billing() {
           break;
       }
 
-      setTaxes((((reservation.carCost + gpsCost + insuranceCost) || 0)) * 0.15);
-      setTotalCost(((carCost + gpsCost + insuranceCost) * 1.15) + deposit);
-
+      setTaxes((reservation.carCost + gpsCost + insuranceCost || 0) * 0.15);
+      setTotalCost((carCost + gpsCost + insuranceCost) * 1.15 + deposit);
     }
-  }, [reservation, carCost, gpsCost, insuranceCost, timeDifferenceInDays, deposit]);
+  }, [
+    reservation,
+    carCost,
+    gpsCost,
+    insuranceCost,
+    timeDifferenceInDays,
+    deposit,
+  ]);
 
   const handleToken = async (token) => {
     try {
       await axios.post(`http://localhost:9000/stripe-route/pay`, {
         token: token,
-        amount: totalCost
+        amount: totalCost,
       });
-      
     } catch (error) {
       setCarCost(0);
       setTaxes(0);
@@ -100,7 +106,11 @@ function Billing() {
           {/* <p>Taxes: {(carCost + gpsCost + insuranceCost)*0.15}</p> */}
           <p>Deposit, if applicable: {deposit}$</p>
           {/* <p>Total Cost: {totalCost}</p> */}
-          <p> Total Cost: {((carCost + gpsCost + insuranceCost) * 1.15).toFixed(2)}$</p>
+          <p>
+            {" "}
+            Total Cost:{" "}
+            {((carCost + gpsCost + insuranceCost) * 1.15).toFixed(2)}$
+          </p>
         </div>
       </div>
     </div>
