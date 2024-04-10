@@ -1,0 +1,81 @@
+The useAuth React Hook allows us to sign in, sign out, and fetch information about the user. Let's test this out to ensure it's set up correctly. 
+First, we need to wrap our application with AuthProvider to access the context. Then, modify the file pages/index.
+
+import React, { useState, useEffect, useContext, createContext } from 'react'
+import firebase from './firebase'
+
+const authContext = createContext()
+
+export function AuthProvider({ children }) {
+  const auth = useProvideAuth()
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>
+}
+
+export const useAuth = () => {
+  return useContext(authContext)
+}
+
+function useProvideAuth() {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const handleUser = (rawUser) => {
+    if (rawUser) {
+      const user = formatUser(rawUser)
+
+      setLoading(false)
+      setUser(user)
+      return user
+    } else {
+      setLoading(false)
+      setUser(false)
+      return false
+    }
+  }
+
+  const signinWithGitHub = () => {
+    setLoading(true)
+    return firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GithubAuthProvider())
+      .then((response) => handleUser(response.user))
+  }
+
+  const signout = () => {
+    return firebase
+      .auth()
+      .signOut()
+      .then(() => handleUser(false))
+  }
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(handleUser)
+
+    return () => unsubscribe()
+  }, [])
+
+  return {
+    user,
+    loading,
+    signinWithGitHub,
+    signout,
+  }
+}
+
+const formatUser = (user) => {
+  return {
+    uid: user.uid,
+    email: user.email,
+    name: user.displayName,
+    provider: user.providerData[0].providerId,
+    photoUrl: user.photoURL,
+  }
+}
+
+
+Here some deployment requirments and info 
+
+Environments
+Production – When selected, the Environment Variable will be applied to your next Production Deployment. To create a Production Deployment, push a commit to the default branch or run vercel --prod.
+Preview – The Environment Variable is applied to your next Preview Deployment. Preview Deployments are created when you push to a branch (for example, my-new-feature) or run vercel.
+Development – The Environment Variable is for use when running your project locally, with vercel dev or your preferred development command. To download Development Environment Variables, run vercel env pull.
