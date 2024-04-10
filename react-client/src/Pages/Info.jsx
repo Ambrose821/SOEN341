@@ -1,13 +1,7 @@
-import React from 'react';
-
-
+import React from "react";
 
 function Info() {
-  return (
-    <div className="Info">
-      
-    </div>
-  );
+  return <div className="Info"></div>;
 }
 
 export default Info;
