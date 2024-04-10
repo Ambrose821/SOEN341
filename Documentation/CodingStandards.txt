@@ -1,0 +1,22 @@
+Coding Standards Documentation
+Introduction
+This document outlines the coding standards and conventions that should be followed in our projects. Adhering to these guidelines ensures that our code is clean, understandable, and maintainable by any developer within the team, regardless of their role or the project they are working on.
+
+Formatting
+Indentation: Use spaces for indentation. The standard indentation level is 4 spaces.
+Line Length: Keep lines to a maximum of 80 characters where possible for better readability.
+Use of Whitespace: Use blank lines to separate blocks of code that are logically related. Within a block, use spacing sparingly to indicate logical groupings of statements.
+Naming Conventions
+Variables and Functions: Use camelCase for variable and function names.
+Classes and Interfaces: Use PascalCase for class and interface names.
+Constants: Use UPPER_CASE with underscores for constants.
+Comments and Documentation
+Commenting Code: Comment your code liberally to explain the "why" behind a complex piece of logic. Avoid comments that simply reiterate what the code does.
+Documentation: Each class and public method should be accompanied by comments that explain their purpose, parameters, and return values.
+Version Control
+Commits: Write clear and concise commit messages, starting with a capital letter. The message should explain the "why" of the commit.
+Branching: Follow the feature-branch workflow. Create a new branch for each feature or bug fix.
+Pull Requests: Use pull requests for merging code into the main branch. Ensure that your code is reviewed by at least one other developer before merging.
+Error Handling
+Consistency: Use a consistent method for error handling and reporting within your application.
+Clarity: Errors should provide clear messages that help the developer understand what went wrong and how to fix it.
