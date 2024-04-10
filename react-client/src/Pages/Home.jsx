@@ -20,7 +20,6 @@ const Item = styled(Paper)(({ theme }) => ({
 const DynamicGrid = ({ photoURLs, ids, models, prices }) => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
-  //const audio = new Audio('./Background.mp3');
 
   const columns = 3;
 
@@ -36,10 +35,6 @@ const DynamicGrid = ({ photoURLs, ids, models, prices }) => {
   const handleReviewsClick = (id) => {
     navigate("/Reviews", { state: { vehicleId: id } });
   };
-
-  // const handleAudioClick = () => {
-  //   audio.play();
-  // };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
