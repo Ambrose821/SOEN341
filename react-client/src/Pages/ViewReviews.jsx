@@ -47,6 +47,7 @@ const Reviews = () => {
 
   const navigate = useNavigate();
 
+  // using location to pass vars fropm one page to the other
   const { vehicleId } = location.state || {};
 
   const [reviews, setReviews] = useState([]);
@@ -79,6 +80,7 @@ const Reviews = () => {
         const data = await response.json();
         setReviews(data.reviews);
 
+        // processing data from the backend
         const total = data.reviews.reduce((acc, curr) => acc + curr.stars, 0);
         const average =
           data.reviews.length > 0 ? total / data.reviews.length : 0;
