@@ -1,0 +1,18 @@
+Introduction
+Client-server architecture is a staple model for building applications that extend across networks. This model efficiently separates concerns, enabling efficient development, deployment, and scalability. It forms the backbone of most internet services, enterprise applications, and many other types of software.
+
+Components
+Client
+The client is the consumer of the services or resources provided by the server. Clients initiate requests to servers; they are typically user-facing applications such as web browsers, mobile apps, or desktop applications.
+
+Server
+The server hosts, delivers, and manages most of the resources and services requested by the client. Servers wait for incoming requests from clients and respond to them directly after processing. They can be databases, mail servers, file servers, or web servers, among others.
+
+Communication
+The communication between client and server happens over a network, with most applications using the Internet. The most common protocol for this communication is the Hypertext Transfer Protocol (HTTP), especially in web applications.
+
+How It Works
+Request: The client sends a request to the server. This could be a request for data (e.g., loading a webpage), a request to execute a command (e.g., submitting a form), or a request for some other resource.
+Processing: The server receives the request, processes it according to its logic or retrieves the requested data, and then prepares a response. This process may involve querying a database, executing a complex operation, or simply fetching a file.
+Response: The server sends the response back to the client. The client then processes the response, which may involve rendering a webpage, displaying new information to the user, or performing some action based on the received data.
+Display: Finally, the client presents the results to the user, completing the request-response cycle.
