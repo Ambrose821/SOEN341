@@ -11,6 +11,7 @@ function Agreement() {
   };
 
   function getCurrentDate() {
+    // we need to make a new date object because it is being processed as a date 
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     let month = currentDate.getMonth() + 1;
@@ -23,6 +24,7 @@ function Agreement() {
     return `${year}-${month}-${day}`;
   }
 
+  // This will handle the submit button when someone agress 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -33,6 +35,7 @@ function Agreement() {
         },
         body: JSON.stringify({ reservation: info[0] }),
       });
+      // we need to await the json so that we use the async properties 
       const data = await response.json();
       if (data.success == true) {
         setCheckedIn(true);
