@@ -1,0 +1,19 @@
+Documentation: useLocation & Authentication (Auth)
+Overview
+This document provides a comprehensive guide on how to utilize the useLocation hook in React Router for accessing the location object which represents the current URL in a web application, and how to implement Authentication (Auth) mechanisms to manage user access and identity verification.
+
+useLocation Hook
+The useLocation hook is part of React Router and is used to access the location object. This object provides information about the current URL and the navigation state.
+
+Key Features:
+Access to pathname, search, and hash values of the URL.
+Track navigation state without re-rendering components unnecessarily.
+Use Cases:
+Accessing query parameters.
+Implementing page transitions based on the current route.
+Conditionally rendering components based on the route.
+
+
+WHAT DOES IT SOLVE:
+
+It's so that it we can send data through pages in react and have better data transfer it uses UseNavgiation which will be underthe Use Navigation documention
