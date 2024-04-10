@@ -1,0 +1,50 @@
+Mongoose is a popular Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a straight-forward, schema-based solution to model your application data. It includes built-in type casting, validation, query building, business logic hooks, and more, out of the box. Here’s an overview of how Mongoose works and its key concepts:
+
+Key Concepts
+Schemas
+A schema is a way to define the structure of the data that will be stored in a MongoDB document. It specifies the types of data, the validations it should undergo, and the default values. Schemas are used to create models.
+
+javascript
+Copy code
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const userSchema = new Schema({
+  name: String, // `name` is a String
+  age: Number, // `age` is a Number
+  email: { type: String, required: true }, // `email` is a required String
+  createdAt: { type: Date, default: Date.now }, // Default values can be specified
+});
+Models
+A model is a compiled version of the schema. A Mongoose model provides an interface to the database for creating, querying, updating, deleting records, etc.
+
+javascript
+Copy code
+const User = mongoose.model('User', userSchema);
+Connections
+Mongoose allows you to connect to your MongoDB database using its connect method. This is usually one of the first steps you take when starting your application.
+
+javascript
+Copy code
+mongoose.connect('mongodb://localhost/myapp', {useNewUrlParser: true, useUnifiedTopology: true});
+Operations
+With models, you can perform various operations such as creating, reading, updating, and deleting documents (CRUD).
+
+Create:
+
+javascript
+Copy code
+const newUser = new User({ name: 'John Doe', age: 30, email: 'johndoe@example.com' });
+newUser.save().then(doc => console.log(doc));
+Read:
+
+javascript
+Copy code
+User.find({ age: { $gte: 18 } }, (err, docs) => {
+  // docs with age 18 and above
+});
+Update:
+
+javascript
+Copy code
+User.updateOne({ _id: id }, { $set: { name: 'Jane Doe' } }).then(result => console.log(result));
