@@ -16,9 +16,11 @@ const Review = require("../models/CarReview");
 var router = express.Router();
 
 router.post("/uploadReview", async function (req, res, next) {
+  // We need this because we we can uppload different reviews for each car 
   try {
     const { newRating, newComment, newEmail, vehicleId } = req.body;
 
+    // we are building the review object to send to the Mango DB
     const review = {
       stars: newRating,
       comment: newComment,
@@ -36,6 +38,7 @@ router.post("/uploadReview", async function (req, res, next) {
 });
 
 router.post("/getReviewsByCarId", async function (req, res, next) {
+  // We need a way to get reviews by an ID so that when we click on the car we can acess all it's reviews 
   try {
     const { vehicleId } = req.body;
     console.log(vehicleId);
